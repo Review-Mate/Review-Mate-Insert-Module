@@ -1,7 +1,12 @@
 import React from 'react';
+import Editor from './components/ReviewEditor/ReviewEditor';
 
 function App() {
-  return <div className="App"></div>;
+  return (
+    <>
+      <Editor />
+    </>
+  );
 }
 
 export default App;
