@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import Rating from './ReviewRating';
 import FileInput from '../FileInput';
+import Fonts from '../../utils/GlobalFonts';
+import { colors } from '../../utils/GlobalStyles';
 
 export default function ReviewEditor() {
   const [text, setText] = useState<string>('');
@@ -20,26 +22,51 @@ export default function ReviewEditor() {
 
   return (
     <Container>
+      <Fonts size={18} weight="bold" margin="0 0 15px 0">
+        이번 여행은 만족하셨나요?
+      </Fonts>
       <Rating rating={rating} setRating={setRating} />
       <Textarea value={text} rows={10} onChange={onChangeInput} />
       <FileInput images={images} setImages={setImages} />
-      <button onClick={onClickAdd}>리뷰 작성</button>
+      <Button onClick={onClickAdd}>
+        <Fonts weight="medium" color="white">
+          리뷰 작성
+        </Fonts>
+      </Button>
     </Container>
   );
 }
 
 const Container = styled.div`
   display: flex;
-  flex: 1;
+  width: 40%;
+  align-items: center;
   flex-direction: column;
-  align-items: flex-start;
+  background-color: ${colors.background};
+  padding: 40px;
+  padding-top: 50px;
 `;
 
 const Textarea = styled.textarea`
-  width: 40%;
-  border: 1px solid black;
-  border-radius: 5px;
-  padding: 10px;
-  margin: 10px 0;
+  width: 100%;
+  height: 200px;
+  border: 1px solid ${colors.gray200};
+  border-radius: 10px;
+  padding: 20px;
+  margin: 50px 0 20px 0;
   resize: none;
+  font-size: 16px;
+`;
+
+const Button = styled.button`
+  width: 143px;
+  height: 50px;
+  border-radius: 5px;
+  background-color: ${colors.black};
+  color: white;
+  margin-top: 40px;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.8;
+  }
 `;

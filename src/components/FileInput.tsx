@@ -1,6 +1,10 @@
 import React from 'react';
 import styled from 'styled-components';
-import close from '../assets/icons/close.png';
+import Close from '../assets/icons/close.svg';
+import { colors } from '@/utils/GlobalStyles';
+import { ReactComponent as Camera } from '@/assets/icons/camera.svg';
+import { Row } from '@/ui/flex/flex';
+import Fonts from '@/utils/GlobalFonts';
 
 interface Props {
   images: Array<string>;
@@ -36,7 +40,10 @@ export default function FileInput(props: Props) {
 
   return (
     <>
-      <ImageUpload htmlFor="image">이미지 업로드</ImageUpload>
+      <ImageUpload htmlFor="image">
+        <Camera />
+        <Fonts margin="0 0 0 5px">사진 첨부하기</Fonts>
+      </ImageUpload>
       <Input
         type="file"
         id="image"
@@ -49,11 +56,11 @@ export default function FileInput(props: Props) {
           {images.map((image, index) => (
             <PreviewImage key={index}>
               <CloseButton
-                src={close}
+                src={Close}
                 alt="삭제"
                 onClick={() => onClickDelete(image)}
               />
-              <img src={image} alt="이미지 미리보기" width={150} />
+              <Image src={image} alt="이미지 미리보기" />
             </PreviewImage>
           ))}
         </ImagePreview>
@@ -63,8 +70,15 @@ export default function FileInput(props: Props) {
 }
 
 const ImageUpload = styled.label`
-  border: 1px dashed black;
-  padding: 10px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  width: 230px;
+  height: 50px;
+  border: 1px solid ${colors.gray200};
+  border-radius: 10px;
+  background-color: white;
   cursor: pointer;
 `;
 
@@ -80,7 +94,8 @@ const ImagePreview = styled.div`
 const PreviewImage = styled.div`
   position: relative;
   margin: 5px;
-  width: 150px;
+  width: 85px;
+  height: 85px;
 `;
 
 const Input = styled.input`
@@ -95,4 +110,10 @@ const CloseButton = styled.img`
   height: 20px;
   margin: 5px;
   cursor: pointer;
+`;
+
+const Image = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;

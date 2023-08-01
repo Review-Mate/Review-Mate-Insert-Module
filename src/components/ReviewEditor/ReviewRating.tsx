@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import starFill from '../../assets/icons/star_fill.png';
-import starEmpty from '../../assets/icons/star_empty.png';
+import starFill from '../../assets/icons/starFill.svg';
+import starEmpty from '../../assets/icons/starEmpty.svg';
 
 interface Props {
   rating: number;
