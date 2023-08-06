@@ -1,31 +1,104 @@
 import React from 'react';
 import styled from 'styled-components';
+import { colors } from './GlobalStyles';
 
-interface FontProps {
-  size?: number;
-  weight?: number | string;
-  color?: string;
-  margin?: string;
-  children: React.ReactNode;
-}
-
-const FontWrapper = styled.span<FontProps>`
-  font-size: ${(props) => props.size}px;
-  font-weight: ${(props) => props.weight};
-  color: ${(props) => props.color || 'black'};
+const Heading = styled.h1<FontProps>`
+  font-size: 28px;
   margin: ${(props) => props.margin || '0'};
+  font-weight: bold;
+  color: ${(props) => (props.color ? props.color : colors.black)};
 `;
 
-const Fonts = ({
-  size = 16,
-  weight = 'regular',
-  color = 'black',
-  margin = '0',
-  children,
-}: FontProps) => (
-  <FontWrapper size={size} weight={weight} color={color} margin={margin}>
-    {children}
-  </FontWrapper>
-);
+const Title = styled.h2<FontProps>`
+  font-size: 24px;
+  margin: ${(props) => props.margin || '0'};
+  font-weight: bold;
+  color: ${(props) => (props.color ? props.color : colors.black)};
+`;
 
-export default Fonts;
+const SubTitle = styled.h3<FontProps>`
+  font-size: 20px;
+  margin: ${(props) => props.margin || '0'};
+  font-weight: bold;
+  color: ${(props) => (props.color ? props.color : colors.black)};
+`;
+
+const body1 = styled.p<FontProps>`
+  font-size: 18px;
+  margin: ${(props) => props.margin || '0'};
+  font-weight: bold;
+  color: ${(props) => (props.color ? props.color : colors.black)};
+`;
+
+const body2 = styled.p<FontProps>`
+  font-size: 16px;
+  margin: ${(props) => props.margin || '0'};
+  color: ${(props) => (props.color ? props.color : colors.black)};
+  font-weight: ${(props) => (props.weight ? props.weight : 'normal')};
+`;
+
+const body3 = styled.p<FontProps>`
+  font-size: 14px;
+  margin: ${(props) => props.margin || '0'};
+  color: ${(props) => (props.color ? props.color : colors.black)};
+  font-weight: ${(props) => (props.weight ? props.weight : 'normal')};
+`;
+
+const caption = styled.p<FontProps>`
+  font-size: 13px;
+  margin: ${(props) => props.margin || '0'};
+  color: ${(props) => (props.color ? props.color : colors.black)};
+  font-weight: ${(props) => (props.weight ? props.weight : 'normal')};
+`;
+
+const num1 = styled.p<FontProps>`
+  font-family: 'GmarketBold';
+  font-size: 30px;
+  margin: ${(props) => props.margin || '0'};
+  color: ${(props) => (props.color ? props.color : colors.black)};
+  font-weight: ${(props) => (props.weight ? props.weight : 'normal')};
+`;
+
+const num2 = styled.p<FontProps>`
+  font-family: 'GmarketBold';
+  font-size: 24px;
+  margin: ${(props) => props.margin || '0'};
+  color: ${(props) => (props.color ? props.color : colors.black)};
+  font-weight: ${(props) => (props.weight ? props.weight : 'normal')};
+`;
+
+const num3 = styled.p<FontProps>`
+  font-family: 'GmarketBold';
+  font-size: 20px;
+  margin: ${(props) => props.margin || '0'};
+  color: ${(props) => (props.color ? props.color : colors.black)};
+  font-weight: ${(props) => (props.weight ? props.weight : 'normal')};
+`;
+
+const num4 = styled.p<FontProps>`
+  font-family: 'GmarketBold';
+  font-size: 14px;
+  margin: ${(props) => props.margin || '0'};
+  color: ${(props) => (props.color ? props.color : colors.black)};
+  font-weight: ${(props) => (props.weight ? props.weight : 'normal')};
+`;
+
+interface FontProps {
+  color?: string;
+  margin?: string;
+  weight?: number;
+}
+
+export const Fonts = {
+  Heading,
+  Title,
+  SubTitle,
+  body1,
+  body2,
+  body3,
+  caption,
+  num1,
+  num2,
+  num3,
+  num4,
+};

@@ -1,5 +1,5 @@
 import React from 'react';
-import Editor from './components/ReviewEditor/ReviewEditor';
+import Editor from './pages/ReviewEditor';
 
 function App() {
   return (

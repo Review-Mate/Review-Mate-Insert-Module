@@ -1,10 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
-import Close from '../assets/icons/close.svg';
+import Close from '@/assets/icons/close.svg';
 import { colors } from '@/utils/GlobalStyles';
 import { ReactComponent as Camera } from '@/assets/icons/camera.svg';
-import { Row } from '@/ui/flex/flex';
-import Fonts from '@/utils/GlobalFonts';
+import { Fonts } from '@/utils/GlobalFonts';
 
 interface Props {
   images: Array<string>;
@@ -42,7 +41,9 @@ export default function FileInput(props: Props) {
     <>
       <ImageUpload htmlFor="image">
         <Camera />
-        <Fonts margin="0 0 0 5px">사진 첨부하기</Fonts>
+        <Fonts.body2 weight={500} margin="0 0 0 5px">
+          사진 첨부하기
+        </Fonts.body2>
       </ImageUpload>
       <Input
         type="file"
@@ -76,7 +77,7 @@ const ImageUpload = styled.label`
   align-items: center;
   width: 230px;
   height: 50px;
-  border: 1px solid ${colors.gray200};
+  border: 1px solid ${colors.gray06};
   border-radius: 10px;
   background-color: white;
   cursor: pointer;

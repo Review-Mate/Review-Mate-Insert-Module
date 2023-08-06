@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Rating from './ReviewRating';
-import FileInput from '../FileInput';
-import Fonts from '../../utils/GlobalFonts';
-import { colors } from '../../utils/GlobalStyles';
+import Rating from '../components/ReviewEditor/ReviewRating';
+import { colors } from '../utils/GlobalStyles';
+import FileInput from '../components/ReviewEditor/FileInput';
+import { Fonts } from '../utils/GlobalFonts';
 
 export default function ReviewEditor() {
   const [text, setText] = useState<string>('');
@@ -22,16 +22,14 @@ export default function ReviewEditor() {
 
   return (
     <Container>
-      <Fonts size={18} weight="bold" margin="0 0 15px 0">
-        이번 여행은 만족하셨나요?
-      </Fonts>
+      <Fonts.body1 margin="0 0 15px 0">이번 여행은 만족하셨나요?</Fonts.body1>
       <Rating rating={rating} setRating={setRating} />
       <Textarea value={text} rows={10} onChange={onChangeInput} />
       <FileInput images={images} setImages={setImages} />
       <Button onClick={onClickAdd}>
-        <Fonts weight="medium" color="white">
+        <Fonts.body2 weight={500} color="white">
           리뷰 작성
-        </Fonts>
+        </Fonts.body2>
       </Button>
     </Container>
   );
@@ -39,10 +37,11 @@ export default function ReviewEditor() {
 
 const Container = styled.div`
   display: flex;
-  width: 40%;
+  width: 80%;
+  margin: 0 auto;
   align-items: center;
   flex-direction: column;
-  background-color: ${colors.background};
+  background-color: ${colors.gray08};
   padding: 40px;
   padding-top: 50px;
 `;
@@ -50,7 +49,7 @@ const Container = styled.div`
 const Textarea = styled.textarea`
   width: 100%;
   height: 200px;
-  border: 1px solid ${colors.gray200};
+  border: 1px solid ${colors.gray06};
   border-radius: 10px;
   padding: 20px;
   margin: 50px 0 20px 0;

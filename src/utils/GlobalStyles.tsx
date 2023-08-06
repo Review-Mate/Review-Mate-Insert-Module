@@ -1,24 +1,25 @@
 // colors
 export const black = '#000000';
 export const white = '#FFFFFF';
-export const primary = '#4397AA';
-export const background = '#F9FBFD';
 
-export const body = '#F9FBFD';
-export const gray100 = '#E3E1DC';
-export const gray200 = '#F0F0F0';
-export const gray300 = '#BFBFBF';
-export const gray400 = '#D9D9D9';
-export const gray500 = '#666666';
+export const primary = '#4397AA';
+
+export const gray01 = '#666666';
+export const gray02 = '#999999';
+export const gray03 = '#BFBFBF';
+export const gray04 = '#CBCBCB';
+export const gray05 = '#D9D9D9';
+export const gray06 = '#F0F0F0';
+export const gray07 = '#F1F4F6';
+export const gray08 = '#F9FBFD';
 
 export const colors = {
   black,
   white,
   primary,
-  background,
-  gray100,
-  gray200,
-  gray300,
-  gray400,
-  gray500,
+  gray08,
+  gray06,
+  gray03,
+  gray05,
+  gray01,
 };
