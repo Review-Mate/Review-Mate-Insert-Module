@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import starFill from '@/assets/icons/starFill.svg';
+import starYellow from '@/assets/icons/starYellow.svg';
 import starEmpty from '@/assets/icons/starEmpty.svg';
 
 interface Props {
@@ -20,7 +20,7 @@ export default function ReviewRating(props: Props) {
           <img
             key={index}
             role="presentation"
-            src={star <= (hover || rating) ? starFill : starEmpty}
+            src={star <= (hover || rating) ? starYellow : starEmpty}
             width={40}
             alt="별점"
             onClick={() => setRating(star)}
