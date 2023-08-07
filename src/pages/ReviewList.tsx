@@ -1,3 +1,4 @@
+import KeywordStats from '@/components/KeywordStats';
 import ReviewStats from '@/components/ReviewStats';
 import { Margin } from '@/ui/margin/margin';
 import React from 'react';
@@ -12,6 +13,8 @@ export default function ReviewList() {
   return (
     <Container>
       <ReviewStats rating={rating} scoreList={scoreList} />
+      <Margin margin={'30px 0 0 0'} />
+      <KeywordStats />
     </Container>
   );
 }
