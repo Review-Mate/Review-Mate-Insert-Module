@@ -127,7 +127,7 @@ const Container = styled.div`
   width: 100%;
   min-width: 600px;
   padding: 30px;
-  margin: 0 2%;
+  box-sizing: border-box;
   border-radius: 10px;
   background-color: ${colors.gray08};
 `;
