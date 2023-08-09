@@ -17,6 +17,7 @@ export default function ReviewStats(prop: Props) {
   return (
     <Box>
       <StatItem>
+        {/* 점수에 따라 별점 채워짐(0.1 단위) */}
         <RatingStatBox rating={rating} />
         <Margin margin={'5px 0 0 0'} />
         <Fonts.num2>{rating}</Fonts.num2>
@@ -27,6 +28,7 @@ export default function ReviewStats(prop: Props) {
         <Fonts.num2>4500</Fonts.num2>
       </StatItem>
       <StatItem>
+        {/* 전체가 100, 퍼센트(%)만큼 채워짐 */}
         <StatBars scoreList={scoreList} />
       </StatItem>
     </Box>
