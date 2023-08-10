@@ -1,20 +1,55 @@
 import { Fonts } from '@/utils/GlobalFonts';
 import { colors } from '@/utils/GlobalStyles';
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { ReactComponent as CheckWhite } from '@/assets/icons/checkWhite.svg';
 import { ReactComponent as CheckBlack } from '@/assets/icons/checkBlack.svg';
 
 export default function KeywordSortBar() {
+  const [selectedBigTag, setSelectedBigTag] = useState(0);
+  const [selectedSmallTag, setSelectedSmallTag] = useState(0);
+
+  const BIG_TAGS = [
+    { id: 0, label: '청결', isSelected: true },
+    { id: 1, label: '서비스', isSelected: false },
+    { id: 2, label: '청결', isSelected: false },
+    { id: 3, label: '서비스', isSelected: false },
+  ];
+
+  const SMALL_TAGS = [
+    { id: 0, parId: 0, label: '먼지', isSelected: true },
+    { id: 1, parId: 0, label: '곰팡이', isSelected: false },
+    { id: 2, parId: 0, label: '냄새', isSelected: false },
+    { id: 3, parId: 1, label: '서비스1', isSelected: false },
+    { id: 4, parId: 1, label: '서비스2', isSelected: false },
+  ];
+
   return (
     <Box>
       <BigBox>
-        <BigTag title={'청결'} check={true} />
-        <BigTag title={'청결'} check={false} />
+        {BIG_TAGS.map((option) => (
+          <React.Fragment key={option.id}>
+            <BigTag
+              title={option.label}
+              check={selectedBigTag === option.id}
+              onClick={() => setSelectedBigTag(option.id)}
+            />
+          </React.Fragment>
+        ))}
       </BigBox>
       <SmallBox>
-        <SmallTag title={'청결'} check={true} />
-        <SmallTag title={'청결'} check={false} />
+        {SMALL_TAGS.map(
+          (option) =>
+            selectedBigTag == option.parId && (
+              <React.Fragment key={option.id}>
+                <SmallTag
+                  title={option.label}
+                  check={selectedSmallTag === option.id}
+                  onClick={() => setSelectedSmallTag(option.id)}
+                />
+              </React.Fragment>
+            )
+        )}
       </SmallBox>
     </Box>
   );
@@ -23,11 +58,15 @@ export default function KeywordSortBar() {
 interface Props {
   title: string;
   check: boolean;
+  onClick?: () => void;
 }
 
-const BigTag = ({ title, check }: Props) => {
+const BigTag = ({ title, check, onClick }: Props) => {
   return (
-    <Tag backgroundColor={check ? colors.primary : colors.white}>
+    <Tag
+      onClick={onClick}
+      backgroundColor={check ? colors.primary : colors.white}
+    >
       {check && <CheckWhite />}
       <Fonts.body3
         color={check ? colors.white : colors.primary}
@@ -40,9 +79,9 @@ const BigTag = ({ title, check }: Props) => {
   );
 };
 
-const SmallTag = ({ title, check }: Props) => {
+const SmallTag = ({ title, check, onClick }: Props) => {
   return (
-    <Tag borderColor={check ? colors.gray03 : colors.gray06}>
+    <Tag onClick={onClick} borderColor={check ? colors.gray03 : colors.gray06}>
       {check && <CheckBlack />}
       <Fonts.body3
         color={colors.gray01}
