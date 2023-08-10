@@ -4,6 +4,7 @@ import React from 'react';
 import { styled } from 'styled-components';
 import { ReactComponent as StarYellow } from '@/assets/icons/starYellow.svg';
 import { Row } from '@/ui/flex/flex';
+import { url } from 'inspector';
 
 interface Props {
   id: number;
@@ -39,7 +40,7 @@ export default function Reviews(props: Props) {
         </Fonts.body3>
         <Fonts.caption color={colors.gray01}>{date}</Fonts.caption>
       </TextBox>
-      <ImageBox />
+      <Image src="https://cdn.pixabay.com/photo/2016/03/04/19/36/beach-1236581_1280.jpg" />
     </Container>
   );
 }
@@ -58,9 +59,8 @@ const TextBox = styled.div`
   margin-right: 40px;
 `;
 
-const ImageBox = styled.div`
+const Image = styled.img`
   width: 120px;
   height: 120px;
   border-radius: 10px;
-  background-color: ${colors.gray03};
 `;

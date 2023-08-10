@@ -12,8 +12,6 @@ export default function KeywordSortBar() {
   const BIG_TAGS = [
     { id: 0, label: '청결', isSelected: true },
     { id: 1, label: '서비스', isSelected: false },
-    { id: 2, label: '청결', isSelected: false },
-    { id: 3, label: '서비스', isSelected: false },
   ];
 
   const SMALL_TAGS = [
