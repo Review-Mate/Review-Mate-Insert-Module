@@ -1,21 +1,31 @@
 import { Fonts } from '@/utils/GlobalFonts';
 import { colors } from '@/utils/GlobalStyles';
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import { ReactComponent as CheckBlack } from '@/assets/icons/checkBlack.svg';
 
 export default function ReviewSortBar() {
+  const [selectedOption, setSelectedOption] = useState(0);
+  const SORT_OPTIONS = [
+    { id: 0, label: '최신순', isSelected: true },
+    { id: 1, label: '별점높은순', isSelected: false },
+    { id: 2, label: '별점낮은순', isSelected: false },
+    { id: 3, label: '긍정률순', isSelected: false },
+    { id: 4, label: '부정률순', isSelected: false },
+  ];
+
   return (
     <Box>
-      <SortTag title={'최신순'} check={true} />
-      <Divider />
-      <SortTag title={'별점높은순'} check={false} />
-      <Divider />
-      <SortTag title={'별점낮은순'} check={false} />
-      <Divider />
-      <SortTag title={'긍정률순'} check={false} />
-      <Divider />
-      <SortTag title={'부정률순'} check={false} />
+      {SORT_OPTIONS.map((option) => (
+        <React.Fragment key={option.id}>
+          <SortTag
+            title={option.label}
+            check={selectedOption === option.id}
+            onClick={() => setSelectedOption(option.id)}
+          />
+          {option.id < SORT_OPTIONS.length - 1 && <Divider />}
+        </React.Fragment>
+      ))}
     </Box>
   );
 }
@@ -23,11 +33,12 @@ export default function ReviewSortBar() {
 interface Props {
   title: string;
   check: boolean;
+  onClick?: () => void;
 }
 
-const SortTag = ({ title, check }: Props) => {
+const SortTag = ({ title, check, onClick }: Props) => {
   return (
-    <Tag>
+    <Tag onClick={onClick}>
       {check && <CheckBlack />}
       <Fonts.caption
         color={check ? colors.black : colors.gray01}
