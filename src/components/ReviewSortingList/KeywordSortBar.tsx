@@ -10,16 +10,16 @@ export default function KeywordSortBar() {
   const [selectedSmallTag, setSelectedSmallTag] = useState(0);
 
   const BIG_TAGS = [
-    { id: 0, label: '청결', isSelected: true },
-    { id: 1, label: '서비스', isSelected: false },
+    { id: 0, label: '청결' },
+    { id: 1, label: '서비스' },
   ];
 
   const SMALL_TAGS = [
-    { id: 0, parId: 0, label: '먼지', isSelected: true },
-    { id: 1, parId: 0, label: '곰팡이', isSelected: false },
-    { id: 2, parId: 0, label: '냄새', isSelected: false },
-    { id: 3, parId: 1, label: '서비스1', isSelected: false },
-    { id: 4, parId: 1, label: '서비스2', isSelected: false },
+    { id: 0, parId: 0, label: '먼지' },
+    { id: 1, parId: 0, label: '곰팡이' },
+    { id: 2, parId: 0, label: '냄새' },
+    { id: 3, parId: 1, label: '서비스1' },
+    { id: 4, parId: 1, label: '서비스2' },
   ];
 
   return (
@@ -65,7 +65,7 @@ const BigTag = ({ title, check, onClick }: Props) => {
       onClick={onClick}
       backgroundColor={check ? colors.primary : colors.white}
     >
-      {check && <CheckWhite />}
+      {check && <CheckWhite style={{ marginBottom: 2 }} />}
       <Fonts.body3
         color={check ? colors.white : colors.primary}
         weight={500}
@@ -80,7 +80,7 @@ const BigTag = ({ title, check, onClick }: Props) => {
 const SmallTag = ({ title, check, onClick }: Props) => {
   return (
     <Tag onClick={onClick} borderColor={check ? colors.gray03 : colors.gray06}>
-      {check && <CheckBlack />}
+      {check && <CheckBlack style={{ marginBottom: 2 }} />}
       <Fonts.body3
         color={colors.gray01}
         weight={500}
@@ -92,11 +92,11 @@ const SmallTag = ({ title, check, onClick }: Props) => {
   );
 };
 
-const Tag = styled.div<{ backgroundColor?: string; borderColor?: string }>`
+const Tag = styled.button<{ backgroundColor?: string; borderColor?: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 66px;
+  min-width: 66px;
   height: 30px;
   border: 1px solid ${(props) => props.borderColor || colors.primary};
   border-radius: 100px;

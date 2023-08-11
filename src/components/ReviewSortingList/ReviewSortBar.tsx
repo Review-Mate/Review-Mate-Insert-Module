@@ -7,24 +7,23 @@ import { ReactComponent as CheckBlack } from '@/assets/icons/checkBlack.svg';
 export default function ReviewSortBar() {
   const [selectedOption, setSelectedOption] = useState(0);
   const SORT_OPTIONS = [
-    { id: 0, label: '최신순', isSelected: true },
-    { id: 1, label: '별점높은순', isSelected: false },
-    { id: 2, label: '별점낮은순', isSelected: false },
-    { id: 3, label: '긍정률순', isSelected: false },
-    { id: 4, label: '부정률순', isSelected: false },
+    { id: 0, label: '최신순' },
+    { id: 1, label: '별점높은순' },
+    { id: 2, label: '별점낮은순' },
+    { id: 3, label: '긍정률순' },
+    { id: 4, label: '부정률순' },
   ];
 
   return (
     <Box>
       {SORT_OPTIONS.map((option) => (
-        <React.Fragment key={option.id}>
-          <SortTag
-            title={option.label}
-            check={selectedOption === option.id}
-            onClick={() => setSelectedOption(option.id)}
-          />
-          {option.id < SORT_OPTIONS.length - 1 && <Divider />}
-        </React.Fragment>
+        <SortTag
+          key={option.id}
+          title={option.label}
+          check={selectedOption === option.id}
+          onClick={() => setSelectedOption(option.id)}
+          divider={option.id < SORT_OPTIONS.length - 1}
+        />
       ))}
     </Box>
   );
@@ -34,20 +33,24 @@ interface Props {
   title: string;
   check: boolean;
   onClick?: () => void;
+  divider?: boolean;
 }
 
-const SortTag = ({ title, check, onClick }: Props) => {
+const SortTag = ({ title, check, onClick, divider }: Props) => {
   return (
-    <Tag onClick={onClick}>
-      {check && <CheckBlack />}
-      <Fonts.caption
-        color={check ? colors.black : colors.gray01}
-        weight={check ? 500 : 400}
-        margin={check ? '0 0 0 4px' : '0'}
-      >
-        {title}
-      </Fonts.caption>
-    </Tag>
+    <>
+      <Tag onClick={onClick}>
+        {check && <CheckBlack />}
+        <Fonts.caption
+          color={check ? colors.black : colors.gray01}
+          weight={check ? 500 : 400}
+          margin={check ? '0 0 0 4px' : '0'}
+        >
+          {title}
+        </Fonts.caption>
+      </Tag>
+      {divider && <Divider />}
+    </>
   );
 };
 
