@@ -1,10 +1,9 @@
 import { Fonts } from '@/utils/GlobalFonts';
 import { colors } from '@/utils/GlobalStyles';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { styled } from 'styled-components';
 import { ReactComponent as StarYellow } from '@/assets/icons/starYellow.svg';
 import { Row } from '@/ui/flex/flex';
-import { url } from 'inspector';
 
 interface Props {
   id: number;
@@ -18,6 +17,25 @@ interface Props {
 
 export default function Reviews(props: Props) {
   const { title, score, content, date, userId, image } = props;
+  const HighLightIndexList = [
+    [23, 26], // 23번째부터 25번째까지 글자를 하이라이팅
+    [53, 56],
+  ];
+
+  const wordHighlight = (content: string, indexList: number[][]) => {
+    const sentence = [];
+    let lastIndex = 0;
+    indexList.forEach((index) => {
+      sentence.push(content.slice(lastIndex, index[0]));
+      sentence.push(<Highlight>{content.slice(index[0], index[1])}</Highlight>);
+      lastIndex = index[1];
+    });
+
+    sentence.push(content.slice(lastIndex));
+
+    return sentence;
+  };
+
   return (
     <Container>
       <TextBox>
@@ -33,7 +51,7 @@ export default function Reviews(props: Props) {
           margin="0 0 20px 0"
           style={{ lineHeight: '150%' }}
         >
-          {content}
+          {wordHighlight(content, HighLightIndexList)}
         </Fonts.caption>
         <Fonts.body3 weight={500} margin="0 0 5px 0">
           {userId}
@@ -50,6 +68,13 @@ const Container = styled.div`
   width: 100%;
   padding: 30px 0;
   border-top: 1px solid ${colors.gray06};
+`;
+
+const Highlight = styled.span`
+  background-color: rgba(67, 151, 170, 0.2);
+  border-radius: 5px;
+  color: ${colors.primary};
+  padding: 2px 3px;
 `;
 
 const TextBox = styled.div`
