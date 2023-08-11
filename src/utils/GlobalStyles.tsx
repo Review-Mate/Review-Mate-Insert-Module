@@ -13,13 +13,21 @@ export const gray06 = '#F0F0F0';
 export const gray07 = '#F1F4F6';
 export const gray08 = '#F9FBFD';
 
+export const red = '#EF6961';
+export const blue = '#4AA4B9';
+
 export const colors = {
   black,
   white,
   primary,
-  gray08,
-  gray06,
-  gray03,
-  gray05,
   gray01,
+  gray02,
+  gray03,
+  gray04,
+  gray05,
+  gray06,
+  gray07,
+  gray08,
+  red,
+  blue,
 };

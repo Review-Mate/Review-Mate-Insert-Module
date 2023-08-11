@@ -27,7 +27,7 @@ const ProgressBox = styled.div`
   background-color: ${colors.gray06};
 `;
 
-const Progress = styled.div<{ value?: number; max?: number }>`
+const Progress = styled.div<{ value: number; max: number }>`
   position: absolute;
   bottom: 0;
   width: 8px;

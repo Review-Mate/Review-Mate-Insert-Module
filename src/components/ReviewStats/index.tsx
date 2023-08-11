@@ -42,6 +42,7 @@ const Box = styled.div`
   border-radius: 10px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
+  box-sizing: border-box;
 `;
 
 const StatItem = styled.div`
