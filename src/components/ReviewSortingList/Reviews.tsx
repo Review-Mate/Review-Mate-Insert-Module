@@ -49,7 +49,7 @@ export default function Reviews(props: Props) {
         <Fonts.caption
           color={colors.gray01}
           margin="0 0 20px 0"
-          style={{ lineHeight: '150%' }}
+          style={{ lineHeight: 1.5 }}
         >
           {wordHighlight(content, HighLightIndexList)}
         </Fonts.caption>

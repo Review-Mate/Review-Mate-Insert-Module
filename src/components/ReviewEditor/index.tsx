@@ -1,9 +1,9 @@
+import { Fonts } from '@/utils/GlobalFonts';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Rating from '../components/ReviewEditor/ReviewRating';
-import { colors } from '../utils/GlobalStyles';
-import FileInput from '../components/ReviewEditor/FileInput';
-import { Fonts } from '../utils/GlobalFonts';
+import ReviewRating from './ReviewRating';
+import FileInput from './FileInput';
+import { colors } from '@/utils/GlobalStyles';
 
 export default function ReviewEditor() {
   const [text, setText] = useState<string>('');
@@ -23,7 +23,7 @@ export default function ReviewEditor() {
   return (
     <Container>
       <Fonts.body1 margin="0 0 15px 0">이번 여행은 만족하셨나요?</Fonts.body1>
-      <Rating rating={rating} setRating={setRating} />
+      <ReviewRating rating={rating} setRating={setRating} />
       <Textarea value={text} rows={10} onChange={onChangeInput} />
       <FileInput images={images} setImages={setImages} />
       <Button onClick={onClickAdd}>
@@ -37,7 +37,7 @@ export default function ReviewEditor() {
 
 const Container = styled.div`
   display: flex;
-  width: 80%;
+  flex: 2;
   margin: 0 auto;
   align-items: center;
   flex-direction: column;
