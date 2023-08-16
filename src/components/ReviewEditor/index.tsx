@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import ReviewRating from './ReviewRating';
 import FileInput from './FileInput';
 import { colors } from '@/utils/GlobalStyles';
+import useInputTimeout from '@/hooks/useInputTimeout';
 
 export default function ReviewEditor() {
   const [text, setText] = useState<string>('');
@@ -19,6 +20,11 @@ export default function ReviewEditor() {
     console.log(rating + '점, ' + text);
     console.log(images);
   };
+
+  // 1초간 입력이 없을 경우 실행
+  useInputTimeout(1000, () => {
+    console.log('timeout');
+  });
 
   return (
     <Container>
