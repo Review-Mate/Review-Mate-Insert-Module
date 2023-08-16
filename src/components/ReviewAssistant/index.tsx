@@ -7,14 +7,15 @@ import { Row } from '@/ui/flex/flex';
 import { ReactComponent as Dot } from '@/assets/icons/dot.svg';
 import { Margin } from '@/ui/margin/margin';
 
-export default function ReviewAssistant() {
-  const [comments, setComments] = useState([
-    {
-      title: '리뷰 작성',
-      content:
-        '호텔 이용 중 불편한 점이 있으셨군요! 해당 상황에 대한 호텔의 조치는 어땠나요?',
-    },
-  ]);
+interface Props {
+  comments: {
+    title: string;
+    content: string;
+  }[];
+}
+
+export default function ReviewAssistant(props: Props) {
+  const { comments } = props;
 
   return (
     <Container>

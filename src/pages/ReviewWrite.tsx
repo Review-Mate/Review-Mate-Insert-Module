@@ -3,13 +3,16 @@ import styled from 'styled-components';
 import ReviewEditor from '@/components/ReviewEditor';
 import ReviewAssistant from '@/components/ReviewAssistant';
 import { Margin } from '@/ui/margin/margin';
+import { Comment } from '@/types/Comments';
 
 export default function ReviewWrite() {
+  const [comments, setComments] = useState<Comment[]>([]);
+
   return (
     <Container>
-      <ReviewEditor />
+      <ReviewEditor comments={comments} setComments={setComments} />
       <Margin margin={'0 0 0 20px'} />
-      <ReviewAssistant />
+      <ReviewAssistant comments={comments} />
     </Container>
   );
 }

@@ -5,8 +5,16 @@ import ReviewRating from './ReviewRating';
 import FileInput from './FileInput';
 import { colors } from '@/utils/GlobalStyles';
 import useInputTimeout from '@/hooks/useInputTimeout';
+import { Comment } from '@/types/Comments';
 
-export default function ReviewEditor() {
+interface Props {
+  comments: Comment[];
+  setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
+}
+
+export default function ReviewEditor(props: Props) {
+  const { comments, setComments } = props;
+
   const [text, setText] = useState<string>('');
   const [rating, setRating] = useState<number>(0);
   const [images, setImages] = useState<Array<string>>([]);
@@ -24,6 +32,14 @@ export default function ReviewEditor() {
   // 1초간 입력이 없을 경우 실행
   useInputTimeout(1000, () => {
     console.log('timeout');
+    setComments([
+      ...comments,
+      {
+        title: '리뷰 작성',
+        content:
+          '호텔 이용 중 불편한 점이 있으셨군요! 해당 상황에 대한 호텔의 조치는 어땠나요?',
+      },
+    ]);
   });
 
   return (
