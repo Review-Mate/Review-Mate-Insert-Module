@@ -6,8 +6,8 @@ import { ReactComponent as CheckWhite } from '@/assets/icons/checkWhite.svg';
 import { ReactComponent as CheckBlack } from '@/assets/icons/checkBlack.svg';
 
 export default function KeywordSortBar() {
-  const [selectedBigTag, setSelectedBigTag] = useState(0);
-  const [selectedSmallTag, setSelectedSmallTag] = useState(0);
+  const [selectedBigTag, setSelectedBigTag] = useState(-1);
+  const [selectedSmallTag, setSelectedSmallTag] = useState(-1);
 
   const BIG_TAGS = [
     { id: 0, label: '청결' },
@@ -30,7 +30,14 @@ export default function KeywordSortBar() {
             <BigTag
               title={option.label}
               check={selectedBigTag === option.id}
-              onClick={() => setSelectedBigTag(option.id)}
+              onClick={() => {
+                if (selectedBigTag === option.id) {
+                  setSelectedBigTag(-1);
+                  setSelectedSmallTag(-1);
+                  return;
+                }
+                setSelectedBigTag(option.id);
+              }}
             />
           </React.Fragment>
         ))}
@@ -43,7 +50,13 @@ export default function KeywordSortBar() {
                 <SmallTag
                   title={option.label}
                   check={selectedSmallTag === option.id}
-                  onClick={() => setSelectedSmallTag(option.id)}
+                  onClick={() => {
+                    if (selectedSmallTag === option.id) {
+                      setSelectedSmallTag(-1);
+                      return;
+                    }
+                    setSelectedSmallTag(option.id);
+                  }}
                 />
               </React.Fragment>
             )
