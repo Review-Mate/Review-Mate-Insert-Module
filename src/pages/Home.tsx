@@ -13,10 +13,10 @@ export default function Home() {
       <Fonts.body1>바로가기</Fonts.body1>
       <Row>
         <LinkBox>
-          <Link to="/review-write">리뷰 작성 위젯</Link>
+          <Link to="/review/write">리뷰 작성 위젯</Link>
         </LinkBox>
         <LinkBox>
-          <Link to="/review-list">리뷰 목록 위젯</Link>
+          <Link to="/review/list">리뷰 목록 위젯</Link>
         </LinkBox>
       </Row>
     </Container>
