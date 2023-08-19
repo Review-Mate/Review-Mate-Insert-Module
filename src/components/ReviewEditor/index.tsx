@@ -5,11 +5,11 @@ import ReviewRating from './ReviewRating';
 import FileInput from './FileInput';
 import { colors } from '@/utils/GlobalStyles';
 import useInputTimeout from '@/hooks/useInputTimeout';
-import { Comment } from '@/types/Comments';
+import { CommentType } from '@/types/Comments';
 
 interface Props {
-  comments: Comment[];
-  setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
+  comments: CommentType[];
+  setComments: React.Dispatch<React.SetStateAction<CommentType[]>>;
 }
 
 export default function ReviewEditor(props: Props) {
@@ -18,6 +18,19 @@ export default function ReviewEditor(props: Props) {
   const [text, setText] = useState<string>('');
   const [rating, setRating] = useState<number>(0);
   const [images, setImages] = useState<Array<string>>([]);
+
+  const CommentList = [
+    {
+      sort: 1,
+      content:
+        '호텔 이용 중 불편한 점이 있으셨군요! 해당 상황에 대한 호텔의 조치는 어땠나요?',
+    },
+    {
+      sort: 2,
+      content:
+        '그래도 다행히 프론트에 건의 했더니, 침구를 새걸로 교체해주셨습니다.',
+    },
+  ];
 
   const onChangeInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
@@ -29,17 +42,12 @@ export default function ReviewEditor(props: Props) {
     console.log(images);
   };
 
+  const [count, setCount] = useState(0);
   // 1초간 입력이 없을 경우 실행
-  useInputTimeout(1000, () => {
+  useInputTimeout(2000, () => {
     console.log('timeout');
-    setComments([
-      ...comments,
-      {
-        title: '리뷰 작성',
-        content:
-          '호텔 이용 중 불편한 점이 있으셨군요! 해당 상황에 대한 호텔의 조치는 어땠나요?',
-      },
-    ]);
+    setComments([...comments, CommentList[count]]);
+    setCount(1);
   });
 
   return (

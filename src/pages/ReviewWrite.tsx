@@ -3,10 +3,10 @@ import styled from 'styled-components';
 import ReviewEditor from '@/components/ReviewEditor';
 import ReviewAssistant from '@/components/ReviewAssistant';
 import { Margin } from '@/ui/margin/margin';
-import { Comment } from '@/types/Comments';
+import { CommentType } from '@/types/Comments';
 
 export default function ReviewWrite() {
-  const [comments, setComments] = useState<Comment[]>([]);
+  const [comments, setComments] = useState<CommentType[]>([]);
 
   return (
     <Container>
@@ -20,5 +20,6 @@ export default function ReviewWrite() {
 const Container = styled.div`
   width: 90%;
   margin: 0 auto;
+  margin-top: 30px;
   display: flex;
 `;

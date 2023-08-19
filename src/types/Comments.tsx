@@ -1,4 +1,4 @@
-export interface Comment {
-  title: string;
+export interface CommentType {
+  sort: number;
   content: string;
 }

@@ -6,12 +6,10 @@ import { ReactComponent as AIBot } from '@/assets/icons/aibot.svg';
 import { Row } from '@/ui/flex/flex';
 import { ReactComponent as Dot } from '@/assets/icons/dot.svg';
 import { Margin } from '@/ui/margin/margin';
+import { CommentType } from '@/types/Comments';
 
 interface Props {
-  comments: {
-    title: string;
-    content: string;
-  }[];
+  comments: CommentType[];
 }
 
 export default function ReviewAssistant(props: Props) {
@@ -26,7 +24,7 @@ export default function ReviewAssistant(props: Props) {
         </Fonts.caption>
       </AIBox>
       {comments.map((comment, index) => (
-        <Comment key={index} title={comment.title} content={comment.content} />
+        <Comment key={index} sort={comment.sort} content={comment.content} />
       ))}
     </Container>
   );
@@ -49,9 +47,12 @@ const Dots = () => {
   );
 };
 
-const Comment = ({ title, content }: { title: string; content: string }) => {
+const Comment = ({ sort, content }: { sort: number; content: string }) => {
+  let title;
+  if (sort == 1) title = '주제 추천';
+  if (sort == 2) title = '이 문장을 쓰려고 하셨나요?';
   return (
-    <CommentBox>
+    <CommentBox sort={sort}>
       <Row margin="0 0 6px 0">
         <AIBot style={{ width: 30 }} />
         <Fonts.body3 weight={500} margin="0 0 0 5px">
@@ -79,6 +80,7 @@ const AIBox = styled.div`
   justify-content: center;
   align-items: center;
   height: 30px;
+  padding: 0 10px;
   border-radius: 5px;
   background-color: ${colors.gray06};
   margin-bottom: 10px;
@@ -94,10 +96,14 @@ const BoxFadeIn = keyframes`
   }
 `;
 
-const CommentBox = styled.div`
+const CommentBox = styled.div<{ sort: number }>`
   display: flex;
   flex-direction: column;
-  border: 1px solid ${colors.gray06};
+  border-color: ${(props) =>
+    props.sort == 1 ? colors.gray06 : colors.primary};
+  border-width: ${(props) => (props.sort == 1 ? 1 : 2)}px;
+  border-radius: 5px;
+  border-style: solid;
   border-radius: 5px;
   padding: 16px 20px;
   margin-top: 10px;
