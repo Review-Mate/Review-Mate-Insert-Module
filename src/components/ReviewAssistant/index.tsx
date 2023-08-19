@@ -1,26 +1,52 @@
 import { Fonts } from '@/utils/GlobalFonts';
 import { colors } from '@/utils/GlobalStyles';
-import React from 'react';
-import { styled } from 'styled-components';
+import React, { useState } from 'react';
+import { keyframes, styled } from 'styled-components';
 import { ReactComponent as AIBot } from '@/assets/icons/aibot.svg';
 import { Row } from '@/ui/flex/flex';
+import { ReactComponent as Dot } from '@/assets/icons/dot.svg';
+import { Margin } from '@/ui/margin/margin';
 
 export default function ReviewAssistant() {
+  const [comments, setComments] = useState([
+    {
+      title: '리뷰 작성',
+      content:
+        '호텔 이용 중 불편한 점이 있으셨군요! 해당 상황에 대한 호텔의 조치는 어땠나요?',
+    },
+  ]);
+
   return (
     <Container>
       <AIBox>
+        <Dots />
         <Fonts.caption weight={500} color={colors.gray01}>
           AI가 맞춤 리뷰 작성을 도와드립니다.
         </Fonts.caption>
       </AIBox>
-      <Comment
-        title="리뷰 작성"
-        content="호텔 이용 중 불편한 점이 있으셨군요!
-해당 상황에 대한 호텔의 조치는 어땠나요?"
-      />
+      {comments.map((comment, index) => (
+        <Comment key={index} title={comment.title} content={comment.content} />
+      ))}
     </Container>
   );
 }
+
+const Dots = () => {
+  return (
+    <React.Fragment>
+      <Loading delay={0}>
+        <Dot />
+      </Loading>
+      <Loading delay={0.1}>
+        <Dot />
+      </Loading>
+      <Loading delay={0.2}>
+        <Dot />
+      </Loading>
+      <Margin margin="0 4px 0 0" />
+    </React.Fragment>
+  );
+};
 
 const Comment = ({ title, content }: { title: string; content: string }) => {
   return (
@@ -42,6 +68,7 @@ const Container = styled.div`
   display: flex;
   flex: 1;
   flex-direction: column;
+  min-width: 200px;
   background-color: ${colors.gray08};
   padding: 20px;
 `;
@@ -56,6 +83,16 @@ const AIBox = styled.div`
   margin-bottom: 10px;
 `;
 
+const BoxFadeIn = keyframes`
+  0% {
+    opacity: 0;
+    margin-top: 300px;
+  }
+  100% {
+    opacity: 1;
+  }
+`;
+
 const CommentBox = styled.div`
   display: flex;
   flex-direction: column;
@@ -64,4 +101,25 @@ const CommentBox = styled.div`
   padding: 16px 20px;
   margin-top: 10px;
   background-color: ${colors.white};
+  animation: ${BoxFadeIn} 0.7s forwards ease-out;
+`;
+
+const dotJump = keyframes`
+  0% {
+    margin-bottom: 10px;
+  }
+  100% {
+    margin-bottom: 6px;
+  }
+`;
+
+const Loading = styled.div<{ delay: number }>`
+  margin-right: 2px;
+  margin-bottom: 6px;
+  animation-name: ${dotJump};
+  animation-duration: 0.7s;
+  animation-delay: ${(props) => props.delay}s;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  animation-direction: alternate;
 `;
