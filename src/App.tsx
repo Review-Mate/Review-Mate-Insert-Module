@@ -1,12 +1,19 @@
 import React from 'react';
-import Editor from './pages/ReviewWrite';
 import ReviewList from './pages/ReviewList';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import ReviewWrite from './pages/ReviewWrite';
+import Home from './pages/Home';
 
 function App() {
   return (
     <>
-      <Editor />
-      {/* <ReviewList /> */}
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/review/write" element={<ReviewWrite />} />
+          <Route path="/review/list" element={<ReviewList />} />
+        </Routes>
+      </BrowserRouter>
     </>
   );
 }

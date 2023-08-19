@@ -19,7 +19,6 @@ export default function Reviews(props: Props) {
   const { title, score, content, date, userId, image } = props;
   const HighLightIndexList = [
     [23, 26], // 23번째부터 25번째까지 글자를 하이라이팅
-    [53, 56],
   ];
 
   const wordHighlight = (content: string, indexList: number[][]) => {
