@@ -10,12 +10,13 @@ import { CommentType } from '@/types/Comments';
 interface Props {
   comments: CommentType[];
   setComments: React.Dispatch<React.SetStateAction<CommentType[]>>;
+  text: string;
+  setText: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function ReviewEditor(props: Props) {
-  const { comments, setComments } = props;
+  const { comments, setComments, text, setText } = props;
 
-  const [text, setText] = useState<string>('');
   const [rating, setRating] = useState<number>(0);
   const [images, setImages] = useState<Array<string>>([]);
 
@@ -28,6 +29,7 @@ export default function ReviewEditor(props: Props) {
     },
     {
       sort: 2,
+      idx: [93, -1],
       contents: [
         '조식과 석식을 호텔에서 먹었는데, 맛과 다양성 모두 훌룡했습니다.',
         '조식과 석식을 호텔에서 먹었는데, 식사 퀄리티가 기대에 미치지 않았습니다.',

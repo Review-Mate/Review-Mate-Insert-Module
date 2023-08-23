@@ -10,10 +10,23 @@ import { CommentType } from '@/types/Comments';
 
 interface Props {
   comments: CommentType[];
+  text: string;
+  setText: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function ReviewAssistant(props: Props) {
-  const { comments } = props;
+  const { comments, text, setText } = props;
+
+  const sentenceComplete = (idx1: number, idx2: number, replace: string) => {
+    console.log(text.length);
+    if (idx2 > text.length || idx2 == -1) idx2 = text.length;
+    if (idx2 < idx1 || idx1 < 0) return;
+
+    let newText = text.substring(0, idx1);
+    newText += replace;
+    newText += text.substring(idx2);
+    setText(newText);
+  };
 
   return (
     <Container>
@@ -29,7 +42,9 @@ export default function ReviewAssistant(props: Props) {
             key={index}
             index={index}
             sort={comment.sort}
+            idx={comment?.idx}
             content={content}
+            sentenceComplete={sentenceComplete}
           />
         ))
       )}
@@ -51,17 +66,28 @@ const Dots = () => {
 const Comment = ({
   index,
   sort,
+  idx,
   content,
+  sentenceComplete,
 }: {
   index: number;
   sort: number;
+  idx?: number[];
   content: string;
+  sentenceComplete: (idx1: number, idx2: number, replace: string) => void;
 }) => {
   let title;
   if (sort == 1) title = '주제 추천';
   if (sort == 2) title = '이 문장을 쓰려고 하셨나요?';
   return (
-    <CommentBox index={index} sort={sort}>
+    <CommentBox
+      index={index}
+      sort={sort}
+      disabled={sort == 1 ? true : false}
+      onClick={() => {
+        if (idx) sentenceComplete(idx[0], idx[1], content);
+      }}
+    >
       <Row margin="0 0 6px 0">
         <AIBot style={{ width: 30 }} />
         <Fonts.body3 weight={500} margin="0 0 0 5px">
@@ -106,7 +132,7 @@ const BoxFadeIn = keyframes`
   }
 `;
 
-const CommentBox = styled.div<{ index: number; sort: number }>`
+const CommentBox = styled.button<{ index: number; sort: number }>`
   display: flex;
   flex-direction: column;
   border-color: ${(props) =>
@@ -128,6 +154,7 @@ const CommentBox = styled.div<{ index: number; sort: number }>`
       ? colors.lightRed
       : colors.lightBlue};
   animation: ${BoxFadeIn} 0.7s forwards ease-out;
+  cursor: ${(props) => (props.sort == 1 ? 'default' : 'pointer')};
 `;
 
 const dotJump = keyframes`
