@@ -23,9 +23,16 @@ export default function ReviewAssistant(props: Props) {
           AI가 맞춤 리뷰 작성을 도와드립니다.
         </Fonts.caption>
       </AIBox>
-      {comments.map((comment, index) => (
-        <Comment key={index} sort={comment.sort} content={comment.content} />
-      ))}
+      {comments.map((comment) =>
+        comment.contents.map((content, index) => (
+          <Comment
+            key={index}
+            index={index}
+            sort={comment.sort}
+            content={content}
+          />
+        ))
+      )}
     </Container>
   );
 }
@@ -47,12 +54,20 @@ const Dots = () => {
   );
 };
 
-const Comment = ({ sort, content }: { sort: number; content: string }) => {
+const Comment = ({
+  index,
+  sort,
+  content,
+}: {
+  index: number;
+  sort: number;
+  content: string;
+}) => {
   let title;
   if (sort == 1) title = '주제 추천';
   if (sort == 2) title = '이 문장을 쓰려고 하셨나요?';
   return (
-    <CommentBox sort={sort}>
+    <CommentBox index={index} sort={sort}>
       <Row margin="0 0 6px 0">
         <AIBot style={{ width: 30 }} />
         <Fonts.body3 weight={500} margin="0 0 0 5px">
@@ -89,25 +104,34 @@ const AIBox = styled.div`
 const BoxFadeIn = keyframes`
   0% {
     opacity: 0;
-    margin-top: 300px;
+    margin-top: 100px;
   }
   100% {
     opacity: 1;
   }
 `;
 
-const CommentBox = styled.div<{ sort: number }>`
+const CommentBox = styled.div<{ index: number; sort: number }>`
   display: flex;
   flex-direction: column;
   border-color: ${(props) =>
-    props.sort == 1 ? colors.gray06 : colors.primary};
+    props.sort == 1
+      ? colors.gray06
+      : props.index == 1
+      ? colors.red
+      : colors.primary};
   border-width: ${(props) => (props.sort == 1 ? 1 : 2)}px;
   border-radius: 5px;
   border-style: solid;
   border-radius: 5px;
   padding: 16px 20px;
   margin-top: 10px;
-  background-color: ${colors.white};
+  background-color: ${(props) =>
+    props.sort == 1
+      ? colors.white
+      : props.index == 1
+      ? colors.lightRed
+      : colors.lightBlue};
   animation: ${BoxFadeIn} 0.7s forwards ease-out;
 `;
 
