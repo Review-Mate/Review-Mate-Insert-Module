@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { keyframes, styled } from 'styled-components';
 import { ReactComponent as AIBot } from '@/assets/icons/aibot.svg';
 import { Row } from '@/ui/flex/flex';
-import { ReactComponent as Dot } from '@/assets/icons/dot.svg';
+import Dot from '@/assets/icons/dot.svg';
 import { Margin } from '@/ui/margin/margin';
 import { CommentType } from '@/types/Comments';
 
@@ -40,15 +40,9 @@ export default function ReviewAssistant(props: Props) {
 const Dots = () => {
   return (
     <React.Fragment>
-      <Loading delay={0}>
-        <Dot />
-      </Loading>
-      <Loading delay={0.1}>
-        <Dot />
-      </Loading>
-      <Loading delay={0.2}>
-        <Dot />
-      </Loading>
+      <DotIcon alt="." src={Dot} delay={0} />
+      <DotIcon alt="." src={Dot} delay={0.1} />
+      <DotIcon alt="." src={Dot} delay={0.2} />
       <Margin margin="0 4px 0 0" />
     </React.Fragment>
   );
@@ -88,13 +82,14 @@ const Container = styled.div`
   min-width: 200px;
   background-color: ${colors.gray08};
   padding: 20px;
+  overflow-y: auto;
 `;
 
 const AIBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 30px;
+  height: 33px;
   padding: 0 10px;
   border-radius: 5px;
   background-color: ${colors.gray06};
@@ -104,7 +99,7 @@ const AIBox = styled.div`
 const BoxFadeIn = keyframes`
   0% {
     opacity: 0;
-    margin-top: 100px;
+    transform: translateY(50px);
   }
   100% {
     opacity: 1;
@@ -137,16 +132,20 @@ const CommentBox = styled.div<{ index: number; sort: number }>`
 
 const dotJump = keyframes`
   0% {
-    margin-bottom: 10px;
+    margin-bottom: 0px;
+  }
+  50%{
+    margin-bottom: 3px;
   }
   100% {
     margin-bottom: 6px;
   }
 `;
 
-const Loading = styled.div<{ delay: number }>`
+const DotIcon = styled.img<{ delay: number }>`
+  width: 4px;
   margin-right: 2px;
-  margin-bottom: 6px;
+  margin-bottom: 0px;
   animation-name: ${dotJump};
   animation-duration: 0.7s;
   animation-delay: ${(props) => props.delay}s;
