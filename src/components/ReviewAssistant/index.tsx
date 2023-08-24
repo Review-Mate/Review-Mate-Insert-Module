@@ -1,12 +1,13 @@
 import { Fonts } from '@/utils/GlobalFonts';
 import { colors } from '@/utils/GlobalStyles';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { keyframes, styled } from 'styled-components';
 import { ReactComponent as AIBot } from '@/assets/icons/aibot.svg';
 import { Row } from '@/ui/flex/flex';
 import Dot from '@/assets/icons/dot.svg';
 import { Margin } from '@/ui/margin/margin';
 import { CommentType } from '@/types/Comments';
+import { COMPLETE, RECOMMEND } from '@/config/constants';
 
 interface Props {
   comments: CommentType[];
@@ -77,13 +78,13 @@ const Comment = ({
   sentenceComplete: (idx1: number, idx2: number, replace: string) => void;
 }) => {
   let title;
-  if (sort == 1) title = '주제 추천';
-  if (sort == 2) title = '이 문장을 쓰려고 하셨나요?';
+  if (sort == RECOMMEND) title = '주제 추천';
+  if (sort == COMPLETE) title = '이 문장을 쓰려고 하셨나요?';
   return (
     <CommentBox
       index={index}
       sort={sort}
-      disabled={sort == 1 ? true : false}
+      disabled={sort == RECOMMEND ? true : false}
       onClick={() => {
         if (idx) sentenceComplete(idx[0], idx[1], content);
       }}
@@ -136,19 +137,19 @@ const CommentBox = styled.button<{ index: number; sort: number }>`
   display: flex;
   flex-direction: column;
   border-color: ${(props) =>
-    props.sort == 1
+    props.sort == RECOMMEND
       ? colors.gray06
       : props.index == 1
       ? colors.red
       : colors.primary};
-  border-width: ${(props) => (props.sort == 1 ? 1 : 2)}px;
+  border-width: ${(props) => (props.sort == RECOMMEND ? 1 : 2)}px;
   border-radius: 5px;
   border-style: solid;
   border-radius: 5px;
   padding: 16px 20px;
   margin-top: 10px;
   background-color: ${(props) =>
-    props.sort == 1
+    props.sort == RECOMMEND
       ? colors.white
       : props.index == 1
       ? colors.lightRed
