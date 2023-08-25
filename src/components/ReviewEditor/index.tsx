@@ -1,14 +1,36 @@
+import { Fonts } from '@/utils/GlobalFonts';
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import Rating from '../components/ReviewEditor/ReviewRating';
-import { colors } from '../utils/GlobalStyles';
-import FileInput from '../components/ReviewEditor/FileInput';
-import { Fonts } from '../utils/GlobalFonts';
+import ReviewRating from './ReviewRating';
+import FileInput from './FileInput';
+import { colors } from '@/utils/GlobalStyles';
+import useInputTimeout from '@/hooks/useInputTimeout';
+import { CommentType } from '@/types/Comments';
 
-export default function ReviewEditor() {
+interface Props {
+  comments: CommentType[];
+  setComments: React.Dispatch<React.SetStateAction<CommentType[]>>;
+}
+
+export default function ReviewEditor(props: Props) {
+  const { comments, setComments } = props;
+
   const [text, setText] = useState<string>('');
   const [rating, setRating] = useState<number>(0);
   const [images, setImages] = useState<Array<string>>([]);
+
+  const CommentList = [
+    {
+      sort: 1,
+      content:
+        '호텔 이용 중 불편한 점이 있으셨군요! 해당 상황에 대한 호텔의 조치는 어땠나요?',
+    },
+    {
+      sort: 2,
+      content:
+        '그래도 다행히 프론트에 건의 했더니, 침구를 새걸로 교체해주셨습니다.',
+    },
+  ];
 
   const onChangeInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setText(e.target.value);
@@ -20,10 +42,18 @@ export default function ReviewEditor() {
     console.log(images);
   };
 
+  const [count, setCount] = useState(0);
+  // 1초간 입력이 없을 경우 실행
+  useInputTimeout(2000, () => {
+    console.log('timeout');
+    setComments([...comments, CommentList[count]]);
+    setCount(1);
+  });
+
   return (
     <Container>
       <Fonts.body1 margin="0 0 15px 0">이번 여행은 만족하셨나요?</Fonts.body1>
-      <Rating rating={rating} setRating={setRating} />
+      <ReviewRating rating={rating} setRating={setRating} />
       <Textarea value={text} rows={10} onChange={onChangeInput} />
       <FileInput images={images} setImages={setImages} />
       <Button onClick={onClickAdd}>
@@ -37,7 +67,7 @@ export default function ReviewEditor() {
 
 const Container = styled.div`
   display: flex;
-  width: 80%;
+  flex: 2;
   margin: 0 auto;
   align-items: center;
   flex-direction: column;
