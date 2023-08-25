@@ -3,17 +3,10 @@ import { styled } from 'styled-components';
 import KeywordSort from './KeywordSortBar';
 import ReviewSort from './ReviewSortBar';
 import Reviews from './Reviews';
+import { ReviewType } from '@/types/RivewType';
 
 interface Props {
-  reviewList: {
-    id: number;
-    title: string;
-    score: number;
-    content: string;
-    date: string;
-    userId: string;
-    image: string;
-  }[];
+  reviewList: ReviewType[];
 }
 
 export default function ReviewSortingList(props: Props) {
@@ -22,7 +15,7 @@ export default function ReviewSortingList(props: Props) {
     <Container>
       <ReviewSort />
       <KeywordSort />
-      {reviewList.map((review) => (
+      {reviewList.map((review: ReviewType) => (
         <Reviews
           key={review.id}
           id={review.id}
@@ -32,6 +25,7 @@ export default function ReviewSortingList(props: Props) {
           date={review.date}
           userId={review.userId}
           image={review.image}
+          keyword={review.keyword}
         />
       ))}
     </Container>

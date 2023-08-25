@@ -4,22 +4,10 @@ import React, { useEffect } from 'react';
 import { styled } from 'styled-components';
 import { ReactComponent as StarYellow } from '@/assets/icons/starYellow.svg';
 import { Row } from '@/ui/flex/flex';
+import { ReviewType } from '@/types/RivewType';
 
-interface Props {
-  id: number;
-  title: string;
-  score: number;
-  content: string;
-  date: string;
-  userId: string;
-  image: string;
-}
-
-export default function Reviews(props: Props) {
-  const { title, score, content, date, userId, image } = props;
-  const HighLightIndexList = [
-    [23, 26], // 23번째부터 25번째까지 글자를 하이라이팅
-  ];
+export default function Reviews(props: ReviewType) {
+  const { title, score, content, date, userId, image, keyword } = props;
 
   const wordHighlight = (content: string, indexList: number[][]) => {
     const sentence = [];
@@ -50,7 +38,7 @@ export default function Reviews(props: Props) {
           margin="0 0 20px 0"
           style={{ lineHeight: 1.5 }}
         >
-          {wordHighlight(content, HighLightIndexList)}
+          {wordHighlight(content, keyword)}
         </Fonts.caption>
         <Fonts.body3 weight={500} margin="0 0 5px 0">
           {userId}
