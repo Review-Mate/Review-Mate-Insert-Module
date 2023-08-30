@@ -4,6 +4,7 @@ import ReviewStats from '@/components/ReviewStats';
 import { reviews } from '@/data/reviewData';
 import { ReviewType } from '@/types/RivewType';
 import { Margin } from '@/ui/margin/margin';
+import { Fonts } from '@/utils/GlobalFonts';
 import React from 'react';
 import { styled } from 'styled-components';
 
@@ -17,6 +18,9 @@ export default function ReviewList() {
 
   return (
     <Container>
+      <Title>
+        <Fonts.body1>리뷰 (1035)</Fonts.body1>
+      </Title>
       <ReviewStats rating={rating} scoreList={scoreList} />
       <Margin margin={'30px 0 0 0'} />
       <KeywordStats />
@@ -26,9 +30,16 @@ export default function ReviewList() {
   );
 }
 
+const Title = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 20px;
+`;
+
 const Container = styled.div`
   display: flex;
-  width: 90%;
+  width: 100%;
   margin: 0 auto;
   min-width: 600px;
   align-items: center;
