@@ -36,7 +36,6 @@ export default function RatingStatBox(props: Props) {
   return (
     <div>
       {stars.map((star, index) => {
-        console.log(Math.round((rating % 1) * 10));
         return (
           <img
             key={index}
