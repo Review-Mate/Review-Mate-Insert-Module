@@ -1,4 +1,5 @@
 export interface CommentType {
   sort: number;
-  content: string;
+  idx?: number[];
+  contents: string[];
 }
