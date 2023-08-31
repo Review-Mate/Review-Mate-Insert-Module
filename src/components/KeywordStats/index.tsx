@@ -8,9 +8,15 @@ import KeywordStatList from './KeywordStatList';
 import { ReactComponent as Down } from '@/assets/icons/down.svg';
 import { ReactComponent as Up } from '@/assets/icons/up.svg';
 
-export default function KeywordStats() {
+interface Props {
+  setHeightChange: (height: boolean) => void;
+}
+
+export default function KeywordStats(props: Props) {
   const limit = 4;
   const [hide, setHide] = useState(true);
+
+  const { setHeightChange } = props;
 
   const keywordList = [
     {
@@ -112,6 +118,7 @@ export default function KeywordStats() {
         <button
           onClick={() => {
             setHide(!hide);
+            setHeightChange(hide);
           }}
         >
           {hide ? <Down /> : <Up />}

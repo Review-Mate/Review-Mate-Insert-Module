@@ -76,7 +76,7 @@ const BigTag = ({ title, check, onClick }: Props) => {
   return (
     <Tag
       onClick={onClick}
-      backgroundColor={check ? colors.primary : colors.white}
+      backgroundcolor={check ? colors.primary : colors.white}
     >
       {check && <CheckWhite style={{ marginBottom: 2 }} />}
       <Fonts.body3
@@ -92,7 +92,7 @@ const BigTag = ({ title, check, onClick }: Props) => {
 
 const SmallTag = ({ title, check, onClick }: Props) => {
   return (
-    <Tag onClick={onClick} borderColor={check ? colors.gray03 : colors.gray06}>
+    <Tag onClick={onClick} bordercolor={check ? colors.gray03 : colors.gray06}>
       {check && <CheckBlack style={{ marginBottom: 2 }} />}
       <Fonts.body3
         color={colors.gray01}
@@ -105,15 +105,15 @@ const SmallTag = ({ title, check, onClick }: Props) => {
   );
 };
 
-const Tag = styled.button<{ backgroundColor?: string; borderColor?: string }>`
+const Tag = styled.button<{ backgroundcolor?: string; bordercolor?: string }>`
   display: flex;
   align-items: center;
   justify-content: center;
   min-width: 66px;
   height: 30px;
-  border: 1px solid ${(props) => props.borderColor || colors.primary};
+  border: 1px solid ${(props) => props.bordercolor || colors.primary};
   border-radius: 100px;
-  background-color: ${(props) => props.backgroundColor || colors.white};
+  background-color: ${(props) => props.backgroundcolor || colors.white};
   margin: 0 5px 0 0;
   cursor: pointer;
 `;
