@@ -10,25 +10,30 @@ import { CommentType } from '@/types/Comments';
 interface Props {
   comments: CommentType[];
   setComments: React.Dispatch<React.SetStateAction<CommentType[]>>;
+  text: string;
+  setText: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function ReviewEditor(props: Props) {
-  const { comments, setComments } = props;
+  const { comments, setComments, text, setText } = props;
 
-  const [text, setText] = useState<string>('');
   const [rating, setRating] = useState<number>(0);
   const [images, setImages] = useState<Array<string>>([]);
 
   const CommentList = [
     {
       sort: 1,
-      content:
-        '호텔 이용 중 불편한 점이 있으셨군요! 해당 상황에 대한 호텔의 조치는 어땠나요?',
+      contents: [
+        '현지 음식을 맛보거나 특별한 요리를 시도한 소감을 나누어 보세요.',
+      ],
     },
     {
       sort: 2,
-      content:
-        '그래도 다행히 프론트에 건의 했더니, 침구를 새걸로 교체해주셨습니다.',
+      idx: [93, -1],
+      contents: [
+        '조식과 석식을 호텔에서 먹었는데, 맛과 다양성 모두 훌룡했습니다.',
+        '조식과 석식을 호텔에서 먹었는데, 식사 퀄리티가 기대에 미치지 않았습니다.',
+      ],
     },
   ];
 
