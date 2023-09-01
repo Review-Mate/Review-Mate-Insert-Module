@@ -1,5 +1,7 @@
+import { ReviewAssistType } from '@/config/constants';
+
 export interface CommentType {
-  sort: number;
+  sort: ReviewAssistType;
   idx?: number[];
   contents: string[];
 }
