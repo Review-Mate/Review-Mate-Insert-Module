@@ -5,7 +5,7 @@ import { reviews } from '@/data/reviewData';
 import { ReviewType } from '@/types/RivewType';
 import { Margin } from '@/ui/margin/margin';
 import { Fonts } from '@/utils/GlobalFonts';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { styled } from 'styled-components';
 
 export default function ReviewList() {
