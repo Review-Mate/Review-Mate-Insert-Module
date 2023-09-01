@@ -20,7 +20,7 @@ export default function ReviewEditor(props: Props) {
   const [rating, setRating] = useState<number>(0);
   const [images, setImages] = useState<Array<string>>([]);
 
-  const CommentList = [
+  const CommentList: CommentType[] = [
     {
       sort: 1,
       contents: [
