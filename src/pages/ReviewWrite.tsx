@@ -4,13 +4,16 @@ import ReviewEditor from '@/components/ReviewEditor';
 import ReviewAssistant from '@/components/ReviewAssistant';
 import { Margin } from '@/ui/margin/margin';
 import { CommentType } from '@/types/Comments';
+import useMessageToParent from '@/hooks/useMessageToParent';
 
 export default function ReviewWrite() {
+  const { componentRef } = useMessageToParent();
+
   const [comments, setComments] = useState<CommentType[]>([]);
   const [text, setText] = useState<string>('');
 
   return (
-    <Container>
+    <Container ref={componentRef}>
       <ReviewEditor
         comments={comments}
         setComments={setComments}
