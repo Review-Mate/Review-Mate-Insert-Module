@@ -7,22 +7,44 @@ import { colors } from '@/utils/GlobalStyles';
 import useInputTimeout from '@/hooks/useInputTimeout';
 import { ReviewWriteStateType } from '@/types/Comments';
 import { CommentList } from '@/data/commentData';
+import { useCreateReview } from '@/hooks/useReviews';
+import { PARTNER_DOMAIN } from '@/config/api';
 
-export default function ReviewEditor(props: ReviewWriteStateType) {
-  const { comments, setComments, content, setContent } = props;
-  const title = '좋아요';
+interface Props extends ReviewWriteStateType {
+  title: string;
+  setTitle: React.Dispatch<React.SetStateAction<string>>;
+}
+
+interface onChangeInputProps {
+  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
+  setState: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export default function ReviewEditor(props: Props) {
+  const { comments, setComments, title, setTitle, content, setContent } = props;
   const [rating, setRating] = useState<number>(0);
   const [images, setImages] = useState<File[]>([]);
 
-  const onChangeInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setContent(e.target.value);
+  const { mutate: createReviewMutate } = useCreateReview();
+
+  const onChangeInput = ({ e, setState }: onChangeInputProps) => {
+    setState(e.target.value);
   };
 
-  const onClickAdd = () => {
+  const onClickSubmit = () => {
     setContent('');
-    console.log(rating + '점, ' + content);
-    console.log(images);
+    setTitle('');
 
+    const formData = intoFormData();
+
+    createReviewMutate({
+      partnerDomain: PARTNER_DOMAIN,
+      reservationPartnerCustomId: '1234',
+      reviewData: formData,
+    });
+  };
+
+  const intoFormData = () => {
     const formData = new FormData();
 
     const reviewCreateRequest = { rating, title, content };
@@ -32,6 +54,8 @@ export default function ReviewEditor(props: ReviewWriteStateType) {
       console.log(image);
       formData.append('reviewImageFiles', image);
     });
+
+    return formData;
   };
 
   const [count, setCount] = useState(0);
@@ -46,9 +70,23 @@ export default function ReviewEditor(props: ReviewWriteStateType) {
     <Container>
       <Fonts.body1 margin="0 0 15px 0">이번 여행은 만족하셨나요?</Fonts.body1>
       <ReviewRating rating={rating} setRating={setRating} />
-      <Textarea value={content} rows={10} onChange={onChangeInput} />
+      <TitleInput
+        placeholder="제목"
+        value={title}
+        onChange={(e) => {
+          onChangeInput({ e, setState: setTitle });
+        }}
+      />
+      <Textarea
+        placeholder="내용"
+        value={content}
+        rows={10}
+        onChange={(e) => {
+          onChangeInput({ e, setState: setContent });
+        }}
+      />
       <FileInput images={images} setImages={setImages} />
-      <Button onClick={onClickAdd}>
+      <Button onClick={onClickSubmit}>
         <Fonts.body2 weight={500} color="white">
           리뷰 작성
         </Fonts.body2>
@@ -68,13 +106,24 @@ const Container = styled.div`
   padding-top: 50px;
 `;
 
+const TitleInput = styled.input`
+  width: 100%;
+  height: 30px;
+  border: 1px solid ${colors.gray06};
+  border-radius: 10px;
+  padding: 20px;
+  margin: 50px 0 10px 0;
+  resize: none;
+  font-size: 16px;
+`;
+
 const Textarea = styled.textarea`
   width: 100%;
   height: 200px;
   border: 1px solid ${colors.gray06};
   border-radius: 10px;
   padding: 20px;
-  margin: 50px 0 20px 0;
+  margin-bottom: 20px;
   resize: none;
   font-size: 16px;
 `;

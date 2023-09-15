@@ -3,20 +3,23 @@ import axios from 'axios';
 import { BASE_URL } from '@/config/api';
 import { ReviewType } from '@/types/RivewType';
 
-type Review = {
-  // 리뷰의 구조를 여기서 정의하세요.
-};
+interface CreateReview {
+  partnerDomain: string;
+  reservationPartnerCustomId: string;
+  reviewData: FormData;
+}
 
 // 리뷰 생성
-const createReview = async (
-  partnerDomain: string,
-  reservationPartnerCustomId: string,
-  reviewData: any
-): Promise<Review> => {
+const createReview = async ({
+  partnerDomain,
+  reservationPartnerCustomId,
+  reviewData,
+}: CreateReview) => {
   const { data } = await axios.post(
     `${BASE_URL}/api/widget/v1/${partnerDomain}/reservations/${reservationPartnerCustomId}/reviews`,
     reviewData
   );
+  console.log('데이터', data);
   return data;
 };
 
@@ -33,13 +36,15 @@ const fetchProductReviews = async (
   return data;
 };
 
-export const useCreateReview = (
-  partnerDomain: string,
-  reservationPartnerCustomId: string
-) => {
-  return useMutation((reviewData: any) =>
-    createReview(partnerDomain, reservationPartnerCustomId, reviewData)
-  );
+export const useCreateReview = () => {
+  return useMutation(createReview, {
+    onSuccess: () => {
+      console.log('리뷰 생성 성공');
+    },
+    onError: () => {
+      console.log('리뷰 생성 실패');
+    },
+  });
 };
 
 export const useProductReviews = (
@@ -48,6 +53,14 @@ export const useProductReviews = (
 ) => {
   return useQuery<ReviewType[], Error>(
     ['productReviews', partnerDomain, travelProductPartnerCustomId],
-    () => fetchProductReviews(partnerDomain, travelProductPartnerCustomId)
+    () => fetchProductReviews(partnerDomain, travelProductPartnerCustomId),
+    {
+      onSuccess: () => {
+        console.log('리뷰 불러오기 성공');
+      },
+      onError: () => {
+        console.log('리뷰 불러오기 실패');
+      },
+    }
   );
 };

@@ -20,6 +20,8 @@ export default function ReviewWrite() {
         setComments={setComments}
         content={content}
         setContent={setContent}
+        title={title}
+        setTitle={setTitle}
       />
       <Margin margin={'0 0 0 20px'} />
       <ReviewAssistant
