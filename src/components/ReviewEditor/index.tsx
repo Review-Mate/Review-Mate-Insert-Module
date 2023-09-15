@@ -5,46 +5,33 @@ import ReviewRating from './ReviewRating';
 import FileInput from './FileInput';
 import { colors } from '@/utils/GlobalStyles';
 import useInputTimeout from '@/hooks/useInputTimeout';
-import { CommentType } from '@/types/Comments';
+import { ReviewWriteStateType } from '@/types/Comments';
+import { CommentList } from '@/data/commentData';
 
-interface Props {
-  comments: CommentType[];
-  setComments: React.Dispatch<React.SetStateAction<CommentType[]>>;
-  text: string;
-  setText: React.Dispatch<React.SetStateAction<string>>;
-}
-
-export default function ReviewEditor(props: Props) {
-  const { comments, setComments, text, setText } = props;
-
+export default function ReviewEditor(props: ReviewWriteStateType) {
+  const { comments, setComments, content, setContent } = props;
+  const title = '좋아요';
   const [rating, setRating] = useState<number>(0);
-  const [images, setImages] = useState<Array<string>>([]);
-
-  const CommentList: CommentType[] = [
-    {
-      sort: 1,
-      contents: [
-        '현지 음식을 맛보거나 특별한 요리를 시도한 소감을 나누어 보세요.',
-      ],
-    },
-    {
-      sort: 2,
-      idx: [93, -1],
-      contents: [
-        '조식과 석식을 호텔에서 먹었는데, 맛과 다양성 모두 훌룡했습니다.',
-        '조식과 석식을 호텔에서 먹었는데, 식사 퀄리티가 기대에 미치지 않았습니다.',
-      ],
-    },
-  ];
+  const [images, setImages] = useState<File[]>([]);
 
   const onChangeInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(e.target.value);
+    setContent(e.target.value);
   };
 
   const onClickAdd = () => {
-    setText('');
-    console.log(rating + '점, ' + text);
+    setContent('');
+    console.log(rating + '점, ' + content);
     console.log(images);
+
+    const formData = new FormData();
+
+    const reviewCreateRequest = { rating, title, content };
+    formData.append('reviewCreateRequest', JSON.stringify(reviewCreateRequest));
+
+    images.forEach((image, index) => {
+      console.log(image);
+      formData.append('reviewImageFiles', image);
+    });
   };
 
   const [count, setCount] = useState(0);
@@ -59,7 +46,7 @@ export default function ReviewEditor(props: Props) {
     <Container>
       <Fonts.body1 margin="0 0 15px 0">이번 여행은 만족하셨나요?</Fonts.body1>
       <ReviewRating rating={rating} setRating={setRating} />
-      <Textarea value={text} rows={10} onChange={onChangeInput} />
+      <Textarea value={content} rows={10} onChange={onChangeInput} />
       <FileInput images={images} setImages={setImages} />
       <Button onClick={onClickAdd}>
         <Fonts.body2 weight={500} color="white">

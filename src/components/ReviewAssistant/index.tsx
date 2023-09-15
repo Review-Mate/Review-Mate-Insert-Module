@@ -6,27 +6,21 @@ import { ReactComponent as AIBot } from '@/assets/icons/aibot.svg';
 import { Row } from '@/ui/flex/flex';
 import Dot from '@/assets/icons/dot.svg';
 import { Margin } from '@/ui/margin/margin';
-import { CommentType } from '@/types/Comments';
+import { CommentType, ReviewWriteStateType } from '@/types/Comments';
 import { ReviewAssistType, reviewAssist } from '@/config/constants';
 
-interface Props {
-  comments: CommentType[];
-  text: string;
-  setText: React.Dispatch<React.SetStateAction<string>>;
-}
-
-export default function ReviewAssistant(props: Props) {
-  const { comments, text, setText } = props;
+export default function ReviewAssistant(props: ReviewWriteStateType) {
+  const { comments, content, setContent } = props;
 
   const sentenceComplete = (idx1: number, idx2: number, replace: string) => {
-    console.log(text.length);
-    if (idx2 > text.length || idx2 == -1) idx2 = text.length;
+    console.log(content.length);
+    if (idx2 > content.length || idx2 == -1) idx2 = content.length;
     if (idx2 < idx1 || idx1 < 0) return;
 
-    let newText = text.substring(0, idx1);
+    let newText = content.substring(0, idx1);
     newText += replace;
-    newText += text.substring(idx2);
-    setText(newText);
+    newText += content.substring(idx2);
+    setContent(newText);
   };
 
   return (
