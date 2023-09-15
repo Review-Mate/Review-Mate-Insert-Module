@@ -11,11 +11,12 @@ interface Props {
 
 export default function ReviewSortingList(props: Props) {
   const { reviewList } = props;
+  console.log(reviewList);
   return (
     <Container>
       <ReviewSort />
       <KeywordSort />
-      {reviewList.map((review: ReviewType) => (
+      {/* {reviewList.map((review: ReviewType) => (
         <Reviews
           key={review.id}
           id={review.id}
@@ -27,7 +28,7 @@ export default function ReviewSortingList(props: Props) {
           image={review.image}
           keyword={review.keyword}
         />
-      ))}
+      ))} */}
     </Container>
   );
 }

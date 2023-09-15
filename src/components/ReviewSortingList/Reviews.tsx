@@ -7,15 +7,33 @@ import { Row } from '@/ui/flex/flex';
 import { ReviewType } from '@/types/RivewType';
 
 export default function Reviews(props: ReviewType) {
-  const { title, score, content, date, userId, image, keyword } = props;
+  const {
+    title,
+    rating,
+    content,
+    createdAt,
+    authorName,
+    polarity,
+    reviewHighlightPairResponses,
+  } = props;
 
-  const wordHighlight = (content: string, indexList: number[][]) => {
+  const wordHighlight = (
+    content: string,
+    indexList: {
+      startIndex: number;
+      endIndex: number;
+    }[]
+  ) => {
+    if (indexList.length === 0) return content;
+
     const sentence = [];
     let lastIndex = 0;
     indexList.forEach((index) => {
-      sentence.push(content.slice(lastIndex, index[0]));
-      sentence.push(<Highlight>{content.slice(index[0], index[1])}</Highlight>);
-      lastIndex = index[1];
+      sentence.push(content.slice(lastIndex, index.startIndex));
+      sentence.push(
+        <Highlight>{content.slice(index.startIndex, index.endIndex)}</Highlight>
+      );
+      lastIndex = index.endIndex;
     });
 
     sentence.push(content.slice(lastIndex));
@@ -30,7 +48,7 @@ export default function Reviews(props: ReviewType) {
         <Row margin="5px 0 8px 0" style={{ height: 20 }}>
           <StarYellow />
           <Fonts.body3 weight={700} margin="3px 0 0 5px">
-            {score}
+            {rating}
           </Fonts.body3>
         </Row>
         <Fonts.caption
@@ -38,12 +56,12 @@ export default function Reviews(props: ReviewType) {
           margin="0 0 20px 0"
           style={{ lineHeight: 1.5 }}
         >
-          {wordHighlight(content, keyword)}
+          {wordHighlight(content, reviewHighlightPairResponses)}
         </Fonts.caption>
         <Fonts.body3 weight={500} margin="0 0 5px 0">
-          {userId}
+          {authorName}
         </Fonts.body3>
-        <Fonts.caption color={colors.gray01}>{date}</Fonts.caption>
+        <Fonts.caption color={colors.gray01}>{createdAt}</Fonts.caption>
       </TextBox>
       <Image src="https://cdn.pixabay.com/photo/2016/03/04/19/36/beach-1236581_1280.jpg" />
     </Container>

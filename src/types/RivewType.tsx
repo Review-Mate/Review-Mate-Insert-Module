@@ -1,10 +1,15 @@
 export type ReviewType = {
   id: number;
+  rating: number;
   title: string;
-  score: number;
   content: string;
-  date: string;
-  userId: string;
-  image: string;
-  keyword: number[][];
+  authorName: string;
+  createdAt: string;
+  polarity: string;
+  reviewHighlightPairResponses: [
+    {
+      startIndex: number;
+      endIndex: number;
+    }
+  ];
 };

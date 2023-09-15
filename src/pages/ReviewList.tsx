@@ -1,9 +1,9 @@
 import KeywordStats from '@/components/KeywordStats';
 import ReviewSortingList from '@/components/ReviewSortingList';
 import ReviewStats from '@/components/ReviewStats';
-import { reviews } from '@/data/reviewData';
+import { PARTNER_DOMAIN } from '@/config/api';
 import useMessageToParent from '@/hooks/useMessageToParent';
-import { ReviewType } from '@/types/RivewType';
+import { useProductReviews } from '@/hooks/useReviews';
 import { Margin } from '@/ui/margin/margin';
 import { Fonts } from '@/utils/GlobalFonts';
 import React, { useState } from 'react';
@@ -17,7 +17,7 @@ export default function ReviewList() {
   // 5,4,3,2,1점
   const [scoreList, setScoreList] = useState([80, 60, 40, 20, 30]);
 
-  const [reviewList, setReviewList] = useState<ReviewType[]>(reviews);
+  const { data, isLoading } = useProductReviews(PARTNER_DOMAIN, 'HOTEL-0001');
 
   return (
     <Container ref={componentRef}>
@@ -28,7 +28,8 @@ export default function ReviewList() {
       <Margin margin={'30px 0 0 0'} />
       <KeywordStats setHeightChange={setHeightChange} />
       <Margin margin={'30px 0 0 0'} />
-      <ReviewSortingList reviewList={reviewList} />
+      {isLoading && <div>로딩중</div>}
+      {!isLoading && data && <ReviewSortingList reviewList={data} />}
     </Container>
   );
 }
