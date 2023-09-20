@@ -153,8 +153,9 @@ button {
   cursor: pointer;
 }
 
-textarea {
-  outline: none;
+textarea:focus,
+input:focus {
+  outline: #afcbd1 solid 1px;
 }
 
 a {
