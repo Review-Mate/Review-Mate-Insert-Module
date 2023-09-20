@@ -16,19 +16,20 @@ export default function ReviewSortingList(props: Props) {
     <Container>
       <ReviewSort />
       <KeywordSort />
-      {/* {reviewList.map((review: ReviewType) => (
+      {reviewList.map((review: ReviewType) => (
         <Reviews
           key={review.id}
           id={review.id}
           title={review.title}
-          score={review.score}
+          rating={review.rating}
           content={review.content}
-          date={review.date}
-          userId={review.userId}
-          image={review.image}
-          keyword={review.keyword}
+          createdAt={review.createdAt}
+          authorName={review.authorName}
+          polarity={review.polarity}
+          // image={review.image}
+          reviewHighlightPairResponses={review.reviewHighlightPairResponses}
         />
-      ))} */}
+      ))}
     </Container>
   );
 }

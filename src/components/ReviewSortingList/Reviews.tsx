@@ -17,6 +17,13 @@ export default function Reviews(props: ReviewType) {
     reviewHighlightPairResponses,
   } = props;
 
+  const formatDate =
+    createdAt.substring(0, 4) +
+    '. ' +
+    createdAt.substring(5, 7) +
+    '. ' +
+    createdAt.substring(8, 10);
+
   const wordHighlight = (
     content: string,
     indexList: {
@@ -61,7 +68,7 @@ export default function Reviews(props: ReviewType) {
         <Fonts.body3 weight={500} margin="0 0 5px 0">
           {authorName}
         </Fonts.body3>
-        <Fonts.caption color={colors.gray01}>{createdAt}</Fonts.caption>
+        <Fonts.caption color={colors.gray01}>{formatDate}</Fonts.caption>
       </TextBox>
       <Image src="https://cdn.pixabay.com/photo/2016/03/04/19/36/beach-1236581_1280.jpg" />
     </Container>

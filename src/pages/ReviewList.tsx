@@ -2,6 +2,7 @@ import KeywordStats from '@/components/KeywordStats';
 import ReviewSortingList from '@/components/ReviewSortingList';
 import ReviewStats from '@/components/ReviewStats';
 import { PARTNER_DOMAIN } from '@/config/api';
+import { PARTNER_CUSTOM_PRODUCT_ID } from '@/config/constants';
 import useMessageToParent from '@/hooks/useMessageToParent';
 import { useProductReviews } from '@/hooks/useReviews';
 import { Margin } from '@/ui/margin/margin';
@@ -17,7 +18,10 @@ export default function ReviewList() {
   // 5,4,3,2,1점
   const [scoreList, setScoreList] = useState([80, 60, 40, 20, 30]);
 
-  const { data, isLoading } = useProductReviews(PARTNER_DOMAIN, 'HOTEL-0001');
+  const { data, isLoading } = useProductReviews(
+    PARTNER_DOMAIN,
+    PARTNER_CUSTOM_PRODUCT_ID
+  );
 
   return (
     <Container ref={componentRef}>
