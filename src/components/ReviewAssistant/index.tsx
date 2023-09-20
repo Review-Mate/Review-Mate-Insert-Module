@@ -7,7 +7,7 @@ import { Row } from '@/ui/flex/flex';
 import Dot from '@/assets/icons/dot.svg';
 import { Margin } from '@/ui/margin/margin';
 import { CommentType, ReviewWriteStateType } from '@/types/Comments';
-import { ReviewAssistType, reviewAssist } from '@/config/constants';
+import { ReviewAssistType, ReviewAssist } from '@/config/enum';
 
 export default function ReviewAssistant(props: ReviewWriteStateType) {
   const { comments, content, setContent } = props;
@@ -72,13 +72,13 @@ const Comment = ({
   sentenceComplete: (idx1: number, idx2: number, replace: string) => void;
 }) => {
   let title;
-  if (sort == reviewAssist.RECOMMEND) title = '주제 추천';
-  if (sort == reviewAssist.COMPLETE) title = '이 문장을 쓰려고 하셨나요?';
+  if (sort == ReviewAssist.RECOMMEND) title = '주제 추천';
+  if (sort == ReviewAssist.COMPLETE) title = '이 문장을 쓰려고 하셨나요?';
   return (
     <CommentBox
       index={index}
       sort={sort}
-      disabled={sort == reviewAssist.RECOMMEND ? true : false}
+      disabled={sort == ReviewAssist.RECOMMEND ? true : false}
       onClick={() => {
         if (idx) sentenceComplete(idx[0], idx[1], content);
       }}
@@ -131,19 +131,19 @@ const CommentBox = styled.button<{ index: number; sort: ReviewAssistType }>`
   display: flex;
   flex-direction: column;
   border-color: ${(props) =>
-    props.sort == reviewAssist.RECOMMEND
+    props.sort == ReviewAssist.RECOMMEND
       ? colors.gray06
       : props.index == 1
       ? colors.red
       : colors.primary};
-  border-width: ${(props) => (props.sort == reviewAssist.RECOMMEND ? 1 : 2)}px;
+  border-width: ${(props) => (props.sort == ReviewAssist.RECOMMEND ? 1 : 2)}px;
   border-radius: 5px;
   border-style: solid;
   border-radius: 5px;
   padding: 16px 20px;
   margin-top: 10px;
   background-color: ${(props) =>
-    props.sort == reviewAssist.RECOMMEND
+    props.sort == ReviewAssist.RECOMMEND
       ? colors.white
       : props.index == 1
       ? colors.lightRed

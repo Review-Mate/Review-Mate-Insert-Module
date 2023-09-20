@@ -1,4 +1,4 @@
-import { ReviewAssistType } from '@/config/constants';
+import { ReviewAssistType } from '@/config/enum';
 
 export interface CommentType {
   sort: ReviewAssistType;
