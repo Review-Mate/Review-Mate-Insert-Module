@@ -36,7 +36,7 @@ export default function ReviewWrite() {
 
 const Container = styled.div`
   width: 100%;
-  height: 680px;
+  min-height: 680px;
   margin: 0 auto;
   margin-top: 30px;
   display: flex;
