@@ -25,3 +25,6 @@ yarn-error.log*
 
 # api
 api.tsx
+
+# 부모에서 넘어와야 할 임시 데이터
+temp/

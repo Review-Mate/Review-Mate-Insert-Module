@@ -2,13 +2,10 @@ import KeywordStats from '@/components/KeywordStats';
 import ReviewSortingList from '@/components/ReviewSortingList';
 import ReviewStats from '@/components/ReviewStats';
 import { PARTNER_DOMAIN } from '@/config/api';
-import {
-  PARTNER_CUSTOM_PRODUCT_ID,
-  SCORE_AVE,
-  SCORE_LIST,
-} from '@/config/constants';
+import { PARTNER_CUSTOM_PRODUCT_ID } from '@/config/constants';
 import useMessageToParent from '@/hooks/useMessageToParent';
 import { useProductReviews } from '@/hooks/useReviews';
+import { SCORE_AVE, SCORE_LIST } from '@/temp/constant';
 import { Margin } from '@/ui/margin/margin';
 import { Fonts } from '@/utils/GlobalFonts';
 import React, { useState } from 'react';

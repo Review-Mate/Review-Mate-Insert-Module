@@ -28,11 +28,11 @@ const createReview = async ({
     `${BASE_URL}/api/widget/v1/${partnerDomain}/reservations/${reservationPartnerCustomId}/reviews`,
     reviewData
   );
-  console.log('데이터', data);
+  console.log('리뷰생성', data);
   return data;
 };
 
-// 상품에 등록된 리뷰 목록 조회
+// 상품에 리뷰 목록 조회
 const fetchProductReviews = async ({
   partnerDomain,
   travelProductPartnerCustomId,
@@ -46,6 +46,7 @@ const fetchProductReviews = async ({
   return data;
 };
 
+// 리뷰 생성
 export const useCreateReview = () => {
   return useMutation(createReview, {
     onSuccess: () => {
@@ -57,6 +58,7 @@ export const useCreateReview = () => {
   });
 };
 
+// 상품별 리뷰 목록 조회
 export const useProductReviews = ({
   partnerDomain,
   travelProductPartnerCustomId,

@@ -9,6 +9,7 @@ import { ReviewWriteStateType } from '@/types/Comments';
 import { CommentList } from '@/data/commentData';
 import { useCreateReview } from '@/hooks/useReviews';
 import { PARTNER_DOMAIN } from '@/config/api';
+import { makeReservation } from '@/temp/makeReservation';
 
 interface Props extends ReviewWriteStateType {
   title: string;
@@ -31,15 +32,20 @@ export default function ReviewEditor(props: Props) {
     setState(e.target.value);
   };
 
-  const onClickSubmit = () => {
+  const onClickSubmit = async () => {
+    if (rating === 0) window.alert('별점을 입력해주세요');
     setContent('');
     setTitle('');
 
+    const date = new Date();
     const formData = intoFormData();
+    const reservationId = `${PARTNER_DOMAIN}-${date.getTime().toString()}`;
+
+    await makeReservation(reservationId);
 
     createReviewMutate({
       partnerDomain: PARTNER_DOMAIN,
-      reservationPartnerCustomId: '1234',
+      reservationPartnerCustomId: reservationId,
       reviewData: formData,
     });
   };
@@ -48,7 +54,12 @@ export default function ReviewEditor(props: Props) {
     const formData = new FormData();
 
     const reviewCreateRequest = { rating, title, content };
-    formData.append('reviewCreateRequest', JSON.stringify(reviewCreateRequest));
+    formData.append(
+      'reviewCreateRequest',
+      new Blob([JSON.stringify(reviewCreateRequest)], {
+        type: 'application/json',
+      })
+    );
 
     images.forEach((image, index) => {
       console.log(image);

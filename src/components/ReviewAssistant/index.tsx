@@ -98,6 +98,7 @@ const Comment = ({
 
 const Container = styled.div`
   display: flex;
+  height: 680px;
   flex: 1;
   flex-direction: column;
   min-width: 200px;
