@@ -12,11 +12,14 @@ import React, { useState } from 'react';
 import { styled } from 'styled-components';
 
 export default function ReviewList() {
-  const { componentRef, setHeightChange } = useMessageToParent();
+  const { componentRef, setHeightChange, heightChange } = useMessageToParent();
 
   const { data, isLoading } = useProductReviews({
     partnerDomain: PARTNER_DOMAIN,
     travelProductPartnerCustomId: PARTNER_CUSTOM_PRODUCT_ID,
+    onSuccess: () => {
+      setHeightChange(!heightChange);
+    },
   });
 
   return (

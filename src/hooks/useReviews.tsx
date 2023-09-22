@@ -65,7 +65,8 @@ export const useProductReviews = ({
   reviewSort = ReviewSort.LATEST,
   reviewPage = 0,
   reviewListSize = 10,
-}: FetchProductReviews) => {
+  onSuccess,
+}: FetchProductReviews & { onSuccess?: () => void }) => {
   return useQuery<ReviewType[], Error>(
     ['productReviews', partnerDomain, travelProductPartnerCustomId],
     () =>
@@ -77,9 +78,7 @@ export const useProductReviews = ({
         reviewListSize,
       }),
     {
-      onSuccess: () => {
-        console.log('리뷰 불러오기 성공');
-      },
+      onSuccess: onSuccess,
       onError: (error) => {
         console.log('리뷰 불러오기 실패', error);
       },
