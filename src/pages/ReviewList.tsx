@@ -9,18 +9,27 @@ import { SCORE_AVE, SCORE_LIST } from '@/temp/constant';
 import { Margin } from '@/ui/margin/margin';
 import { Fonts } from '@/utils/GlobalFonts';
 import React, { useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import { styled } from 'styled-components';
 
 export default function ReviewList() {
   const { componentRef, setHeightChange, heightChange } = useMessageToParent();
+  const location = useLocation();
+  // 파트너가 전달한 상품 아이디
+  const partnerProductId = new URLSearchParams(location.search).get(
+    'product_id'
+  );
 
-  const { data, isLoading } = useProductReviews({
-    partnerDomain: PARTNER_DOMAIN,
-    travelProductPartnerCustomId: PARTNER_CUSTOM_PRODUCT_ID,
-    onSuccess: () => {
-      setHeightChange(!heightChange);
-    },
-  });
+  // 상품 리뷰 목록 조회
+  const { data, isLoading } = partnerProductId
+    ? useProductReviews({
+        partnerDomain: PARTNER_DOMAIN,
+        travelProductPartnerCustomId: partnerProductId,
+        onSuccess: () => {
+          setHeightChange(heightChange + 1);
+        },
+      })
+    : { data: null, isLoading: true };
 
   return (
     <Container ref={componentRef}>
@@ -29,7 +38,7 @@ export default function ReviewList() {
       </Title>
       <ReviewStats rating={SCORE_AVE} scoreList={SCORE_LIST} />
       <Margin margin={'30px 0 0 0'} />
-      <KeywordStats setHeightChange={setHeightChange} />
+      <KeywordStats />
       <Margin margin={'30px 0 0 0'} />
       {isLoading && <div>로딩중</div>}
       {!isLoading && data && <ReviewSortingList reviewList={data} />}
