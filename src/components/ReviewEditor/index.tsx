@@ -9,7 +9,7 @@ import { ReviewWriteStateType } from '@/types/Comments';
 import { CommentList } from '@/data/commentData';
 import { useCreateReview } from '@/hooks/useReviews';
 import { PARTNER_DOMAIN } from '@/config/api';
-import { makeReservation } from '@/temp/makeReservation';
+import { useLocation } from 'react-router-dom';
 
 interface Props extends ReviewWriteStateType {
   title: string;
@@ -23,25 +23,40 @@ interface onChangeInputProps {
 
 export default function ReviewEditor(props: Props) {
   const { comments, setComments, title, setTitle, content, setContent } = props;
+
+  const location = useLocation();
+  // 파트너가 전달한 예약 아이디
+  const reservationId = new URLSearchParams(location.search).get(
+    'reservation_id'
+  );
+
   const [rating, setRating] = useState<number>(0);
   const [images, setImages] = useState<File[]>([]);
-
   const { mutate: createReviewMutate } = useCreateReview();
 
   const onChangeInput = ({ e, setState }: onChangeInputProps) => {
     setState(e.target.value);
   };
 
-  const onClickSubmit = async () => {
+  const validationCheck = () => {
     if (rating === 0) window.alert('별점을 입력해주세요');
+    else if (title.length === 0) window.alert('제목을 입력해주세요');
+    else if (content.length === 0) window.alert('내용을 입력해주세요');
+
+    return rating !== 0 && title.length !== 0 && content.length !== 0;
+  };
+
+  const onClickSubmit = async () => {
+    if (!reservationId) {
+      window.alert('예약 아이디가 없습니다.');
+      return;
+    }
+    if (!validationCheck()) return;
+
     setContent('');
     setTitle('');
 
-    const date = new Date();
     const formData = intoFormData();
-    const reservationId = `${PARTNER_DOMAIN}-${date.getTime().toString()}`;
-
-    await makeReservation(reservationId);
 
     createReviewMutate({
       partnerDomain: PARTNER_DOMAIN,
@@ -62,7 +77,6 @@ export default function ReviewEditor(props: Props) {
     );
 
     images.forEach((image, index) => {
-      console.log(image);
       formData.append('reviewImageFiles', image);
     });
 
@@ -71,8 +85,7 @@ export default function ReviewEditor(props: Props) {
 
   const [count, setCount] = useState(0);
   // 1초간 입력이 없을 경우 실행
-  useInputTimeout(2000, () => {
-    console.log('timeout');
+  useInputTimeout(1000, () => {
     setComments([...comments, CommentList[count]]);
     setCount(1);
   });
