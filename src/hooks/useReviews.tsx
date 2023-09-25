@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from 'react-query';
 import axios from 'axios';
 import { BASE_URL } from '@/config/api';
-import { ReviewType } from '@/types/RivewType';
+import { ReviewListSortType } from '@/types/RivewType';
 import { ReviewSort, ReviewSortType } from '@/config/enum';
 
 interface CreateReview {
@@ -39,9 +39,9 @@ const fetchProductReviews = async ({
   reviewSort = ReviewSort.LATEST,
   reviewPage = 0,
   reviewListSize = 10,
-}: FetchProductReviews): Promise<ReviewType[]> => {
+}: FetchProductReviews): Promise<ReviewListSortType> => {
   const { data } = await axios.get(
-    `${BASE_URL}/api/widget/v1/${partnerDomain}/products/${travelProductPartnerCustomId}/reviews?orderBy=${reviewSort}&page=${reviewPage}&size=${reviewListSize}`
+    `${BASE_URL}/api/widget/v1/${partnerDomain}/products/${travelProductPartnerCustomId}/reviews?orderCriteria=${reviewSort}&page=${reviewPage}&size=${reviewListSize}`
   );
   return data;
 };
@@ -67,7 +67,7 @@ export const useProductReviews = ({
   reviewListSize = 10,
   onSuccess,
 }: FetchProductReviews & { onSuccess?: () => void }) => {
-  return useQuery<ReviewType[], Error>(
+  return useQuery<ReviewListSortType, Error>(
     ['productReviews', partnerDomain, travelProductPartnerCustomId],
     () =>
       fetchProductReviews({
