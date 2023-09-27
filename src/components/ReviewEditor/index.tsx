@@ -32,7 +32,9 @@ export default function ReviewEditor(props: Props) {
 
   const [rating, setRating] = useState<number>(0);
   const [images, setImages] = useState<File[]>([]);
-  const { mutate: createReviewMutate } = useCreateReview();
+  const { mutate: createReviewMutate } = useCreateReview(() => {
+    window.alert('리뷰가 등록되었습니다.');
+  });
 
   const onChangeInput = ({ e, setState }: onChangeInputProps) => {
     setState(e.target.value);

@@ -47,11 +47,9 @@ const fetchProductReviews = async ({
 };
 
 // 리뷰 생성
-export const useCreateReview = () => {
+export const useCreateReview = (onSuccess?: () => void) => {
   return useMutation(createReview, {
-    onSuccess: () => {
-      console.log('리뷰 생성 성공');
-    },
+    onSuccess: onSuccess,
     onError: () => {
       console.log('리뷰 생성 실패');
     },
