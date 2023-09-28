@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from 'react-query';
 import axios from 'axios';
 import { BASE_URL } from '@/config/api';
-import { ReviewType } from '@/types/ReviewType';
+import { ReviewListSortType } from '@/types/ReviewType';
 import { ReviewSort, ReviewSortType } from '@/config/enum';
 
 interface CreateReview {
