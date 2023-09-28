@@ -7,6 +7,7 @@ import { ReactComponent as AIBot } from '@/assets/icons/aibot.svg';
 import KeywordStatList from './KeywordStatList';
 import { ReactComponent as Down } from '@/assets/icons/down.svg';
 import { ReactComponent as Up } from '@/assets/icons/up.svg';
+import { KeywordList } from '@/data/keywordData';
 
 interface Props {
   setHeightChange: (height: boolean) => void;
@@ -17,44 +18,6 @@ export default function KeywordStats(props: Props) {
   const [hide, setHide] = useState(true);
 
   const { setHeightChange } = props;
-
-  const keywordList = [
-    {
-      title: '청결',
-      positive: 70,
-      negative: 30,
-    },
-    {
-      title: '청결',
-      positive: 70,
-      negative: 30,
-    },
-    {
-      title: '청결',
-      positive: 70,
-      negative: 30,
-    },
-    {
-      title: '청결',
-      positive: 70,
-      negative: 30,
-    },
-    {
-      title: '청결',
-      positive: 70,
-      negative: 30,
-    },
-    {
-      title: '서비스',
-      positive: 70,
-      negative: 30,
-    },
-    {
-      title: '서비스',
-      positive: 70,
-      negative: 30,
-    },
-  ];
 
   return (
     <Container>
@@ -87,7 +50,7 @@ export default function KeywordStats(props: Props) {
           부정
         </Fonts.caption>
       </StatTitle>
-      {keywordList.map((keyword, index) => {
+      {KeywordList.map((keyword, index) => {
         if (index < limit)
           return (
             <div key={index}>
@@ -101,7 +64,7 @@ export default function KeywordStats(props: Props) {
           );
       })}
       {!hide &&
-        keywordList.map((keyword, index) => {
+        KeywordList.map((keyword, index) => {
           if (index >= limit)
             return (
               <div key={index}>

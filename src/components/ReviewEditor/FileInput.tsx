@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import Close from '@/assets/icons/close.svg';
 import { colors } from '@/utils/GlobalStyles';
@@ -6,12 +6,15 @@ import { ReactComponent as Camera } from '@/assets/icons/camera.svg';
 import { Fonts } from '@/utils/GlobalFonts';
 
 interface Props {
-  images: Array<string>;
-  setImages: (images: Array<string>) => void;
+  images: File[];
+  setImages: (images: File[]) => void;
 }
 
 export default function FileInput(props: Props) {
   const { images, setImages } = props;
+
+  // 미리보기 이미지
+  const [imageUrls, setImageUrls] = useState<string[]>([]);
 
   const onChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -21,20 +24,24 @@ export default function FileInput(props: Props) {
       return;
     }
 
+    const nowImageURLS = [...imageUrls];
     const nowImages = [...images];
 
     if (files) {
       for (let i = 0; i < files.length; i++) {
-        const imageUrl = URL.createObjectURL(files[i]);
-        nowImages.push(imageUrl);
+        const ImageUrl = URL.createObjectURL(files[i]);
+        setImageUrls([...imageUrls, ImageUrl]);
+        nowImageURLS.push(ImageUrl);
+        nowImages.push(files[i]);
       }
+      setImageUrls(nowImageURLS);
       setImages(nowImages);
     }
   };
 
   const onClickDelete = (image: string) => {
-    const newImages = images.filter((nowImage) => nowImage !== image);
-    setImages(newImages);
+    const newImages = imageUrls.filter((imageUrl) => imageUrl !== image);
+    setImageUrls(newImages);
   };
 
   return (
@@ -52,16 +59,16 @@ export default function FileInput(props: Props) {
         multiple
         onChange={(e) => onChangeFile(e)}
       />
-      {images.length > 0 && (
+      {imageUrls.length > 0 && (
         <ImagePreview>
-          {images.map((image, index) => (
+          {imageUrls.map((imageUrl, index) => (
             <PreviewImage key={index}>
               <CloseButton
                 src={Close}
                 alt="삭제"
-                onClick={() => onClickDelete(image)}
+                onClick={() => onClickDelete(imageUrl)}
               />
-              <Image src={image} alt="이미지 미리보기" />
+              <Image src={imageUrl} alt="이미지 미리보기" />
             </PreviewImage>
           ))}
         </ImagePreview>

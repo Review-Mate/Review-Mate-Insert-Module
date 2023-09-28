@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 export default function useMessageToParent(): {
   componentRef: React.RefObject<HTMLDivElement>;
   setHeightChange: React.Dispatch<React.SetStateAction<boolean>>;
+  heightChange: boolean;
 } {
   const componentRef = React.useRef<HTMLDivElement>(null);
 
@@ -33,5 +34,5 @@ export default function useMessageToParent(): {
     sendHeightToParent();
   }, [heightChange]);
 
-  return { componentRef, setHeightChange };
+  return { componentRef, setHeightChange, heightChange };
 }

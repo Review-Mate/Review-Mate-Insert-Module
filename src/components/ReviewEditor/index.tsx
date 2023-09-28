@@ -5,46 +5,68 @@ import ReviewRating from './ReviewRating';
 import FileInput from './FileInput';
 import { colors } from '@/utils/GlobalStyles';
 import useInputTimeout from '@/hooks/useInputTimeout';
-import { CommentType } from '@/types/Comments';
+import { ReviewWriteStateType } from '@/types/Comments';
+import { CommentList } from '@/data/commentData';
+import { useCreateReview } from '@/hooks/useReviews';
+import { PARTNER_DOMAIN } from '@/config/api';
+import { makeReservation } from '@/temp/makeReservation';
 
-interface Props {
-  comments: CommentType[];
-  setComments: React.Dispatch<React.SetStateAction<CommentType[]>>;
-  text: string;
-  setText: React.Dispatch<React.SetStateAction<string>>;
+interface Props extends ReviewWriteStateType {
+  title: string;
+  setTitle: React.Dispatch<React.SetStateAction<string>>;
+}
+
+interface onChangeInputProps {
+  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>;
+  setState: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function ReviewEditor(props: Props) {
-  const { comments, setComments, text, setText } = props;
-
+  const { comments, setComments, title, setTitle, content, setContent } = props;
   const [rating, setRating] = useState<number>(0);
-  const [images, setImages] = useState<Array<string>>([]);
+  const [images, setImages] = useState<File[]>([]);
 
-  const CommentList: CommentType[] = [
-    {
-      sort: 1,
-      contents: [
-        '현지 음식을 맛보거나 특별한 요리를 시도한 소감을 나누어 보세요.',
-      ],
-    },
-    {
-      sort: 2,
-      idx: [93, -1],
-      contents: [
-        '조식과 석식을 호텔에서 먹었는데, 맛과 다양성 모두 훌룡했습니다.',
-        '조식과 석식을 호텔에서 먹었는데, 식사 퀄리티가 기대에 미치지 않았습니다.',
-      ],
-    },
-  ];
+  const { mutate: createReviewMutate } = useCreateReview();
 
-  const onChangeInput = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
-    setText(e.target.value);
+  const onChangeInput = ({ e, setState }: onChangeInputProps) => {
+    setState(e.target.value);
   };
 
-  const onClickAdd = () => {
-    setText('');
-    console.log(rating + '점, ' + text);
-    console.log(images);
+  const onClickSubmit = async () => {
+    if (rating === 0) window.alert('별점을 입력해주세요');
+    setContent('');
+    setTitle('');
+
+    const date = new Date();
+    const formData = intoFormData();
+    const reservationId = `${PARTNER_DOMAIN}-${date.getTime().toString()}`;
+
+    await makeReservation(reservationId);
+
+    createReviewMutate({
+      partnerDomain: PARTNER_DOMAIN,
+      reservationPartnerCustomId: reservationId,
+      reviewData: formData,
+    });
+  };
+
+  const intoFormData = () => {
+    const formData = new FormData();
+
+    const reviewCreateRequest = { rating, title, content };
+    formData.append(
+      'reviewCreateRequest',
+      new Blob([JSON.stringify(reviewCreateRequest)], {
+        type: 'application/json',
+      })
+    );
+
+    images.forEach((image, index) => {
+      console.log(image);
+      formData.append('reviewImageFiles', image);
+    });
+
+    return formData;
   };
 
   const [count, setCount] = useState(0);
@@ -59,9 +81,23 @@ export default function ReviewEditor(props: Props) {
     <Container>
       <Fonts.body1 margin="0 0 15px 0">이번 여행은 만족하셨나요?</Fonts.body1>
       <ReviewRating rating={rating} setRating={setRating} />
-      <Textarea value={text} rows={10} onChange={onChangeInput} />
+      <TitleInput
+        placeholder="제목"
+        value={title}
+        onChange={(e) => {
+          onChangeInput({ e, setState: setTitle });
+        }}
+      />
+      <Textarea
+        placeholder="내용"
+        value={content}
+        rows={10}
+        onChange={(e) => {
+          onChangeInput({ e, setState: setContent });
+        }}
+      />
       <FileInput images={images} setImages={setImages} />
-      <Button onClick={onClickAdd}>
+      <Button onClick={onClickSubmit}>
         <Fonts.body2 weight={500} color="white">
           리뷰 작성
         </Fonts.body2>
@@ -81,13 +117,24 @@ const Container = styled.div`
   padding-top: 50px;
 `;
 
+const TitleInput = styled.input`
+  width: 100%;
+  height: 30px;
+  border: 1px solid ${colors.gray06};
+  border-radius: 10px;
+  padding: 20px;
+  margin: 50px 0 10px 0;
+  resize: none;
+  font-size: 16px;
+`;
+
 const Textarea = styled.textarea`
   width: 100%;
   height: 200px;
   border: 1px solid ${colors.gray06};
   border-radius: 10px;
   padding: 20px;
-  margin: 50px 0 20px 0;
+  margin-bottom: 20px;
   resize: none;
   font-size: 16px;
 `;

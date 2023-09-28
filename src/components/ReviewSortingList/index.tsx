@@ -11,6 +11,7 @@ interface Props {
 
 export default function ReviewSortingList(props: Props) {
   const { reviewList } = props;
+  console.log(reviewList);
   return (
     <Container>
       <ReviewSort />
@@ -20,12 +21,13 @@ export default function ReviewSortingList(props: Props) {
           key={review.id}
           id={review.id}
           title={review.title}
-          score={review.score}
+          rating={review.rating}
           content={review.content}
-          date={review.date}
-          userId={review.userId}
-          image={review.image}
-          keyword={review.keyword}
+          createdAt={review.createdAt}
+          authorName={review.authorName}
+          polarity={review.polarity}
+          // image={review.image}
+          reviewHighlightPairResponses={review.reviewHighlightPairResponses}
         />
       ))}
     </Container>
