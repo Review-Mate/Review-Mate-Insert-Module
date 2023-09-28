@@ -1,5 +1,4 @@
-import React from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import { colors } from './GlobalStyles';
 
 const Heading = styled.h1<FontProps>`

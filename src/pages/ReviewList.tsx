@@ -8,7 +8,7 @@ import { useProductReviews } from '@/hooks/useReviews';
 import { SCORE_AVE, SCORE_LIST } from '@/temp/constant';
 import { Margin } from '@/ui/margin/margin';
 import { Fonts } from '@/utils/GlobalFonts';
-import React, { useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 
 export default function ReviewList() {
@@ -51,5 +51,4 @@ const Container = styled.div`
   min-width: 600px;
   align-items: center;
   flex-direction: column;
-  padding-top: 30px;
 `;

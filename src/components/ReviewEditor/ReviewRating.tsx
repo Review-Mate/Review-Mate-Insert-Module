@@ -9,7 +9,7 @@ interface Props {
 }
 
 export default function ReviewRating(props: Props) {
-  const [stars, setStars] = useState([1, 2, 3, 4, 5]);
+  const stars = [1, 2, 3, 4, 5];
   const [hover, setHover] = useState(0);
 
   const { rating, setRating } = props;

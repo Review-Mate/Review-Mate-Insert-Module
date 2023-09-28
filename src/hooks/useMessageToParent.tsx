@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 export default function useMessageToParent(): {
   componentRef: React.RefObject<HTMLDivElement>;
   setHeightChange: React.Dispatch<React.SetStateAction<boolean>>;
   heightChange: boolean;
 } {
-  const componentRef = React.useRef<HTMLDivElement>(null);
+  const componentRef = useRef<HTMLDivElement>(null);
 
   const [heightChange, setHeightChange] = useState(false);
 

@@ -1,6 +1,6 @@
 import { Fonts } from '@/utils/GlobalFonts';
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import ReviewRating from './ReviewRating';
 import FileInput from './FileInput';
 import { colors } from '@/utils/GlobalStyles';
@@ -61,8 +61,7 @@ export default function ReviewEditor(props: Props) {
       })
     );
 
-    images.forEach((image, index) => {
-      console.log(image);
+    images.forEach((image) => {
       formData.append('reviewImageFiles', image);
     });
 
@@ -72,7 +71,6 @@ export default function ReviewEditor(props: Props) {
   const [count, setCount] = useState(0);
   // 1초간 입력이 없을 경우 실행
   useInputTimeout(2000, () => {
-    console.log('timeout');
     setComments([...comments, CommentList[count]]);
     setCount(1);
   });

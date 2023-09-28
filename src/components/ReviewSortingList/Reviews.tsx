@@ -1,6 +1,6 @@
 import { Fonts } from '@/utils/GlobalFonts';
 import { colors } from '@/utils/GlobalStyles';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 import { ReactComponent as StarYellow } from '@/assets/icons/starYellow.svg';
 import { Row } from '@/ui/flex/flex';

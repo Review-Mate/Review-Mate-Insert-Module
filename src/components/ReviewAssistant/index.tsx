@@ -1,19 +1,18 @@
 import { Fonts } from '@/utils/GlobalFonts';
 import { colors } from '@/utils/GlobalStyles';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { keyframes, styled } from 'styled-components';
 import { ReactComponent as AIBot } from '@/assets/icons/aibot.svg';
 import { Row } from '@/ui/flex/flex';
 import Dot from '@/assets/icons/dot.svg';
 import { Margin } from '@/ui/margin/margin';
-import { CommentType, ReviewWriteStateType } from '@/types/Comments';
+import { ReviewWriteStateType } from '@/types/Comments';
 import { ReviewAssistType, ReviewAssist } from '@/config/enum';
 
 export default function ReviewAssistant(props: ReviewWriteStateType) {
   const { comments, content, setContent } = props;
 
   const sentenceComplete = (idx1: number, idx2: number, replace: string) => {
-    console.log(content.length);
     if (idx2 > content.length || idx2 == -1) idx2 = content.length;
     if (idx2 < idx1 || idx1 < 0) return;
 
