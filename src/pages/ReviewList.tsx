@@ -40,7 +40,7 @@ export default function ReviewList() {
       <KeywordStats />
       <Margin margin={'30px 0 0 0'} />
       {isLoading && <div>로딩중</div>}
-      {!isLoading && data && <ReviewSortingList reviewList={data} />}
+      {!isLoading && data && <ReviewSortingList reviewList={data?.content} />}
     </Container>
   );
 }
