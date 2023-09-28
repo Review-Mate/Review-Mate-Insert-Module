@@ -9,26 +9,34 @@ import useMessageToParent from '@/hooks/useMessageToParent';
 export default function ReviewWrite() {
   const { componentRef } = useMessageToParent();
 
+  const [title, setTitle] = useState<string>('');
+  const [content, setContent] = useState<string>('');
   const [comments, setComments] = useState<CommentType[]>([]);
-  const [text, setText] = useState<string>('');
 
   return (
     <Container ref={componentRef}>
       <ReviewEditor
         comments={comments}
         setComments={setComments}
-        text={text}
-        setText={setText}
+        content={content}
+        setContent={setContent}
+        title={title}
+        setTitle={setTitle}
       />
       <Margin margin={'0 0 0 20px'} />
-      <ReviewAssistant comments={comments} text={text} setText={setText} />
+      <ReviewAssistant
+        comments={comments}
+        setComments={setComments}
+        content={content}
+        setContent={setContent}
+      />
     </Container>
   );
 }
 
 const Container = styled.div`
   width: 100%;
-  height: 620px;
+  min-height: 680px;
   margin: 0 auto;
   margin-top: 30px;
   display: flex;
