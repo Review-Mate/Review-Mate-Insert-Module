@@ -28,7 +28,6 @@ const createReview = async ({
     `${BASE_URL}/api/widget/v1/${partnerDomain}/reservations/${reservationPartnerCustomId}/reviews`,
     reviewData
   );
-  console.log('리뷰생성', data);
   return data;
 };
 

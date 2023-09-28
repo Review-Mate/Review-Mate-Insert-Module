@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import ReviewEditor from '@/components/ReviewEditor';
 import ReviewAssistant from '@/components/ReviewAssistant';
 import { Margin } from '@/ui/margin/margin';
@@ -38,6 +38,5 @@ const Container = styled.div`
   width: 100%;
   min-height: 680px;
   margin: 0 auto;
-  margin-top: 30px;
   display: flex;
 `;

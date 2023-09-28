@@ -1,6 +1,6 @@
 import { Fonts } from '@/utils/GlobalFonts';
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import ReviewRating from './ReviewRating';
 import FileInput from './FileInput';
 import { colors } from '@/utils/GlobalStyles';
@@ -78,7 +78,7 @@ export default function ReviewEditor(props: Props) {
       })
     );
 
-    images.forEach((image, index) => {
+    images.forEach((image) => {
       formData.append('reviewImageFiles', image);
     });
 
