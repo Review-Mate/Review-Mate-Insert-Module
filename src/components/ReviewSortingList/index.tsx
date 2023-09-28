@@ -11,7 +11,6 @@ interface Props {
 
 export default function ReviewSortingList(props: Props) {
   const { reviewList } = props;
-  console.log(reviewList);
   return (
     <Container>
       <ReviewSort />

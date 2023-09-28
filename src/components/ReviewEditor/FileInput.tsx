@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import styled from 'styled-components';
+import { styled } from 'styled-components';
 import Close from '@/assets/icons/close.svg';
 import { colors } from '@/utils/GlobalStyles';
 import { ReactComponent as Camera } from '@/assets/icons/camera.svg';

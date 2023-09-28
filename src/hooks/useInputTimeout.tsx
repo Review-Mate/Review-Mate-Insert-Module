@@ -17,7 +17,6 @@ export default function useInputTimeout(timeout: number, callback: () => void) {
 
   useEffect(() => {
     if (!lastTime) return;
-    console.log('----time start----');
 
     const timer = setTimeout(() => {
       callback();
