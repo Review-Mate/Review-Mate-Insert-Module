@@ -1,7 +1,7 @@
 import { useQuery, useMutation } from 'react-query';
 import axios from 'axios';
 import { BASE_URL } from '@/config/api';
-import { ReviewListSortType } from '@/types/RivewType';
+import { ReviewListSortType } from '@/types/ReviewType';
 import { ReviewSort, ReviewSortType } from '@/config/enum';
 
 interface CreateReview {
@@ -46,11 +46,9 @@ const fetchProductReviews = async ({
 };
 
 // 리뷰 생성
-export const useCreateReview = () => {
+export const useCreateReview = (onSuccess?: () => void) => {
   return useMutation(createReview, {
-    onSuccess: () => {
-      console.log('리뷰 생성 성공');
-    },
+    onSuccess: onSuccess,
     onError: () => {
       console.log('리뷰 생성 실패');
     },

@@ -8,16 +8,13 @@ import KeywordStatList from './KeywordStatList';
 import { ReactComponent as Down } from '@/assets/icons/down.svg';
 import { ReactComponent as Up } from '@/assets/icons/up.svg';
 import { KeywordList } from '@/data/keywordData';
+import useMessageToParent from '@/hooks/useMessageToParent';
 
-interface Props {
-  setHeightChange: (height: boolean) => void;
-}
+export default function KeywordStats() {
+  const { setHeightChange, heightChange } = useMessageToParent();
 
-export default function KeywordStats(props: Props) {
   const limit = 4;
   const [hide, setHide] = useState(true);
-
-  const { setHeightChange } = props;
 
   return (
     <Container>
@@ -81,7 +78,7 @@ export default function KeywordStats(props: Props) {
         <button
           onClick={() => {
             setHide(!hide);
-            setHeightChange(hide);
+            setHeightChange(heightChange + 1);
           }}
         >
           {hide ? <Down /> : <Up />}

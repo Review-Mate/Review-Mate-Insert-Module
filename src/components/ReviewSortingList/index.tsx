@@ -3,7 +3,7 @@ import { styled } from 'styled-components';
 import KeywordSort from './KeywordSortBar';
 import ReviewSort from './ReviewSortBar';
 import Reviews from './Reviews';
-import { ReviewType } from '@/types/RivewType';
+import { ReviewType } from '@/types/ReviewType';
 
 interface Props {
   reviewList: ReviewType[];

@@ -4,7 +4,7 @@ import React from 'react';
 import { styled } from 'styled-components';
 import { ReactComponent as StarYellow } from '@/assets/icons/starYellow.svg';
 import { Row } from '@/ui/flex/flex';
-import { ReviewType } from '@/types/RivewType';
+import { ReviewType } from '@/types/ReviewType';
 
 export default function Reviews(props: ReviewType) {
   const {
