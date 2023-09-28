@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 
 export default function useMessageToParent(): {
   componentRef: React.RefObject<HTMLDivElement>;
-  setHeightChange: React.Dispatch<React.SetStateAction<boolean>>;
-  heightChange: boolean;
+  setHeightChange: React.Dispatch<React.SetStateAction<number>>;
+  heightChange: number;
 } {
   const componentRef = React.useRef<HTMLDivElement>(null);
 
-  const [heightChange, setHeightChange] = useState(false);
+  const [heightChange, setHeightChange] = useState(0);
 
   useEffect(() => {
     const handleMessage = (e: MessageEvent) => {
