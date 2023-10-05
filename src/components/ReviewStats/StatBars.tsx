@@ -8,9 +8,7 @@ interface Props {
   scoreList: number[];
 }
 
-export default function StatBars(props: Props) {
-  const { scoreList } = props;
-
+export default function StatBars({ scoreList }: Props) {
   return (
     <ProgressBox>
       {scoreList.map((score: number, index: number) => (

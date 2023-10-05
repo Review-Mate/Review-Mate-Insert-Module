@@ -4,10 +4,9 @@ import ReviewStats from '@/components/ReviewStats';
 import { PARTNER_DOMAIN } from '@/config/api';
 import useMessageToParent from '@/hooks/useMessageToParent';
 import { useProductReviews } from '@/hooks/useReviews';
-import { SCORE_AVE, SCORE_LIST } from '@/temp/constant';
 import { Margin } from '@/ui/margin/margin';
 import { Fonts } from '@/utils/GlobalFonts';
-import React, { useState } from 'react';
+import React from 'react';
 import { useLocation } from 'react-router-dom';
 import { styled } from 'styled-components';
 
@@ -35,9 +34,9 @@ export default function ReviewList() {
       <Title>
         <Fonts.body1>리뷰</Fonts.body1>
       </Title>
-      <ReviewStats rating={SCORE_AVE} scoreList={SCORE_LIST} />
+      {partnerProductId && <ReviewStats partnerProductId={partnerProductId} />}
       <Margin margin={'30px 0 0 0'} />
-      <KeywordStats />
+      {partnerProductId && <KeywordStats partnerProductId={partnerProductId} />}
       <Margin margin={'30px 0 0 0'} />
       {isLoading && <div>로딩중</div>}
       {!isLoading && data && <ReviewSortingList reviewList={data?.content} />}
