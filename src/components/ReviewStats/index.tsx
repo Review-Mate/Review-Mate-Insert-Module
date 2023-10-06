@@ -34,7 +34,7 @@ export default function ReviewStats({ partnerProductId }: Props) {
         {reviewStats && <Fonts.num2>{reviewStats?.reviewCount}</Fonts.num2>}
       </StatItem>
       <StatItem>
-        {/* 전체가 100, 퍼센트(%)만큼 채워짐 */}
+        {/* 전체 리뷰 수를 100으로, 퍼센트(%)만큼 채워짐 */}
         {reviewStats && (
           <StatBars
             scoreList={[
@@ -44,6 +44,7 @@ export default function ReviewStats({ partnerProductId }: Props) {
               reviewStats?.twoStarRatingCount,
               reviewStats?.oneStarRatingCount,
             ]}
+            max={reviewStats?.reviewCount}
           />
         )}
       </StatItem>

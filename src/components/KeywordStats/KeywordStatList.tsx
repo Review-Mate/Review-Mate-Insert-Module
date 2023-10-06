@@ -24,7 +24,7 @@ export default function KeywordStatList(props: Props) {
       <Bar>
         <KeywordStatBar
           value={negative}
-          max={100}
+          max={positive + negative}
           reverse={1}
           color={colors.red}
         />
