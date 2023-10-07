@@ -63,7 +63,9 @@ export const useProductReviews = ({
   reviewPage = 0,
   reviewListSize = 10,
   onSuccess,
-}: FetchProductReviews & { onSuccess?: () => void }) => {
+}: FetchProductReviews & {
+  onSuccess?: (data: ReviewListSortType) => void;
+}) => {
   return useQuery<ReviewListSortType, Error>(
     ['productReviews', partnerDomain, travelProductPartnerCustomId],
     () =>

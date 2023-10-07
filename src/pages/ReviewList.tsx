@@ -25,21 +25,28 @@ export default function ReviewList() {
     ReviewSort.LATEST
   );
 
+  // 선택된 페이지 번호
+  const [selectedPage, setSelectedPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+
   // 상품 리뷰 목록 조회
   const { data, isLoading, refetch } = partnerProductId
     ? useProductReviews({
         partnerDomain: PARTNER_DOMAIN,
         travelProductPartnerCustomId: partnerProductId,
         reviewSort: selectedOption,
-        onSuccess: () => {
+        reviewPage: selectedPage - 1,
+        onSuccess: (data) => {
           setHeightChange(heightChange + 1);
+          setCurrentPage(data.pageable.pageNumber + 1);
         },
       })
     : { data: null, isLoading: true, refetch: undefined };
 
+  console.log(data);
   useEffect(() => {
     if (refetch) refetch();
-  }, [selectedOption]);
+  }, [selectedOption, selectedPage]);
 
   if (partnerProductId)
     return (
@@ -58,6 +65,9 @@ export default function ReviewList() {
               reviewList={data?.content}
               selectedOption={selectedOption}
               setSelectedOption={setSelectedOption}
+              totalPages={data?.totalPages}
+              setSelectedPage={setSelectedPage}
+              currentPage={currentPage}
             />
           )}
         </Container>
