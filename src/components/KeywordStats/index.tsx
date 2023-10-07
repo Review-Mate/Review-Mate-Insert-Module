@@ -1,7 +1,7 @@
 import { Margin } from '@/ui/margin/margin';
 import { Fonts } from '@/utils/GlobalFonts';
 import { colors } from '@/utils/GlobalStyles';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { styled } from 'styled-components';
 import { ReactComponent as AIBot } from '@/assets/icons/aibot.svg';
 import KeywordStatList from './KeywordStatList';
@@ -10,20 +10,18 @@ import { ReactComponent as Up } from '@/assets/icons/up.svg';
 import useMessageToParent from '@/hooks/useMessageToParent';
 import { useTagStats } from '@/hooks/useStats';
 import { PARTNER_DOMAIN } from '@/config/api';
+import ProductIdContext from '../contexts/ProductIdContext';
 
-interface Props {
-  partnerProductId: string;
-}
-
-export default function KeywordStats({ partnerProductId }: Props) {
+export default function KeywordStats() {
   const { setHeightChange, heightChange } = useMessageToParent();
+  const partnerProductId = useContext(ProductIdContext);
   const {
     data: KeywordList,
     isLoading,
     isError,
   } = useTagStats({
     partnerDomain: PARTNER_DOMAIN,
-    singleTravelProductPartnerCustomId: 'HOTEL-0001',
+    singleTravelProductPartnerCustomId: partnerProductId,
   });
 
   const TAG_NUMBER_LIMIT = 4;

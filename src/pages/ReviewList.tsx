@@ -1,6 +1,7 @@
 import KeywordStats from '@/components/KeywordStats';
 import ReviewSortingList from '@/components/ReviewSortingList';
 import ReviewStats from '@/components/ReviewStats';
+import ProductIdContext from '@/components/contexts/ProductIdContext';
 import { PARTNER_DOMAIN } from '@/config/api';
 import useMessageToParent from '@/hooks/useMessageToParent';
 import { useProductReviews } from '@/hooks/useReviews';
@@ -29,19 +30,26 @@ export default function ReviewList() {
       })
     : { data: null, isLoading: true };
 
-  return (
-    <Container ref={componentRef}>
-      <Title>
-        <Fonts.body1>리뷰</Fonts.body1>
-      </Title>
-      {partnerProductId && <ReviewStats partnerProductId={partnerProductId} />}
-      <Margin margin={'30px 0 0 0'} />
-      {partnerProductId && <KeywordStats partnerProductId={partnerProductId} />}
-      <Margin margin={'30px 0 0 0'} />
-      {isLoading && <div>로딩중</div>}
-      {!isLoading && data && <ReviewSortingList reviewList={data?.content} />}
-    </Container>
-  );
+  if (partnerProductId)
+    return (
+      <ProductIdContext.Provider value={partnerProductId}>
+        <Container ref={componentRef}>
+          <Title>
+            <Fonts.body1>리뷰</Fonts.body1>
+          </Title>
+          <ReviewStats />
+          <Margin margin={'30px 0 0 0'} />
+          <KeywordStats />
+          <Margin margin={'30px 0 0 0'} />
+          {isLoading && <div>로딩중</div>}
+          {!isLoading && data && (
+            <ReviewSortingList reviewList={data?.content} />
+          )}
+        </Container>
+      </ProductIdContext.Provider>
+    );
+
+  return <div>상품 아이디가 존재하지 않습니다.</div>;
 }
 
 const Title = styled.div`

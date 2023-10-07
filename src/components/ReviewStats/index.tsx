@@ -2,17 +2,16 @@ import StatBars from '@/components/ReviewStats/StatBars';
 import { Margin } from '@/ui/margin/margin';
 import { Fonts } from '@/utils/GlobalFonts';
 import { colors } from '@/utils/GlobalStyles';
-import React from 'react';
+import React, { useContext } from 'react';
 import { styled } from 'styled-components';
 import RatingStatBox from './RatingStatBox';
 import { PARTNER_DOMAIN } from '@/config/api';
 import { useReviewStats } from '@/hooks/useStats';
+import ProductIdContext from '../contexts/ProductIdContext';
 
-interface Props {
-  partnerProductId: string;
-}
+export default function ReviewStats() {
+  const partnerProductId = useContext(ProductIdContext);
 
-export default function ReviewStats({ partnerProductId }: Props) {
   const { data: reviewStats, isLoading } = useReviewStats({
     partnerDomain: PARTNER_DOMAIN,
     singleTravelProductPartnerCustomId: partnerProductId,
