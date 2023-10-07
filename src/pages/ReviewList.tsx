@@ -3,11 +3,12 @@ import ReviewSortingList from '@/components/ReviewSortingList';
 import ReviewStats from '@/components/ReviewStats';
 import ProductIdContext from '@/components/contexts/ProductIdContext';
 import { PARTNER_DOMAIN } from '@/config/api';
+import { ReviewSort } from '@/config/enum';
 import useMessageToParent from '@/hooks/useMessageToParent';
 import { useProductReviews } from '@/hooks/useReviews';
 import { Margin } from '@/ui/margin/margin';
 import { Fonts } from '@/utils/GlobalFonts';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { styled } from 'styled-components';
 
@@ -19,16 +20,26 @@ export default function ReviewList() {
     'product_id'
   );
 
+  // 선택된 리뷰 정렬 옵션
+  const [selectedOption, setSelectedOption] = useState<ReviewSort>(
+    ReviewSort.LATEST
+  );
+
   // 상품 리뷰 목록 조회
-  const { data, isLoading } = partnerProductId
+  const { data, isLoading, refetch } = partnerProductId
     ? useProductReviews({
         partnerDomain: PARTNER_DOMAIN,
         travelProductPartnerCustomId: partnerProductId,
+        reviewSort: selectedOption,
         onSuccess: () => {
           setHeightChange(heightChange + 1);
         },
       })
-    : { data: null, isLoading: true };
+    : { data: null, isLoading: true, refetch: undefined };
+
+  useEffect(() => {
+    if (refetch) refetch();
+  }, [selectedOption]);
 
   if (partnerProductId)
     return (
@@ -43,7 +54,11 @@ export default function ReviewList() {
           <Margin margin={'30px 0 0 0'} />
           {isLoading && <div>로딩중</div>}
           {!isLoading && data && (
-            <ReviewSortingList reviewList={data?.content} />
+            <ReviewSortingList
+              reviewList={data?.content}
+              selectedOption={selectedOption}
+              setSelectedOption={setSelectedOption}
+            />
           )}
         </Container>
       </ProductIdContext.Provider>

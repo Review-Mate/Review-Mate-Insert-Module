@@ -1,19 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from 'styled-components';
 import KeywordSort from './KeywordSortBar';
-import ReviewSort from './ReviewSortBar';
 import Reviews from './Reviews';
 import { ReviewType } from '@/types/ReviewType';
+import ReviewSortBar from './ReviewSortBar';
+import { ReviewSort } from '@/config/enum';
 
 interface Props {
   reviewList: ReviewType[];
+  selectedOption: ReviewSort;
+  setSelectedOption: React.Dispatch<React.SetStateAction<ReviewSort>>;
 }
 
-export default function ReviewSortingList(props: Props) {
-  const { reviewList } = props;
+export default function ReviewSortingList({
+  reviewList,
+  selectedOption,
+  setSelectedOption,
+}: Props) {
   return (
     <Container>
-      <ReviewSort />
+      <ReviewSortBar
+        selectedOption={selectedOption}
+        setSelectedOption={setSelectedOption}
+      />
       <KeywordSort />
       {reviewList.map((review: ReviewType) => (
         <Reviews
