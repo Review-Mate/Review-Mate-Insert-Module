@@ -37,7 +37,7 @@ const ProgressBox = styled.div`
 
 const Circle = styled.div<{ color?: string; reverse?: number }>`
   position: absolute;
-  top: -8px;
+  top: -9px;
   left: ${(props) => (props.reverse ? 'auto' : -13)}px;
   right: ${(props) => (props.reverse ? -13 : 'auto')}px;
   display: flex;

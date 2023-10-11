@@ -1,7 +1,7 @@
 import { Margin } from '@/ui/margin/margin';
 import { Fonts } from '@/utils/GlobalFonts';
 import { colors } from '@/utils/GlobalStyles';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { styled } from 'styled-components';
 import { ReactComponent as AIBot } from '@/assets/icons/aibot.svg';
 import KeywordStatList from './KeywordStatList';
@@ -12,8 +12,13 @@ import { useTagStats } from '@/hooks/useStats';
 import { PARTNER_DOMAIN } from '@/config/api';
 import ProductIdContext from '../contexts/ProductIdContext';
 
-export default function KeywordStats() {
+interface Props {
+  reviewCount: number;
+}
+
+export default function KeywordStats({ reviewCount }: Props) {
   const { setHeightChange, heightChange } = useMessageToParent();
+
   const partnerProductId = useContext(ProductIdContext);
   const {
     data: KeywordList,
@@ -24,6 +29,17 @@ export default function KeywordStats() {
     singleTravelProductPartnerCustomId: partnerProductId,
   });
 
+  const getMaxPropertyCount = () => {
+    let mx = 0;
+    KeywordList?.forEach((keyword) => {
+      mx = Math.max(mx, keyword.positiveCount, keyword.negativeCount);
+    });
+
+    return mx;
+  };
+
+  const maxCount = useMemo(() => getMaxPropertyCount(), [KeywordList]);
+
   const TAG_NUMBER_LIMIT = 4;
 
   const [hide, setHide] = useState(true);
@@ -33,7 +49,7 @@ export default function KeywordStats() {
       <Fonts.body1>주요 키워드</Fonts.body1>
       <Margin margin={'6px 0 0 0'} />
       <Fonts.caption color={colors.primary} weight={500}>
-        총 5000개의 리뷰 중에서 자주 언급된 키워드를 선별했어요!
+        총 {reviewCount}개의 리뷰 중에서 자주 언급된 키워드를 선별했어요!
       </Fonts.caption>
       <Margin margin={'20px 0 0 0'} />
       <AIBox>
@@ -68,10 +84,12 @@ export default function KeywordStats() {
                 title={keyword.reviewProperty}
                 positive={keyword.positiveCount}
                 negative={keyword.negativeCount}
+                max={maxCount}
               />
             </div>
           );
       })}
+      <KeywordStatList title={'dd'} positive={3} negative={3} max={maxCount} />
       {!hide &&
         KeywordList?.map((keyword, index) => {
           if (index >= TAG_NUMBER_LIMIT)
@@ -82,6 +100,7 @@ export default function KeywordStats() {
                   title={keyword.reviewProperty}
                   positive={keyword.positiveCount}
                   negative={keyword.negativeCount}
+                  max={maxCount}
                 />
               </div>
             );

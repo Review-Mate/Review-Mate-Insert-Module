@@ -6,17 +6,15 @@ import { ReactComponent as StarYellow } from '@/assets/icons/starYellow.svg';
 import { Row } from '@/ui/flex/flex';
 import { ReviewType } from '@/types/ReviewType';
 
-export default function Reviews(props: ReviewType) {
-  const {
-    title,
-    rating,
-    content,
-    createdAt,
-    authorName,
-    polarity,
-    reviewHighlightPairResponses,
-  } = props;
-
+export default function Reviews({
+  title,
+  rating,
+  content,
+  createdAt,
+  authorName,
+  polarity,
+  reviewHighlightPairResponses,
+}: ReviewType) {
   const formatDate =
     createdAt.substring(0, 4) +
     '. ' +
