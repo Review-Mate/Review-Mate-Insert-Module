@@ -70,7 +70,7 @@ export default function Reviews(props: ReviewType) {
         </Fonts.body3>
         <Fonts.caption color={colors.gray01}>{formatDate}</Fonts.caption>
       </TextBox>
-      <Image src="https://cdn.pixabay.com/photo/2016/03/04/19/36/beach-1236581_1280.jpg" />
+      {/* <Image src="https://cdn.pixabay.com/photo/2016/03/04/19/36/beach-1236581_1280.jpg" /> */}
     </Container>
   );
 }

@@ -24,7 +24,7 @@ export default function KeywordStatList(props: Props) {
       <Bar>
         <KeywordStatBar
           value={negative}
-          max={100}
+          max={positive + negative}
           reverse={1}
           color={colors.red}
         />
@@ -53,8 +53,10 @@ const Title = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 63px;
   height: 34px;
+  min-width: 63px;
+  padding: 0 10px;
+  margin: 0 15px;
   border-radius: 100px;
   background-color: ${colors.gray06};
 `;

@@ -15,7 +15,7 @@ interface Props {
   rating: number;
 }
 
-export default function RatingStatBox(props: Props) {
+export default function RatingStatBox({ rating }: Props) {
   const stars = [1, 2, 3, 4, 5];
 
   const starIcons = [
@@ -30,8 +30,6 @@ export default function RatingStatBox(props: Props) {
     star08,
     star09,
   ];
-
-  const { rating } = props;
 
   return (
     <div>

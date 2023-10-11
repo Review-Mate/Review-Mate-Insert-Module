@@ -1,19 +1,31 @@
 import { Margin } from '@/ui/margin/margin';
 import { Fonts } from '@/utils/GlobalFonts';
 import { colors } from '@/utils/GlobalStyles';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { styled } from 'styled-components';
 import { ReactComponent as AIBot } from '@/assets/icons/aibot.svg';
 import KeywordStatList from './KeywordStatList';
 import { ReactComponent as Down } from '@/assets/icons/down.svg';
 import { ReactComponent as Up } from '@/assets/icons/up.svg';
-import { KeywordList } from '@/data/keywordData';
 import useMessageToParent from '@/hooks/useMessageToParent';
+import { useTagStats } from '@/hooks/useStats';
+import { PARTNER_DOMAIN } from '@/config/api';
+import ProductIdContext from '../contexts/ProductIdContext';
 
 export default function KeywordStats() {
   const { setHeightChange, heightChange } = useMessageToParent();
+  const partnerProductId = useContext(ProductIdContext);
+  const {
+    data: KeywordList,
+    isLoading,
+    isError,
+  } = useTagStats({
+    partnerDomain: PARTNER_DOMAIN,
+    singleTravelProductPartnerCustomId: partnerProductId,
+  });
 
-  const limit = 4;
+  const TAG_NUMBER_LIMIT = 4;
+
   const [hide, setHide] = useState(true);
 
   return (
@@ -47,42 +59,44 @@ export default function KeywordStats() {
           부정
         </Fonts.caption>
       </StatTitle>
-      {KeywordList.map((keyword, index) => {
-        if (index < limit)
+      {KeywordList?.map((keyword, index) => {
+        if (index < TAG_NUMBER_LIMIT)
           return (
             <div key={index}>
               <Margin margin={'10px 0 0 0'} />
               <KeywordStatList
-                title={keyword.title}
-                positive={keyword.positive}
-                negative={keyword.negative}
+                title={keyword.reviewProperty}
+                positive={keyword.positiveCount}
+                negative={keyword.negativeCount}
               />
             </div>
           );
       })}
       {!hide &&
-        KeywordList.map((keyword, index) => {
-          if (index >= limit)
+        KeywordList?.map((keyword, index) => {
+          if (index >= TAG_NUMBER_LIMIT)
             return (
               <div key={index}>
                 <Margin margin={'10px 0 0 0'} />
                 <KeywordStatList
-                  title={keyword.title}
-                  positive={keyword.positive}
-                  negative={keyword.negative}
+                  title={keyword.reviewProperty}
+                  positive={keyword.positiveCount}
+                  negative={keyword.negativeCount}
                 />
               </div>
             );
         })}
       <DownIcon>
-        <button
-          onClick={() => {
-            setHide(!hide);
-            setHeightChange(heightChange + 1);
-          }}
-        >
-          {hide ? <Down /> : <Up />}
-        </button>
+        {KeywordList && KeywordList?.length > TAG_NUMBER_LIMIT && (
+          <button
+            onClick={() => {
+              setHide(!hide);
+              setHeightChange(heightChange + 1);
+            }}
+          >
+            {hide ? <Down /> : <Up />}
+          </button>
+        )}
       </DownIcon>
     </Container>
   );

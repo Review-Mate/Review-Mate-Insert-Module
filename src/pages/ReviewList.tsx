@@ -1,13 +1,14 @@
 import KeywordStats from '@/components/KeywordStats';
 import ReviewSortingList from '@/components/ReviewSortingList';
 import ReviewStats from '@/components/ReviewStats';
+import ProductIdContext from '@/components/contexts/ProductIdContext';
 import { PARTNER_DOMAIN } from '@/config/api';
+import { ReviewSort } from '@/config/enum';
 import useMessageToParent from '@/hooks/useMessageToParent';
 import { useProductReviews } from '@/hooks/useReviews';
-import { SCORE_AVE, SCORE_LIST } from '@/temp/constant';
 import { Margin } from '@/ui/margin/margin';
 import { Fonts } from '@/utils/GlobalFonts';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { styled } from 'styled-components';
 
@@ -19,30 +20,61 @@ export default function ReviewList() {
     'product_id'
   );
 
+  // 선택된 리뷰 정렬 옵션
+  const [selectedOption, setSelectedOption] = useState<ReviewSort>(
+    ReviewSort.LATEST
+  );
+
+  // 선택된 페이지 번호
+  const [selectedPage, setSelectedPage] = useState(1);
+  const [currentPage, setCurrentPage] = useState(1);
+
   // 상품 리뷰 목록 조회
-  const { data, isLoading } = partnerProductId
+  const { data, isLoading, refetch } = partnerProductId
     ? useProductReviews({
         partnerDomain: PARTNER_DOMAIN,
         travelProductPartnerCustomId: partnerProductId,
-        onSuccess: () => {
+        reviewSort: selectedOption,
+        reviewPage: selectedPage - 1,
+        onSuccess: (data) => {
           setHeightChange(heightChange + 1);
+          setCurrentPage(data.pageable.pageNumber + 1);
         },
       })
-    : { data: null, isLoading: true };
+    : { data: null, isLoading: true, refetch: undefined };
 
-  return (
-    <Container ref={componentRef}>
-      <Title>
-        <Fonts.body1>리뷰</Fonts.body1>
-      </Title>
-      <ReviewStats rating={SCORE_AVE} scoreList={SCORE_LIST} />
-      <Margin margin={'30px 0 0 0'} />
-      <KeywordStats />
-      <Margin margin={'30px 0 0 0'} />
-      {isLoading && <div>로딩중</div>}
-      {!isLoading && data && <ReviewSortingList reviewList={data?.content} />}
-    </Container>
-  );
+  console.log(data);
+  useEffect(() => {
+    if (refetch) refetch();
+  }, [selectedOption, selectedPage]);
+
+  if (partnerProductId)
+    return (
+      <ProductIdContext.Provider value={partnerProductId}>
+        <Container ref={componentRef}>
+          <Title>
+            <Fonts.body1>리뷰</Fonts.body1>
+          </Title>
+          <ReviewStats />
+          <Margin margin={'30px 0 0 0'} />
+          <KeywordStats />
+          <Margin margin={'30px 0 0 0'} />
+          {isLoading && <div>로딩중</div>}
+          {!isLoading && data && (
+            <ReviewSortingList
+              reviewList={data?.content}
+              selectedOption={selectedOption}
+              setSelectedOption={setSelectedOption}
+              totalPages={data?.totalPages}
+              setSelectedPage={setSelectedPage}
+              currentPage={currentPage}
+            />
+          )}
+        </Container>
+      </ProductIdContext.Provider>
+    );
+
+  return <div>상품 아이디가 존재하지 않습니다.</div>;
 }
 
 const Title = styled.div`
