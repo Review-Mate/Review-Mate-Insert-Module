@@ -14,7 +14,7 @@ const fetchReviewStats = async ({
   singleTravelProductPartnerCustomId,
 }: FetchStats): Promise<ReviewStatsType> => {
   const { data } = await axios.get(
-    `${BASE_URL}/api/widget/v1/${partnerDomain}/products/${singleTravelProductPartnerCustomId}/statistic/reviews`
+    `${BASE_URL}/api/widget/v1/${partnerDomain}/products/${singleTravelProductPartnerCustomId}/statistics/reviews`
   );
   return data;
 };
