@@ -11,6 +11,7 @@ import { Fonts } from '@/utils/GlobalFonts';
 import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { styled } from 'styled-components';
+import LoadingBar from '@/ui/loadingBar/LoadingBar';
 
 export default function ReviewList() {
   const { componentRef, setHeightChange, heightChange } = useMessageToParent();
@@ -30,7 +31,7 @@ export default function ReviewList() {
   const [currentPage, setCurrentPage] = useState(1);
 
   // 상품 리뷰 목록 조회
-  const { data, isLoading, refetch } = partnerProductId
+  const { data, isLoading, refetch, isError } = partnerProductId
     ? useProductReviews({
         partnerDomain: PARTNER_DOMAIN,
         travelProductPartnerCustomId: partnerProductId,
@@ -41,12 +42,13 @@ export default function ReviewList() {
           setCurrentPage(data.pageable.pageNumber + 1);
         },
       })
-    : { data: null, isLoading: true, refetch: undefined };
+    : { data: null, isLoading: true, refetch: undefined, isError: false };
 
-  console.log(data);
   useEffect(() => {
     if (refetch) refetch();
   }, [selectedOption, selectedPage]);
+
+  console.log(data);
 
   if (partnerProductId)
     return (
@@ -57,9 +59,12 @@ export default function ReviewList() {
           </Title>
           <ReviewStats />
           <Margin margin={'30px 0 0 0'} />
-          <KeywordStats />
+          <KeywordStats reviewCount={data?.numberOfElements || 0} />
           <Margin margin={'30px 0 0 0'} />
-          {isLoading && <div>로딩중</div>}
+          {isLoading && <LoadingBar />}
+          {isError && (
+            <Fonts.body3>리뷰 목록을 불러오지 못했습니다.</Fonts.body3>
+          )}
           {!isLoading && data && (
             <ReviewSortingList
               reviewList={data?.content}
