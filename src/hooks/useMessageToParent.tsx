@@ -41,6 +41,11 @@ export default function useMessageToParent(): {
     window.parent.postMessage({ type: 'height', message: message }, '*');
   };
 
+  // 부모에게 메세지 전송
+  const postMessageToParent = (type: string, message: string) => {
+    window.parent.postMessage({ type, message }, '*');
+  };
+
   useEffect(() => {
     sendHeightToParent();
   }, [heightChange]);
