@@ -1,6 +1,6 @@
 import { Fonts } from '@/utils/GlobalFonts';
 import { colors } from '@/utils/GlobalStyles';
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as CheckWhite } from '@/assets/icons/checkWhite.svg';
 import { ReactComponent as CheckBlack } from '@/assets/icons/checkBlack.svg';
@@ -34,6 +34,7 @@ export default function KeywordSortBar() {
                 title={tagName}
                 check={selectedBigTag === tagName}
                 onClick={() => {
+                  setSelectedTag('');
                   if (selectedBigTag === tagName) {
                     setSelectedBigTag('');
                     setSelectedTag('');
