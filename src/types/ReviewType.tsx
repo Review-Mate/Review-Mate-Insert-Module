@@ -44,3 +44,19 @@ export interface ReviewListSortType {
   totalElements: number;
   totalPages: number;
 }
+
+export interface TagStatsType {
+  reviewProperty: string;
+  positiveCount: number;
+  negativeCount: number;
+}
+
+export interface ReviewStatsType {
+  averageRating: number;
+  reviewCount: number;
+  fiveStarRatingCount: number;
+  fourStarRatingCount: number;
+  threeStarRatingCount: number;
+  twoStarRatingCount: number;
+  oneStarRatingCount: number;
+}

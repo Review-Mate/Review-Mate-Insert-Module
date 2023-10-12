@@ -9,10 +9,10 @@ export type ReviewAssistType = keyof typeof ReviewAssist | number;
 // 리뷰 목록 정렬
 export enum ReviewSort {
   LATEST = 'LATEST',
-  RATING_ASC = 'RATING_ASC',
   RATING_DESC = 'RATING_DESC',
-  POSITIVE = 'POSITIVE',
-  NEGATIVE = 'NEGATIVE',
+  RATING_ASC = 'RATING_ASC',
+  POSITIVE_DESC = 'POSITIVE_DESC',
+  NEGATIVE_DESC = 'NEGATIVE_DESC',
 }
 
 export type ReviewSortType = keyof typeof ReviewSort;

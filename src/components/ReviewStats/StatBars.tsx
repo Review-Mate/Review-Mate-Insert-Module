@@ -6,17 +6,16 @@ import StatBar from './StatBar';
 
 interface Props {
   scoreList: number[];
+  max: number;
 }
 
-export default function StatBars(props: Props) {
-  const { scoreList } = props;
-
+export default function StatBars({ scoreList, max }: Props) {
   return (
     <ProgressBox>
       {scoreList.map((score: number, index: number) => (
         <div key={index}>
           <ProgressGroup>
-            <StatBar value={score} max={100} />
+            <StatBar value={score} max={max} />
             <Margin margin={'5px 0 0 0'} />
             <Fonts.caption>{5 - index}점</Fonts.caption>
           </ProgressGroup>

@@ -2,34 +2,60 @@ import StatBars from '@/components/ReviewStats/StatBars';
 import { Margin } from '@/ui/margin/margin';
 import { Fonts } from '@/utils/GlobalFonts';
 import { colors } from '@/utils/GlobalStyles';
-import React from 'react';
+import React, { useContext } from 'react';
 import { styled } from 'styled-components';
 import RatingStatBox from './RatingStatBox';
+import { useReviewStats } from '@/hooks/useStats';
+import ProductIdContext from '../contexts/ProductIdContext';
+import LoadingBar from '@/ui/loadingBar/LoadingBar';
 
-interface Props {
-  rating: number;
-  scoreList: number[];
-}
+export default function ReviewStats() {
+  const { partnerDomain, partnerProductId } = useContext(ProductIdContext);
 
-export default function ReviewStats(prop: Props) {
-  const { rating, scoreList } = prop;
+  const {
+    data: reviewStats,
+    isLoading,
+    isError,
+  } = useReviewStats({
+    partnerDomain: partnerDomain,
+    singleTravelProductPartnerCustomId: partnerProductId,
+  });
 
   return (
     <Box>
       <StatItem>
         {/* 점수에 따라 별점 채워짐(0.1 단위) */}
-        <RatingStatBox rating={rating} />
+        {reviewStats && <RatingStatBox rating={reviewStats?.averageRating} />}
         <Margin margin={'5px 0 0 0'} />
-        <Fonts.num2>{rating}</Fonts.num2>
+        {reviewStats && (
+          <Fonts.num2>{reviewStats?.averageRating.toFixed(1)}</Fonts.num2>
+        )}
       </StatItem>
       <StatItem>
-        <Fonts.body3>총 리뷰 수</Fonts.body3>
-        <Margin margin={'10px 0 0 0'} />
-        <Fonts.num2>4500</Fonts.num2>
+        {isLoading && <LoadingBar />}
+        {isError && <Fonts.body3>리뷰 통계를 불러오지 못했습니다.</Fonts.body3>}
+        {reviewStats && (
+          <>
+            <Fonts.body3>총 리뷰 수</Fonts.body3>
+            <Margin margin={'10px 0 0 0'} />
+            <Fonts.num2>{reviewStats?.reviewCount}</Fonts.num2>
+          </>
+        )}
       </StatItem>
       <StatItem>
-        {/* 전체가 100, 퍼센트(%)만큼 채워짐 */}
-        <StatBars scoreList={scoreList} />
+        {/* 전체 리뷰 수를 100으로, 퍼센트(%)만큼 채워짐 */}
+        {reviewStats && (
+          <StatBars
+            scoreList={[
+              reviewStats?.fiveStarRatingCount,
+              reviewStats?.fourStarRatingCount,
+              reviewStats?.threeStarRatingCount,
+              reviewStats?.twoStarRatingCount,
+              reviewStats?.oneStarRatingCount,
+            ]}
+            max={reviewStats?.reviewCount}
+          />
+        )}
       </StatItem>
     </Box>
   );

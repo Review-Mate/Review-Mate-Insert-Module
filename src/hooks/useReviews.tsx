@@ -16,6 +16,8 @@ export interface FetchProductReviews {
   reviewSort?: ReviewSortType;
   reviewPage?: number;
   reviewListSize?: number;
+  property?: string;
+  keyword?: string;
 }
 
 // 리뷰 생성
@@ -38,10 +40,13 @@ const fetchProductReviews = async ({
   reviewSort = ReviewSort.LATEST,
   reviewPage = 0,
   reviewListSize = 10,
+  property,
+  keyword,
 }: FetchProductReviews): Promise<ReviewListSortType> => {
-  const { data } = await axios.get(
-    `${BASE_URL}/api/widget/v1/${partnerDomain}/products/${travelProductPartnerCustomId}/reviews?orderCriteria=${reviewSort}&page=${reviewPage}&size=${reviewListSize}`
-  );
+  let api = `${BASE_URL}/api/widget/v1/${partnerDomain}/products/${travelProductPartnerCustomId}/reviews?orderCriteria=${reviewSort}&page=${reviewPage}&size=${reviewListSize}`;
+  if (property && keyword && property != '' && keyword != '')
+    api = api.concat(`&property=${property}&keyword=${keyword}`);
+  const { data } = await axios.get(api);
   return data;
 };
 
@@ -62,8 +67,12 @@ export const useProductReviews = ({
   reviewSort = ReviewSort.LATEST,
   reviewPage = 0,
   reviewListSize = 10,
+  property,
+  keyword,
   onSuccess,
-}: FetchProductReviews & { onSuccess?: () => void }) => {
+}: FetchProductReviews & {
+  onSuccess?: (data: ReviewListSortType) => void;
+}) => {
   return useQuery<ReviewListSortType, Error>(
     ['productReviews', partnerDomain, travelProductPartnerCustomId],
     () =>
@@ -73,6 +82,8 @@ export const useProductReviews = ({
         reviewSort,
         reviewPage,
         reviewListSize,
+        property,
+        keyword,
       }),
     {
       onSuccess: onSuccess,

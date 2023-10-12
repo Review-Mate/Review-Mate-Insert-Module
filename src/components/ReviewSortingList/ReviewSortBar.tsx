@@ -1,27 +1,28 @@
 import { Fonts } from '@/utils/GlobalFonts';
 import { colors } from '@/utils/GlobalStyles';
-import React, { useState } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 import { ReactComponent as CheckBlack } from '@/assets/icons/checkBlack.svg';
+import { SORT_OPTIONS } from '@/config/constants';
+import { ReviewSort } from '@/config/enum';
 
-export default function ReviewSortBar() {
-  const [selectedOption, setSelectedOption] = useState(0);
-  const SORT_OPTIONS = [
-    { id: 0, label: '최신순' },
-    { id: 1, label: '별점높은순' },
-    { id: 2, label: '별점낮은순' },
-    { id: 3, label: '긍정률순' },
-    { id: 4, label: '부정률순' },
-  ];
+interface Props {
+  selectedOption: ReviewSort;
+  setSelectedOption: React.Dispatch<React.SetStateAction<ReviewSort>>;
+}
 
+export default function ReviewSortBar({
+  selectedOption,
+  setSelectedOption,
+}: Props) {
   return (
     <Box>
       {SORT_OPTIONS.map((option) => (
         <SortTag
           key={option.id}
-          title={option.label}
-          check={selectedOption === option.id}
-          onClick={() => setSelectedOption(option.id)}
+          title={option.title}
+          check={selectedOption === option.label}
+          onClick={() => setSelectedOption(option.label)}
           divider={option.id < SORT_OPTIONS.length - 1}
         />
       ))}
@@ -29,14 +30,14 @@ export default function ReviewSortBar() {
   );
 }
 
-interface Props {
+interface SortTagProps {
   title: string;
   check: boolean;
   onClick?: () => void;
   divider?: boolean;
 }
 
-const SortTag = ({ title, check, onClick, divider }: Props) => {
+const SortTag = ({ title, check, onClick, divider }: SortTagProps) => {
   return (
     <>
       <Tag onClick={onClick}>
