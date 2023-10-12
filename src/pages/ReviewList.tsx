@@ -12,6 +12,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { styled } from 'styled-components';
 import LoadingBar from '@/ui/loadingBar/LoadingBar';
+import ProductTagContext from '@/components/contexts/ProductTagContext';
 
 export default function ReviewList() {
   const { componentRef, setHeightChange, heightChange } = useMessageToParent();
@@ -25,10 +26,11 @@ export default function ReviewList() {
   const [selectedOption, setSelectedOption] = useState<ReviewSort>(
     ReviewSort.LATEST
   );
-
   // 선택된 페이지 번호
   const [selectedPage, setSelectedPage] = useState(1);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedTag, setSelectedTag] = useState('');
+  const [selectedBigTag, setSelectedBigTag] = useState('');
 
   // 상품 리뷰 목록 조회
   const { data, isLoading, refetch, isError } = partnerProductId
@@ -37,6 +39,8 @@ export default function ReviewList() {
         travelProductPartnerCustomId: partnerProductId,
         reviewSort: selectedOption,
         reviewPage: selectedPage - 1,
+        property: selectedBigTag,
+        keyword: selectedTag,
         onSuccess: (data) => {
           setHeightChange(heightChange + 1);
           setCurrentPage(data.pageable.pageNumber + 1);
@@ -46,36 +50,45 @@ export default function ReviewList() {
 
   useEffect(() => {
     if (refetch) refetch();
-  }, [selectedOption, selectedPage]);
+  }, [selectedOption, selectedPage, selectedBigTag, selectedTag]);
 
   console.log(data);
 
   if (partnerProductId)
     return (
       <ProductIdContext.Provider value={partnerProductId}>
-        <Container ref={componentRef}>
-          <Title>
-            <Fonts.body1>리뷰</Fonts.body1>
-          </Title>
-          <ReviewStats />
-          <Margin margin={'30px 0 0 0'} />
-          <KeywordStats reviewCount={data?.numberOfElements || 0} />
-          <Margin margin={'30px 0 0 0'} />
-          {isLoading && <LoadingBar />}
-          {isError && (
-            <Fonts.body3>리뷰 목록을 불러오지 못했습니다.</Fonts.body3>
-          )}
-          {!isLoading && data && (
-            <ReviewSortingList
-              reviewList={data?.content}
-              selectedOption={selectedOption}
-              setSelectedOption={setSelectedOption}
-              totalPages={data?.totalPages}
-              setSelectedPage={setSelectedPage}
-              currentPage={currentPage}
-            />
-          )}
-        </Container>
+        <ProductTagContext.Provider
+          value={{
+            selectedTag,
+            setSelectedTag,
+            selectedBigTag,
+            setSelectedBigTag,
+          }}
+        >
+          <Container ref={componentRef}>
+            <Title>
+              <Fonts.body1>리뷰</Fonts.body1>
+            </Title>
+            <ReviewStats />
+            <Margin margin={'30px 0 0 0'} />
+            <KeywordStats reviewCount={data?.numberOfElements || 0} />
+            <Margin margin={'30px 0 0 0'} />
+            {isLoading && <LoadingBar />}
+            {isError && (
+              <Fonts.body3>리뷰 목록을 불러오지 못했습니다.</Fonts.body3>
+            )}
+            {!isLoading && data && (
+              <ReviewSortingList
+                reviewList={data?.content}
+                selectedOption={selectedOption}
+                setSelectedOption={setSelectedOption}
+                totalPages={data?.totalPages}
+                setSelectedPage={setSelectedPage}
+                currentPage={currentPage}
+              />
+            )}
+          </Container>
+        </ProductTagContext.Provider>
       </ProductIdContext.Provider>
     );
 

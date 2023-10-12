@@ -7,10 +7,11 @@ import { ReactComponent as CheckBlack } from '@/assets/icons/checkBlack.svg';
 import { useTags } from '@/hooks/useTags';
 import { PARTNER_DOMAIN } from '@/config/api';
 import ProductIdContext from '../contexts/ProductIdContext';
+import ProductTagContext from '../contexts/ProductTagContext';
 
 export default function KeywordSortBar() {
-  const [selectedBigTag, setSelectedBigTag] = useState('');
-  const [selectedSmallTag, setSelectedSmallTag] = useState('');
+  const { selectedTag, setSelectedTag, selectedBigTag, setSelectedBigTag } =
+    useContext(ProductTagContext);
 
   const partnerProductId = useContext(ProductIdContext);
   const {
@@ -36,7 +37,7 @@ export default function KeywordSortBar() {
                 onClick={() => {
                   if (selectedBigTag === tagName) {
                     setSelectedBigTag('');
-                    setSelectedSmallTag('');
+                    setSelectedTag('');
                     return;
                   }
                   setSelectedBigTag(tagName);
@@ -51,13 +52,13 @@ export default function KeywordSortBar() {
             <React.Fragment key={index}>
               <SmallTag
                 title={smallTag}
-                check={selectedSmallTag === smallTag}
+                check={selectedTag === smallTag}
                 onClick={() => {
-                  if (selectedSmallTag === smallTag) {
-                    setSelectedSmallTag('');
+                  if (selectedTag === smallTag) {
+                    setSelectedTag('');
                     return;
                   }
-                  setSelectedSmallTag(smallTag);
+                  setSelectedTag(smallTag);
                 }}
               />
             </React.Fragment>
@@ -67,13 +68,13 @@ export default function KeywordSortBar() {
   );
 }
 
-interface Props {
+interface TagProps {
   title: string;
   check: boolean;
   onClick?: () => void;
 }
 
-const BigTag = ({ title, check, onClick }: Props) => {
+const BigTag = ({ title, check, onClick }: TagProps) => {
   return (
     <Tag
       onClick={onClick}
@@ -91,7 +92,7 @@ const BigTag = ({ title, check, onClick }: Props) => {
   );
 };
 
-const SmallTag = ({ title, check, onClick }: Props) => {
+const SmallTag = ({ title, check, onClick }: TagProps) => {
   return (
     <Tag onClick={onClick} bordercolor={check ? colors.gray03 : colors.gray06}>
       {check && <CheckBlack style={{ marginBottom: 2 }} />}
