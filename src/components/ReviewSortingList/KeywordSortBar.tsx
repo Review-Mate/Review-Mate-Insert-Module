@@ -50,25 +50,27 @@ export default function KeywordSortBar({ setSelectedPage }: Props) {
             </React.Fragment>
           ))}
       </BigBox>
-      <SmallBox>
-        {tagsData &&
-          tagsData[selectedBigTag]?.map((smallTag, index) => (
-            <React.Fragment key={index}>
-              <SmallTag
-                title={smallTag}
-                check={selectedTag === smallTag}
-                onClick={() => {
-                  if (selectedTag === smallTag) {
-                    setSelectedTag('');
-                    return;
-                  }
-                  setSelectedPage(1);
-                  setSelectedTag(smallTag);
-                }}
-              />
-            </React.Fragment>
-          ))}
-      </SmallBox>
+      {selectedBigTag != '' && (
+        <SmallBox>
+          {tagsData &&
+            tagsData[selectedBigTag]?.map((smallTag, index) => (
+              <React.Fragment key={index}>
+                <SmallTag
+                  title={smallTag}
+                  check={selectedTag === smallTag}
+                  onClick={() => {
+                    if (selectedTag === smallTag) {
+                      setSelectedTag('');
+                      return;
+                    }
+                    setSelectedPage(1);
+                    setSelectedTag(smallTag);
+                  }}
+                />
+              </React.Fragment>
+            ))}
+        </SmallBox>
+      )}
     </Box>
   );
 }
