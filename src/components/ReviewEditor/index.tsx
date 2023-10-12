@@ -8,7 +8,6 @@ import useInputTimeout from '@/hooks/useInputTimeout';
 import { ReviewWriteStateType } from '@/types/Comments';
 import { CommentList } from '@/data/commentData';
 import { useCreateReview } from '@/hooks/useReviews';
-import { PARTNER_DOMAIN } from '@/config/api';
 import { useLocation } from 'react-router-dom';
 
 interface Props extends ReviewWriteStateType {
@@ -25,6 +24,12 @@ export default function ReviewEditor(props: Props) {
   const { comments, setComments, title, setTitle, content, setContent } = props;
 
   const location = useLocation();
+
+  // 파트너사 도메인
+  const partnerDomain = new URLSearchParams(location.search).get(
+    'partner_domain'
+  );
+
   // 파트너가 전달한 예약 아이디
   const reservationId = new URLSearchParams(location.search).get(
     'reservation_id'
@@ -49,7 +54,7 @@ export default function ReviewEditor(props: Props) {
   };
 
   const onClickSubmit = async () => {
-    if (!reservationId) {
+    if (!reservationId || !partnerDomain) {
       window.alert('예약 아이디가 없습니다.');
       return;
     }
@@ -57,11 +62,12 @@ export default function ReviewEditor(props: Props) {
 
     setContent('');
     setTitle('');
+    setRating(0);
 
     const formData = intoFormData();
 
     createReviewMutate({
-      partnerDomain: PARTNER_DOMAIN,
+      partnerDomain: partnerDomain,
       reservationPartnerCustomId: reservationId,
       reviewData: formData,
     });
@@ -123,7 +129,7 @@ export default function ReviewEditor(props: Props) {
 
 const Container = styled.div`
   display: flex;
-  flex: 2;
+  flex: 1.5;
   margin: 0 auto;
   align-items: center;
   flex-direction: column;

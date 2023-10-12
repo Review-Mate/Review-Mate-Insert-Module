@@ -9,7 +9,6 @@ import { ReactComponent as Down } from '@/assets/icons/down.svg';
 import { ReactComponent as Up } from '@/assets/icons/up.svg';
 import useMessageToParent from '@/hooks/useMessageToParent';
 import { useTagStats } from '@/hooks/useStats';
-import { PARTNER_DOMAIN } from '@/config/api';
 import ProductIdContext from '../contexts/ProductIdContext';
 
 interface Props {
@@ -19,13 +18,13 @@ interface Props {
 export default function KeywordStats({ reviewCount }: Props) {
   const { setHeightChange, heightChange } = useMessageToParent();
 
-  const partnerProductId = useContext(ProductIdContext);
+  const { partnerDomain, partnerProductId } = useContext(ProductIdContext);
   const {
     data: KeywordList,
     isLoading,
     isError,
   } = useTagStats({
-    partnerDomain: PARTNER_DOMAIN,
+    partnerDomain: partnerDomain,
     singleTravelProductPartnerCustomId: partnerProductId,
   });
 
@@ -89,7 +88,6 @@ export default function KeywordStats({ reviewCount }: Props) {
             </div>
           );
       })}
-      <KeywordStatList title={'dd'} positive={3} negative={3} max={maxCount} />
       {!hide &&
         KeywordList?.map((keyword, index) => {
           if (index >= TAG_NUMBER_LIMIT)

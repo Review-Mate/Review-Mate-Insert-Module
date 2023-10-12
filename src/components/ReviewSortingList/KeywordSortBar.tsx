@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import { ReactComponent as CheckWhite } from '@/assets/icons/checkWhite.svg';
 import { ReactComponent as CheckBlack } from '@/assets/icons/checkBlack.svg';
 import { useTags } from '@/hooks/useTags';
-import { PARTNER_DOMAIN } from '@/config/api';
 import ProductIdContext from '../contexts/ProductIdContext';
 import ProductTagContext from '../contexts/ProductTagContext';
 
@@ -13,13 +12,13 @@ export default function KeywordSortBar() {
   const { selectedTag, setSelectedTag, selectedBigTag, setSelectedBigTag } =
     useContext(ProductTagContext);
 
-  const partnerProductId = useContext(ProductIdContext);
+  const { partnerDomain, partnerProductId } = useContext(ProductIdContext);
   const {
     data: tagsData,
     isLoading,
     isError,
   } = useTags({
-    partnerDomain: PARTNER_DOMAIN,
+    partnerDomain: partnerDomain,
     singleTravelProductPartnerCustomId: partnerProductId,
   });
 

@@ -5,20 +5,19 @@ import { colors } from '@/utils/GlobalStyles';
 import React, { useContext } from 'react';
 import { styled } from 'styled-components';
 import RatingStatBox from './RatingStatBox';
-import { PARTNER_DOMAIN } from '@/config/api';
 import { useReviewStats } from '@/hooks/useStats';
 import ProductIdContext from '../contexts/ProductIdContext';
 import LoadingBar from '@/ui/loadingBar/LoadingBar';
 
 export default function ReviewStats() {
-  const partnerProductId = useContext(ProductIdContext);
+  const { partnerDomain, partnerProductId } = useContext(ProductIdContext);
 
   const {
     data: reviewStats,
     isLoading,
     isError,
   } = useReviewStats({
-    partnerDomain: PARTNER_DOMAIN,
+    partnerDomain: partnerDomain,
     singleTravelProductPartnerCustomId: partnerProductId,
   });
 

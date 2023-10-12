@@ -2,7 +2,6 @@ import KeywordStats from '@/components/KeywordStats';
 import ReviewSortingList from '@/components/ReviewSortingList';
 import ReviewStats from '@/components/ReviewStats';
 import ProductIdContext from '@/components/contexts/ProductIdContext';
-import { PARTNER_DOMAIN } from '@/config/api';
 import { ReviewSort } from '@/config/enum';
 import useMessageToParent from '@/hooks/useMessageToParent';
 import { useProductReviews } from '@/hooks/useReviews';
@@ -17,10 +16,12 @@ import ProductTagContext from '@/components/contexts/ProductTagContext';
 export default function ReviewList() {
   const { componentRef, setHeightChange, heightChange } = useMessageToParent();
   const location = useLocation();
+
+  const params = new URLSearchParams(location.search);
+  // // 파트너사 도메인
+  const partnerDomain = params.get('partner_domain');
   // 파트너가 전달한 상품 아이디
-  const partnerProductId = new URLSearchParams(location.search).get(
-    'product_id'
-  );
+  const partnerProductId = params.get('product_id');
 
   // 선택된 리뷰 정렬 옵션
   const [selectedOption, setSelectedOption] = useState<ReviewSort>(
@@ -33,20 +34,21 @@ export default function ReviewList() {
   const [selectedBigTag, setSelectedBigTag] = useState('');
 
   // 상품 리뷰 목록 조회
-  const { data, isLoading, refetch, isError } = partnerProductId
-    ? useProductReviews({
-        partnerDomain: PARTNER_DOMAIN,
-        travelProductPartnerCustomId: partnerProductId,
-        reviewSort: selectedOption,
-        reviewPage: selectedPage - 1,
-        property: selectedBigTag,
-        keyword: selectedTag,
-        onSuccess: (data) => {
-          setHeightChange(heightChange + 1);
-          setCurrentPage(data.pageable.pageNumber + 1);
-        },
-      })
-    : { data: null, isLoading: true, refetch: undefined, isError: false };
+  const { data, isLoading, refetch, isError } =
+    partnerProductId && partnerDomain
+      ? useProductReviews({
+          partnerDomain: partnerDomain,
+          travelProductPartnerCustomId: partnerProductId,
+          reviewSort: selectedOption,
+          reviewPage: selectedPage - 1,
+          property: selectedBigTag,
+          keyword: selectedTag,
+          onSuccess: (data) => {
+            setHeightChange(heightChange + 1);
+            setCurrentPage(data.pageable.pageNumber + 1);
+          },
+        })
+      : { data: null, isLoading: true, refetch: undefined, isError: false };
 
   useEffect(() => {
     if (refetch) refetch();
@@ -54,9 +56,9 @@ export default function ReviewList() {
 
   console.log(data);
 
-  if (partnerProductId)
+  if (partnerDomain && partnerProductId)
     return (
-      <ProductIdContext.Provider value={partnerProductId}>
+      <ProductIdContext.Provider value={{ partnerDomain, partnerProductId }}>
         <ProductTagContext.Provider
           value={{
             selectedTag,
