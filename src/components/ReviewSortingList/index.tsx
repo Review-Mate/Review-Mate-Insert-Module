@@ -36,7 +36,7 @@ export default function ReviewSortingList({
         selectedOption={selectedOption}
         setSelectedOption={setSelectedOption}
       />
-      <KeywordSortBar />
+      <KeywordSortBar setSelectedPage={setSelectedPage} />
       {reviewList.map((review: ReviewType) => (
         <Reviews
           key={review.id}

@@ -8,7 +8,11 @@ import { useTags } from '@/hooks/useTags';
 import ProductIdContext from '../contexts/ProductIdContext';
 import ProductTagContext from '../contexts/ProductTagContext';
 
-export default function KeywordSortBar() {
+interface Props {
+  setSelectedPage: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export default function KeywordSortBar({ setSelectedPage }: Props) {
   const { selectedTag, setSelectedTag, selectedBigTag, setSelectedBigTag } =
     useContext(ProductTagContext);
 
@@ -58,6 +62,7 @@ export default function KeywordSortBar() {
                     setSelectedTag('');
                     return;
                   }
+                  setSelectedPage(1);
                   setSelectedTag(smallTag);
                 }}
               />
