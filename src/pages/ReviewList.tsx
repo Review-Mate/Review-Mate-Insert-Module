@@ -54,8 +54,6 @@ export default function ReviewList() {
     if (refetch) refetch();
   }, [selectedOption, selectedPage, selectedBigTag, selectedTag]);
 
-  console.log(data);
-
   if (partnerDomain && partnerProductId)
     return (
       <ProductIdContext.Provider value={{ partnerDomain, partnerProductId }}>

@@ -9,6 +9,7 @@ import { ReviewWriteStateType } from '@/types/Comments';
 import { CommentList } from '@/data/commentData';
 import { useCreateReview } from '@/hooks/useReviews';
 import { useLocation } from 'react-router-dom';
+import useMessageToParent from '@/hooks/useMessageToParent';
 
 interface Props extends ReviewWriteStateType {
   title: string;
@@ -37,8 +38,11 @@ export default function ReviewEditor(props: Props) {
 
   const [rating, setRating] = useState<number>(0);
   const [images, setImages] = useState<File[]>([]);
+
+  const { sendMessageToParent } = useMessageToParent();
   const { mutate: createReviewMutate } = useCreateReview(() => {
     window.alert('리뷰가 등록되었습니다.');
+    sendMessageToParent({ message: 'success' });
   });
 
   const onChangeInput = ({ e, setState }: onChangeInputProps) => {
