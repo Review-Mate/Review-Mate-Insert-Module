@@ -8,8 +8,8 @@ import useInputTimeout from '@/hooks/useInputTimeout';
 import { ReviewWriteStateType } from '@/types/Comments';
 import { CommentList } from '@/data/commentData';
 import { useCreateReview } from '@/hooks/useReviews';
-import { PARTNER_DOMAIN } from '@/config/api';
 import { useLocation } from 'react-router-dom';
+import useMessageToParent from '@/hooks/useMessageToParent';
 
 interface Props extends ReviewWriteStateType {
   title: string;
@@ -25,6 +25,12 @@ export default function ReviewEditor(props: Props) {
   const { comments, setComments, title, setTitle, content, setContent } = props;
 
   const location = useLocation();
+
+  // 파트너사 도메인
+  const partnerDomain = new URLSearchParams(location.search).get(
+    'partner_domain'
+  );
+
   // 파트너가 전달한 예약 아이디
   const reservationId = new URLSearchParams(location.search).get(
     'reservation_id'
@@ -32,8 +38,11 @@ export default function ReviewEditor(props: Props) {
 
   const [rating, setRating] = useState<number>(0);
   const [images, setImages] = useState<File[]>([]);
+
+  const { sendMessageToParent } = useMessageToParent();
   const { mutate: createReviewMutate } = useCreateReview(() => {
     window.alert('리뷰가 등록되었습니다.');
+    sendMessageToParent({ message: 'success' });
   });
 
   const onChangeInput = ({ e, setState }: onChangeInputProps) => {
@@ -49,7 +58,7 @@ export default function ReviewEditor(props: Props) {
   };
 
   const onClickSubmit = async () => {
-    if (!reservationId) {
+    if (!reservationId || !partnerDomain) {
       window.alert('예약 아이디가 없습니다.');
       return;
     }
@@ -57,11 +66,12 @@ export default function ReviewEditor(props: Props) {
 
     setContent('');
     setTitle('');
+    setRating(0);
 
     const formData = intoFormData();
 
     createReviewMutate({
-      partnerDomain: PARTNER_DOMAIN,
+      partnerDomain: partnerDomain,
       reservationPartnerCustomId: reservationId,
       reviewData: formData,
     });
@@ -123,7 +133,7 @@ export default function ReviewEditor(props: Props) {
 
 const Container = styled.div`
   display: flex;
-  flex: 2;
+  flex: 1.5;
   margin: 0 auto;
   align-items: center;
   flex-direction: column;

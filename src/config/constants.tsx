@@ -1,7 +1,8 @@
 import { ReviewSort } from './enum';
 
 // 데모 리뷰 조회용 상품 id
-export const PARTNER_CUSTOM_PRODUCT_ID = 'PRODUCT-0001';
+export const PARTNER_CUSTOM_PRODUCT_ID =
+  process.env.REACT_APP_PARTNER_CUSTOM_PRODUCT_ID;
 
 // 리뷰 정렬 옵션
 export const SORT_OPTIONS = [

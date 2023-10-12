@@ -8,15 +8,19 @@ interface Props {
   title: string;
   positive: number;
   negative: number;
+  max: number;
 }
 
-export default function KeywordStatList(props: Props) {
-  const { title, positive, negative } = props;
-
+export default function KeywordStatList({
+  title,
+  positive,
+  negative,
+  max,
+}: Props) {
   return (
     <Box>
       <Bar>
-        <KeywordStatBar value={positive} max={100} />
+        <KeywordStatBar value={positive} max={max} />
       </Bar>
       <Title>
         <Fonts.body3>{title}</Fonts.body3>
@@ -24,7 +28,7 @@ export default function KeywordStatList(props: Props) {
       <Bar>
         <KeywordStatBar
           value={negative}
-          max={positive + negative}
+          max={max}
           reverse={1}
           color={colors.red}
         />

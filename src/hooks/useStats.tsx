@@ -1,9 +1,9 @@
-import { useQuery, useMutation } from 'react-query';
+import { useQuery } from 'react-query';
 import axios from 'axios';
 import { BASE_URL } from '@/config/api';
 import { ReviewStatsType, TagStatsType } from '@/types/ReviewType';
 
-interface FetchStats {
+export interface FetchStats {
   partnerDomain: string;
   singleTravelProductPartnerCustomId: string;
 }
@@ -14,7 +14,7 @@ const fetchReviewStats = async ({
   singleTravelProductPartnerCustomId,
 }: FetchStats): Promise<ReviewStatsType> => {
   const { data } = await axios.get(
-    `${BASE_URL}/api/widget/v1/${partnerDomain}/products/${singleTravelProductPartnerCustomId}/statistic/reviews`
+    `${BASE_URL}/api/widget/v1/${partnerDomain}/products/${singleTravelProductPartnerCustomId}/statistics/reviews`
   );
   return data;
 };

@@ -5,15 +5,19 @@ import { colors } from '@/utils/GlobalStyles';
 import React, { useContext } from 'react';
 import { styled } from 'styled-components';
 import RatingStatBox from './RatingStatBox';
-import { PARTNER_DOMAIN } from '@/config/api';
 import { useReviewStats } from '@/hooks/useStats';
 import ProductIdContext from '../contexts/ProductIdContext';
+import LoadingBar from '@/ui/loadingBar/LoadingBar';
 
 export default function ReviewStats() {
-  const partnerProductId = useContext(ProductIdContext);
+  const { partnerDomain, partnerProductId } = useContext(ProductIdContext);
 
-  const { data: reviewStats, isLoading } = useReviewStats({
-    partnerDomain: PARTNER_DOMAIN,
+  const {
+    data: reviewStats,
+    isLoading,
+    isError,
+  } = useReviewStats({
+    partnerDomain: partnerDomain,
     singleTravelProductPartnerCustomId: partnerProductId,
   });
 
@@ -28,9 +32,15 @@ export default function ReviewStats() {
         )}
       </StatItem>
       <StatItem>
-        <Fonts.body3>총 리뷰 수</Fonts.body3>
-        <Margin margin={'10px 0 0 0'} />
-        {reviewStats && <Fonts.num2>{reviewStats?.reviewCount}</Fonts.num2>}
+        {isLoading && <LoadingBar />}
+        {isError && <Fonts.body3>리뷰 통계를 불러오지 못했습니다.</Fonts.body3>}
+        {reviewStats && (
+          <>
+            <Fonts.body3>총 리뷰 수</Fonts.body3>
+            <Margin margin={'10px 0 0 0'} />
+            <Fonts.num2>{reviewStats?.reviewCount}</Fonts.num2>
+          </>
+        )}
       </StatItem>
       <StatItem>
         {/* 전체 리뷰 수를 100으로, 퍼센트(%)만큼 채워짐 */}

@@ -1,10 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+interface messageType {
+  type?: string;
+  message: string;
+}
+
 export default function useMessageToParent(): {
   componentRef: React.RefObject<HTMLDivElement>;
   setHeightChange: React.Dispatch<React.SetStateAction<number>>;
   heightChange: number;
-  postMessageToParent: (message: string, type: string) => void;
+  sendMessageToParent: ({ type, message }: messageType) => void;
 } {
   const componentRef = useRef<HTMLDivElement>(null);
 
@@ -14,7 +19,6 @@ export default function useMessageToParent(): {
     const handleMessage = (e: MessageEvent) => {
       if (!e.data.type) return;
       if (e.data.type === 'loaded') sendHeightToParent();
-      console.log('부모로 부터 온 메세지:', e.data);
     };
 
     window.addEventListener('message', handleMessage);
@@ -23,6 +27,12 @@ export default function useMessageToParent(): {
       window.removeEventListener('message', handleMessage);
     };
   }, []);
+
+  // 부모에게 메시지 전송
+  const sendMessageToParent = ({ type = 'success', message }: messageType) => {
+    if (!message) return;
+    window.parent.postMessage({ type: type, message: message }, '*');
+  };
 
   // height 바뀔 때마다 자동으로 부모에게 height값 전송
   const sendHeightToParent = () => {
@@ -40,5 +50,5 @@ export default function useMessageToParent(): {
     sendHeightToParent();
   }, [heightChange]);
 
-  return { componentRef, setHeightChange, heightChange, postMessageToParent };
+  return { componentRef, setHeightChange, heightChange, sendMessageToParent };
 }

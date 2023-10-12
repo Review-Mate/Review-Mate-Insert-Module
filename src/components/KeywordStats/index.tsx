@@ -1,7 +1,7 @@
 import { Margin } from '@/ui/margin/margin';
 import { Fonts } from '@/utils/GlobalFonts';
 import { colors } from '@/utils/GlobalStyles';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useMemo, useState } from 'react';
 import { styled } from 'styled-components';
 import { ReactComponent as AIBot } from '@/assets/icons/aibot.svg';
 import KeywordStatList from './KeywordStatList';
@@ -9,20 +9,35 @@ import { ReactComponent as Down } from '@/assets/icons/down.svg';
 import { ReactComponent as Up } from '@/assets/icons/up.svg';
 import useMessageToParent from '@/hooks/useMessageToParent';
 import { useTagStats } from '@/hooks/useStats';
-import { PARTNER_DOMAIN } from '@/config/api';
 import ProductIdContext from '../contexts/ProductIdContext';
 
-export default function KeywordStats() {
+interface Props {
+  reviewCount: number;
+}
+
+export default function KeywordStats({ reviewCount }: Props) {
   const { setHeightChange, heightChange } = useMessageToParent();
-  const partnerProductId = useContext(ProductIdContext);
+
+  const { partnerDomain, partnerProductId } = useContext(ProductIdContext);
   const {
     data: KeywordList,
     isLoading,
     isError,
   } = useTagStats({
-    partnerDomain: PARTNER_DOMAIN,
+    partnerDomain: partnerDomain,
     singleTravelProductPartnerCustomId: partnerProductId,
   });
+
+  const getMaxPropertyCount = () => {
+    let mx = 0;
+    KeywordList?.forEach((keyword) => {
+      mx = Math.max(mx, keyword.positiveCount, keyword.negativeCount);
+    });
+
+    return mx;
+  };
+
+  const maxCount = useMemo(() => getMaxPropertyCount(), [KeywordList]);
 
   const TAG_NUMBER_LIMIT = 4;
 
@@ -33,7 +48,7 @@ export default function KeywordStats() {
       <Fonts.body1>주요 키워드</Fonts.body1>
       <Margin margin={'6px 0 0 0'} />
       <Fonts.caption color={colors.primary} weight={500}>
-        총 5000개의 리뷰 중에서 자주 언급된 키워드를 선별했어요!
+        총 {reviewCount}개의 리뷰 중에서 자주 언급된 키워드를 선별했어요!
       </Fonts.caption>
       <Margin margin={'20px 0 0 0'} />
       <AIBox>
@@ -68,6 +83,7 @@ export default function KeywordStats() {
                 title={keyword.reviewProperty}
                 positive={keyword.positiveCount}
                 negative={keyword.negativeCount}
+                max={maxCount}
               />
             </div>
           );
@@ -82,6 +98,7 @@ export default function KeywordStats() {
                   title={keyword.reviewProperty}
                   positive={keyword.positiveCount}
                   negative={keyword.negativeCount}
+                  max={maxCount}
                 />
               </div>
             );
