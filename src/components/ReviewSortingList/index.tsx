@@ -1,6 +1,6 @@
 import React from 'react';
 import { styled } from 'styled-components';
-import KeywordSort from './KeywordSortBar';
+import KeywordSortBar from './KeywordSortBar';
 import Reviews from './Reviews';
 import { ReviewType } from '@/types/ReviewType';
 import ReviewSortBar from './ReviewSortBar';
@@ -36,7 +36,7 @@ export default function ReviewSortingList({
         selectedOption={selectedOption}
         setSelectedOption={setSelectedOption}
       />
-      <KeywordSort />
+      <KeywordSortBar />
       {reviewList.map((review: ReviewType) => (
         <Reviews
           key={review.id}

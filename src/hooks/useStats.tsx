@@ -1,9 +1,9 @@
-import { useQuery, useMutation } from 'react-query';
+import { useQuery } from 'react-query';
 import axios from 'axios';
 import { BASE_URL } from '@/config/api';
 import { ReviewStatsType, TagStatsType } from '@/types/ReviewType';
 
-interface FetchStats {
+export interface FetchStats {
   partnerDomain: string;
   singleTravelProductPartnerCustomId: string;
 }

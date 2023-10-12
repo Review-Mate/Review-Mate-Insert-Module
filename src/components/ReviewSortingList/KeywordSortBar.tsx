@@ -1,66 +1,67 @@
 import { Fonts } from '@/utils/GlobalFonts';
 import { colors } from '@/utils/GlobalStyles';
-import React, { useState } from 'react';
-import { styled } from 'styled-components';
+import React, { useContext, useState } from 'react';
+import styled from 'styled-components';
 import { ReactComponent as CheckWhite } from '@/assets/icons/checkWhite.svg';
 import { ReactComponent as CheckBlack } from '@/assets/icons/checkBlack.svg';
+import { useTags } from '@/hooks/useTags';
+import { PARTNER_DOMAIN } from '@/config/api';
+import ProductIdContext from '../contexts/ProductIdContext';
 
 export default function KeywordSortBar() {
-  const [selectedBigTag, setSelectedBigTag] = useState(-1);
-  const [selectedSmallTag, setSelectedSmallTag] = useState(-1);
+  const [selectedBigTag, setSelectedBigTag] = useState('');
+  const [selectedSmallTag, setSelectedSmallTag] = useState('');
 
-  const BIG_TAGS = [
-    { id: 0, label: '청결' },
-    { id: 1, label: '서비스' },
-  ];
+  const partnerProductId = useContext(ProductIdContext);
+  const {
+    data: tagsData,
+    isLoading,
+    isError,
+  } = useTags({
+    partnerDomain: PARTNER_DOMAIN,
+    singleTravelProductPartnerCustomId: partnerProductId,
+  });
 
-  const SMALL_TAGS = [
-    { id: 0, parId: 0, label: '먼지' },
-    { id: 1, parId: 0, label: '곰팡이' },
-    { id: 2, parId: 0, label: '냄새' },
-    { id: 3, parId: 1, label: '서비스1' },
-    { id: 4, parId: 1, label: '서비스2' },
-  ];
+  if (isLoading || isError) return <></>;
 
   return (
     <Box>
       <BigBox>
-        {BIG_TAGS.map((option) => (
-          <React.Fragment key={option.id}>
-            <BigTag
-              title={option.label}
-              check={selectedBigTag === option.id}
-              onClick={() => {
-                if (selectedBigTag === option.id) {
-                  setSelectedBigTag(-1);
-                  setSelectedSmallTag(-1);
-                  return;
-                }
-                setSelectedBigTag(option.id);
-              }}
-            />
-          </React.Fragment>
-        ))}
+        {tagsData &&
+          Object.keys(tagsData)?.map((tagName, index) => (
+            <React.Fragment key={index}>
+              <BigTag
+                title={tagName}
+                check={selectedBigTag === tagName}
+                onClick={() => {
+                  if (selectedBigTag === tagName) {
+                    setSelectedBigTag('');
+                    setSelectedSmallTag('');
+                    return;
+                  }
+                  setSelectedBigTag(tagName);
+                }}
+              />
+            </React.Fragment>
+          ))}
       </BigBox>
       <SmallBox>
-        {SMALL_TAGS.map(
-          (option) =>
-            selectedBigTag == option.parId && (
-              <React.Fragment key={option.id}>
-                <SmallTag
-                  title={option.label}
-                  check={selectedSmallTag === option.id}
-                  onClick={() => {
-                    if (selectedSmallTag === option.id) {
-                      setSelectedSmallTag(-1);
-                      return;
-                    }
-                    setSelectedSmallTag(option.id);
-                  }}
-                />
-              </React.Fragment>
-            )
-        )}
+        {tagsData &&
+          tagsData[selectedBigTag]?.map((smallTag, index) => (
+            <React.Fragment key={index}>
+              <SmallTag
+                title={smallTag}
+                check={selectedSmallTag === smallTag}
+                onClick={() => {
+                  if (selectedSmallTag === smallTag) {
+                    setSelectedSmallTag('');
+                    return;
+                  }
+                  setSelectedSmallTag(smallTag);
+                }}
+              />
+            </React.Fragment>
+          ))}
       </SmallBox>
     </Box>
   );
