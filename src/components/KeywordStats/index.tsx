@@ -7,7 +7,6 @@ import { ReactComponent as AIBot } from '@/assets/icons/aibot.svg';
 import KeywordStatList from './KeywordStatList';
 import { ReactComponent as Down } from '@/assets/icons/down.svg';
 import { ReactComponent as Up } from '@/assets/icons/up.svg';
-import useMessageToParent from '@/hooks/useMessageToParent';
 import { useTagStats } from '@/hooks/useStats';
 import ProductIdContext from '../contexts/ProductIdContext';
 
@@ -16,8 +15,6 @@ interface Props {
 }
 
 export default function KeywordStats({ reviewCount }: Props) {
-  const { setHeightChange, heightChange } = useMessageToParent();
-
   const { partnerDomain, partnerProductId } = useContext(ProductIdContext);
   const {
     data: KeywordList,
@@ -108,7 +105,6 @@ export default function KeywordStats({ reviewCount }: Props) {
           <button
             onClick={() => {
               setHide(!hide);
-              setHeightChange(heightChange + 1);
             }}
           >
             {hide ? <Down /> : <Up />}
