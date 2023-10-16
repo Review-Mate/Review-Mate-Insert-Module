@@ -1,6 +1,6 @@
 import { Fonts } from '@/utils/GlobalFonts';
 import { colors } from '@/utils/GlobalStyles';
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as CheckWhite } from '@/assets/icons/checkWhite.svg';
 import { ReactComponent as CheckBlack } from '@/assets/icons/checkBlack.svg';
@@ -8,7 +8,11 @@ import { useTags } from '@/hooks/useTags';
 import ProductIdContext from '../contexts/ProductIdContext';
 import ProductTagContext from '../contexts/ProductTagContext';
 
-export default function KeywordSortBar() {
+interface Props {
+  setSelectedPage: React.Dispatch<React.SetStateAction<number>>;
+}
+
+export default function KeywordSortBar({ setSelectedPage }: Props) {
   const { selectedTag, setSelectedTag, selectedBigTag, setSelectedBigTag } =
     useContext(ProductTagContext);
 
@@ -34,6 +38,7 @@ export default function KeywordSortBar() {
                 title={tagName}
                 check={selectedBigTag === tagName}
                 onClick={() => {
+                  setSelectedTag('');
                   if (selectedBigTag === tagName) {
                     setSelectedBigTag('');
                     setSelectedTag('');
@@ -45,24 +50,27 @@ export default function KeywordSortBar() {
             </React.Fragment>
           ))}
       </BigBox>
-      <SmallBox>
-        {tagsData &&
-          tagsData[selectedBigTag]?.map((smallTag, index) => (
-            <React.Fragment key={index}>
-              <SmallTag
-                title={smallTag}
-                check={selectedTag === smallTag}
-                onClick={() => {
-                  if (selectedTag === smallTag) {
-                    setSelectedTag('');
-                    return;
-                  }
-                  setSelectedTag(smallTag);
-                }}
-              />
-            </React.Fragment>
-          ))}
-      </SmallBox>
+      {selectedBigTag != '' && (
+        <SmallBox>
+          {tagsData &&
+            tagsData[selectedBigTag]?.map((smallTag, index) => (
+              <React.Fragment key={index}>
+                <SmallTag
+                  title={smallTag}
+                  check={selectedTag === smallTag}
+                  onClick={() => {
+                    if (selectedTag === smallTag) {
+                      setSelectedTag('');
+                      return;
+                    }
+                    setSelectedPage(1);
+                    setSelectedTag(smallTag);
+                  }}
+                />
+              </React.Fragment>
+            ))}
+        </SmallBox>
+      )}
     </Box>
   );
 }
