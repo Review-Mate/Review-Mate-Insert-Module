@@ -3,7 +3,6 @@ import ReviewSortingList from '@/components/ReviewSortingList';
 import ReviewStats from '@/components/ReviewStats';
 import ProductIdContext from '@/components/contexts/ProductIdContext';
 import { ReviewSort } from '@/config/enum';
-import useMessageToParent from '@/hooks/useMessageToParent';
 import { useProductReviews } from '@/hooks/useReviews';
 import { Margin } from '@/ui/margin/margin';
 import { Fonts } from '@/utils/GlobalFonts';
@@ -12,9 +11,10 @@ import { useLocation } from 'react-router-dom';
 import { styled } from 'styled-components';
 import LoadingBar from '@/ui/loadingBar/LoadingBar';
 import ProductTagContext from '@/components/contexts/ProductTagContext';
+import useHeightToParent from '@/hooks/useHeightToParent';
 
 export default function ReviewList() {
-  const { componentRef, setHeightChange, heightChange } = useMessageToParent();
+  const { componentRef } = useHeightToParent();
   const location = useLocation();
 
   const params = new URLSearchParams(location.search);
@@ -44,7 +44,6 @@ export default function ReviewList() {
           property: selectedBigTag,
           keyword: selectedTag,
           onSuccess: (data) => {
-            setHeightChange(heightChange + 1);
             setCurrentPage(data.pageable.pageNumber + 1);
           },
         })

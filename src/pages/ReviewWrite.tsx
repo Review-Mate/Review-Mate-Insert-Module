@@ -4,10 +4,10 @@ import ReviewEditor from '@/components/ReviewEditor';
 import ReviewAssistant from '@/components/ReviewAssistant';
 import { Margin } from '@/ui/margin/margin';
 import { CommentType } from '@/types/Comments';
-import useMessageToParent from '@/hooks/useMessageToParent';
+import useHeightToParent from '@/hooks/useHeightToParent';
 
 export default function ReviewWrite() {
-  const { componentRef } = useMessageToParent();
+  const { componentRef } = useHeightToParent();
 
   const [title, setTitle] = useState<string>('');
   const [content, setContent] = useState<string>('');
