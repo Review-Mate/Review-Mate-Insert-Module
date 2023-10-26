@@ -1,10 +1,21 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReviewList from './pages/ReviewList';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ReviewWrite from './pages/ReviewWrite';
 import Home from './pages/Home';
 
 function App() {
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = '/script/widgetScript.js';
+    script.async = true;
+    document.body.appendChild(script);
+
+    return () => {
+      document.body.removeChild(script);
+    };
+  }, []);
+
   return (
     <>
       <BrowserRouter>
