@@ -5,17 +5,6 @@ import ReviewWrite from './pages/ReviewWrite';
 import Home from './pages/Home';
 
 function App() {
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = '/script/widgetScript.js';
-    script.async = true;
-    document.body.appendChild(script);
-
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);
-
   return (
     <>
       <BrowserRouter>
