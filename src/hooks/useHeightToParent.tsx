@@ -7,19 +7,6 @@ export default function useHeightToParent(): {
 
   const [heightChange, setHeightChange] = useState(0);
 
-  // iframe 로드되면 height 전송
-  useEffect(() => {
-    const handleMessage = (e: MessageEvent) => {
-      if (!e.data.type) return;
-      if (e.data.type === 'loaded') sendHeightToParent();
-    };
-    window.addEventListener('message', handleMessage);
-
-    return () => {
-      window.removeEventListener('message', handleMessage);
-    };
-  }, []);
-
   // height 변경 감지
   useEffect(() => {
     if (componentRef.current) resizeObserver.observe(componentRef.current);
