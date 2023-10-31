@@ -12,6 +12,7 @@ import { styled } from 'styled-components';
 import LoadingBar from '@/ui/loadingBar/LoadingBar';
 import ProductTagContext from '@/components/contexts/ProductTagContext';
 import useHeightToParent from '@/hooks/useHeightToParent';
+import { useReviewStats } from '@/hooks/useStats';
 
 export default function ReviewList() {
   const { componentRef } = useHeightToParent();
@@ -34,23 +35,40 @@ export default function ReviewList() {
   const [selectedBigTag, setSelectedBigTag] = useState('');
 
   // 상품 리뷰 목록 조회
-  const { data, isLoading, refetch, isError } =
-    partnerProductId && partnerDomain
-      ? useProductReviews({
-          partnerDomain: partnerDomain,
-          travelProductPartnerCustomId: partnerProductId,
-          reviewSort: selectedOption,
-          reviewPage: selectedPage - 1,
-          property: selectedBigTag,
-          keyword: selectedTag,
-          onSuccess: (data) => {
-            setCurrentPage(data.pageable.pageNumber + 1);
-          },
-        })
-      : { data: null, isLoading: true, refetch: undefined, isError: false };
+  const {
+    data: reviewList,
+    isLoading: isLoadingList,
+    refetch: reviewListRefetch,
+    isError: isErrorList,
+  } = partnerProductId && partnerDomain
+    ? useProductReviews({
+        partnerDomain: partnerDomain,
+        travelProductPartnerCustomId: partnerProductId,
+        reviewSort: selectedOption,
+        reviewPage: selectedPage - 1,
+        property: selectedBigTag,
+        keyword: selectedTag,
+        onSuccess: (data) => {
+          setCurrentPage(data.pageable.pageNumber + 1);
+          console.log('dd', data);
+        },
+      })
+    : { data: null, isLoading: true, refetch: undefined, isError: false };
+
+  // 상품 리뷰 통계 조회
+  const {
+    data: reviewStats,
+    isLoading: isLoadingStats,
+    isError: isErrorStats,
+  } = partnerProductId && partnerDomain
+    ? useReviewStats({
+        partnerDomain: partnerDomain,
+        singleTravelProductPartnerCustomId: partnerProductId,
+      })
+    : { data: null, isLoading: true, isError: false };
 
   useEffect(() => {
-    if (refetch) refetch();
+    if (reviewListRefetch) reviewListRefetch();
   }, [selectedOption, selectedPage, selectedBigTag, selectedTag]);
 
   if (partnerDomain && partnerProductId)
@@ -68,20 +86,24 @@ export default function ReviewList() {
             <Title>
               <Fonts.body1>리뷰</Fonts.body1>
             </Title>
-            <ReviewStats />
+            <ReviewStats
+              reviewStats={reviewStats}
+              isLoading={isLoadingStats}
+              isError={isErrorStats}
+            />
             <Margin margin={'30px 0 0 0'} />
-            <KeywordStats reviewCount={data?.numberOfElements || 0} />
+            <KeywordStats reviewCount={reviewStats?.reviewCount || 0} />
             <Margin margin={'30px 0 0 0'} />
-            {isLoading && <LoadingBar />}
-            {isError && (
+            {isLoadingList && <LoadingBar />}
+            {isErrorList && (
               <Fonts.body3>리뷰 목록을 불러오지 못했습니다.</Fonts.body3>
             )}
-            {!isLoading && data && (
+            {!isLoadingList && reviewList && (
               <ReviewSortingList
-                reviewList={data?.content}
+                reviewList={reviewList?.content}
                 selectedOption={selectedOption}
                 setSelectedOption={setSelectedOption}
-                totalPages={data?.totalPages}
+                totalPages={reviewList?.totalPages}
                 setSelectedPage={setSelectedPage}
                 currentPage={currentPage}
               />
