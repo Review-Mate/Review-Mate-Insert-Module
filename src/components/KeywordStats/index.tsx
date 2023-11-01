@@ -9,6 +9,7 @@ import { ReactComponent as Down } from '@/assets/icons/down.svg';
 import { ReactComponent as Up } from '@/assets/icons/up.svg';
 import { useTagStats } from '@/hooks/useStats';
 import ProductIdContext from '../contexts/ProductIdContext';
+import { reviewTagMatch } from '@/utils/tagMatch';
 
 interface Props {
   reviewCount: number;
@@ -72,12 +73,14 @@ export default function KeywordStats({ reviewCount }: Props) {
         </Fonts.caption>
       </StatTitle>
       {KeywordList?.map((keyword, index) => {
+        const tag = reviewTagMatch[keyword.reviewProperty];
+        if (tag === undefined) return;
         if (index < TAG_NUMBER_LIMIT)
           return (
             <div key={index}>
               <Margin margin={'10px 0 0 0'} />
               <KeywordStatList
-                title={keyword.reviewProperty}
+                title={reviewTagMatch[keyword.reviewProperty]}
                 positive={keyword.positiveCount}
                 negative={keyword.negativeCount}
                 max={maxCount}

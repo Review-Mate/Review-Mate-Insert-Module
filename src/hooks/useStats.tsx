@@ -43,8 +43,8 @@ export const useReviewStats = ({
         singleTravelProductPartnerCustomId,
       }),
     {
-      onSuccess: () => {
-        console.log('태그 통계 불러오기 성공');
+      onSuccess: (data) => {
+        console.log('태그 통계 불러오기 성공', data);
       },
       onError: (error) => {
         console.log('태그 통계 불러오기 실패', error);

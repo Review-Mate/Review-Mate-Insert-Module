@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReviewList from './pages/ReviewList';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import ReviewWrite from './pages/ReviewWrite';

@@ -2,25 +2,22 @@ import StatBars from '@/components/ReviewStats/StatBars';
 import { Margin } from '@/ui/margin/margin';
 import { Fonts } from '@/utils/GlobalFonts';
 import { colors } from '@/utils/GlobalStyles';
-import React, { useContext } from 'react';
+import React from 'react';
 import { styled } from 'styled-components';
 import RatingStatBox from './RatingStatBox';
-import { useReviewStats } from '@/hooks/useStats';
-import ProductIdContext from '../contexts/ProductIdContext';
 import LoadingBar from '@/ui/loadingBar/LoadingBar';
 
-export default function ReviewStats() {
-  const { partnerDomain, partnerProductId } = useContext(ProductIdContext);
+interface Props {
+  reviewStats: any;
+  isLoading: boolean;
+  isError: boolean;
+}
 
-  const {
-    data: reviewStats,
-    isLoading,
-    isError,
-  } = useReviewStats({
-    partnerDomain: partnerDomain,
-    singleTravelProductPartnerCustomId: partnerProductId,
-  });
-
+export default function ReviewStats({
+  reviewStats,
+  isLoading,
+  isError,
+}: Props) {
   return (
     <Box>
       <StatItem>
