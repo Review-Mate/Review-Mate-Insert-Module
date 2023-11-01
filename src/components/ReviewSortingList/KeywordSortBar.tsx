@@ -7,6 +7,7 @@ import { ReactComponent as CheckBlack } from '@/assets/icons/checkBlack.svg';
 import { useTags } from '@/hooks/useTags';
 import ProductIdContext from '../contexts/ProductIdContext';
 import ProductTagContext from '../contexts/ProductTagContext';
+import { reviewTagMatch } from '@/utils/tagMatch';
 
 interface Props {
   setSelectedPage: React.Dispatch<React.SetStateAction<number>>;
@@ -32,23 +33,27 @@ export default function KeywordSortBar({ setSelectedPage }: Props) {
     <Box>
       <BigBox>
         {tagsData &&
-          Object.keys(tagsData)?.map((tagName, index) => (
-            <React.Fragment key={index}>
-              <BigTag
-                title={tagName}
-                check={selectedBigTag === tagName}
-                onClick={() => {
-                  setSelectedTag('');
-                  if (selectedBigTag === tagName) {
-                    setSelectedBigTag('');
+          Object.keys(tagsData)?.map((tagName, index) => {
+            const tag = reviewTagMatch[tagName];
+            if (tag === undefined) return;
+            return (
+              <React.Fragment key={index}>
+                <BigTag
+                  title={tag}
+                  check={selectedBigTag === tagName}
+                  onClick={() => {
                     setSelectedTag('');
-                    return;
-                  }
-                  setSelectedBigTag(tagName);
-                }}
-              />
-            </React.Fragment>
-          ))}
+                    if (selectedBigTag === tagName) {
+                      setSelectedBigTag('');
+                      setSelectedTag('');
+                      return;
+                    }
+                    setSelectedBigTag(tagName);
+                  }}
+                />
+              </React.Fragment>
+            );
+          })}
       </BigBox>
       {selectedBigTag != '' && (
         <SmallBox>
