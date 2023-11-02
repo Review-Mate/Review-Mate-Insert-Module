@@ -50,8 +50,8 @@ const Dots = () => {
   return (
     <React.Fragment>
       <DotIcon alt="." src={Dot} delay={0} />
-      <DotIcon alt="." src={Dot} delay={0.1} />
       <DotIcon alt="." src={Dot} delay={0.2} />
+      <DotIcon alt="." src={Dot} delay={0.4} />
       <Margin margin="0 4px 0 0" />
     </React.Fragment>
   );
@@ -156,11 +156,8 @@ const dotJump = keyframes`
   0% {
     margin-bottom: 0px;
   }
-  50%{
-    margin-bottom: 3px;
-  }
   100% {
-    margin-bottom: 6px;
+    margin-bottom: 5px;
   }
 `;
 
