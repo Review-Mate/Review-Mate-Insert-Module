@@ -10,6 +10,7 @@ import { CommentList } from '@/data/commentData';
 import { useCreateReview } from '@/hooks/useReviews';
 import { useLocation } from 'react-router-dom';
 import useMessageToParent from '@/hooks/useMessageToParent';
+import { useReviewRecommendations } from '@/hooks/useReviewAssistant';
 
 interface Props extends ReviewWriteStateType {
   title: string;
@@ -30,7 +31,6 @@ export default function ReviewEditor(props: Props) {
   const partnerDomain = new URLSearchParams(location.search).get(
     'partner_domain'
   );
-
   // 파트너가 전달한 예약 아이디
   const reservationId = new URLSearchParams(location.search).get(
     'reservation_id'
@@ -38,6 +38,12 @@ export default function ReviewEditor(props: Props) {
 
   const [rating, setRating] = useState<number>(0);
   const [images, setImages] = useState<File[]>([]);
+
+  const { mutate: reviewRecommendMutate } = useReviewRecommendations({
+    onSuccess: (data) => {
+      setComments([...comments, data.body]);
+    },
+  });
 
   const { sendMessageToParent } = useMessageToParent();
   const { mutate: createReviewMutate } = useCreateReview(() => {
@@ -95,11 +101,9 @@ export default function ReviewEditor(props: Props) {
     return formData;
   };
 
-  const [count, setCount] = useState(0);
   // 1초간 입력이 없을 경우 실행
   useInputTimeout(1000, () => {
-    setComments([...comments, CommentList[count]]);
-    setCount(1);
+    reviewRecommendMutate(content);
   });
 
   return (
