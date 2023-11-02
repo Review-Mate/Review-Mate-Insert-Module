@@ -88,7 +88,10 @@ const Comment = ({
           {title}
         </Fonts.body3>
       </Row>
-      <Fonts.body3 color={colors.gray01} style={{ lineHeight: '150%' }}>
+      <Fonts.body3
+        color={colors.gray01}
+        style={{ lineHeight: '150%', textAlign: 'left' }}
+      >
         {content}
       </Fonts.body3>
     </CommentBox>
@@ -110,8 +113,7 @@ const AIBox = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 33px;
-  padding: 0 10px;
+  padding: 8px 10px;
   border-radius: 5px;
   background-color: ${colors.gray06};
   margin-bottom: 10px;
