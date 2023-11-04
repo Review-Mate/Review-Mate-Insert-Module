@@ -7,7 +7,11 @@ import { Row } from '@/ui/flex/flex';
 import Dot from '@/assets/icons/dot.svg';
 import { Margin } from '@/ui/margin/margin';
 import { ReviewWriteStateType } from '@/types/Comments';
-import { ReviewAssistType, ReviewAssist } from '@/config/enum';
+import {
+  ReviewAssistType,
+  ReviewAssist,
+  ReviewPolarityType,
+} from '@/config/enum';
 
 export default function ReviewAssistant(props: ReviewWriteStateType) {
   const { comments, content, setContent } = props;
@@ -30,18 +34,18 @@ export default function ReviewAssistant(props: ReviewWriteStateType) {
           AI가 맞춤 리뷰 작성을 도와드립니다.
         </Fonts.caption>
       </AIBox>
-      {comments.map((comment) =>
-        comment.contents.map((content, index) => (
+      {comments.map((comment, index) => {
+        return (
           <Comment
             key={index}
-            index={index}
             sort={comment.sort}
             idx={comment?.idx}
-            content={content}
+            polarity={comment?.polarity}
+            content={comment.content}
             sentenceComplete={sentenceComplete}
           />
-        ))
-      )}
+        );
+      })}
     </Container>
   );
 }
@@ -57,26 +61,28 @@ const Dots = () => {
   );
 };
 
-const Comment = ({
-  index,
-  sort,
-  idx,
-  content,
-  sentenceComplete,
-}: {
-  index: number;
+interface CommentProps {
   sort: ReviewAssistType;
+  polarity?: ReviewPolarityType;
   idx?: number[];
   content: string;
   sentenceComplete: (idx1: number, idx2: number, replace: string) => void;
-}) => {
+}
+
+const Comment = ({
+  sort,
+  polarity,
+  idx,
+  content,
+  sentenceComplete,
+}: CommentProps) => {
   let title;
   if (sort == ReviewAssist.RECOMMEND) title = '주제 추천';
   if (sort == ReviewAssist.COMPLETE) title = '이 문장을 쓰려고 하셨나요?';
   return (
     <CommentBox
-      index={index}
       sort={sort}
+      polarity={polarity}
       disabled={sort == ReviewAssist.RECOMMEND ? true : false}
       onClick={() => {
         if (idx) sentenceComplete(idx[0], idx[1], content);
@@ -129,25 +135,28 @@ const BoxFadeIn = keyframes`
   }
 `;
 
-const CommentBox = styled.button<{ index: number; sort: ReviewAssistType }>`
+const CommentBox = styled.button<{
+  sort: ReviewAssistType;
+  polarity: ReviewPolarityType;
+}>`
   display: flex;
   flex-direction: column;
   border-color: ${(props) =>
-    props.sort == ReviewAssist.RECOMMEND
+    props.sort === ReviewAssist.RECOMMEND
       ? colors.gray06
-      : props.index == 1
+      : props.polarity
       ? colors.red
       : colors.primary};
-  border-width: ${(props) => (props.sort == ReviewAssist.RECOMMEND ? 1 : 2)}px;
+  border-width: ${(props) => (props.sort === ReviewAssist.RECOMMEND ? 1 : 2)}px;
   border-radius: 5px;
   border-style: solid;
   border-radius: 5px;
   padding: 16px 20px;
   margin-top: 10px;
   background-color: ${(props) =>
-    props.sort == ReviewAssist.RECOMMEND
+    props.sort === ReviewAssist.RECOMMEND
       ? colors.white
-      : props.index == 1
+      : props.polarity
       ? colors.lightRed
       : colors.lightBlue};
   animation: ${BoxFadeIn} 0.7s forwards ease-out;

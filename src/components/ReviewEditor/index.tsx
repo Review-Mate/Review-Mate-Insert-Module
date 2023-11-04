@@ -6,7 +6,6 @@ import FileInput from './FileInput';
 import { colors } from '@/utils/GlobalStyles';
 import useInputTimeout from '@/hooks/useInputTimeout';
 import { ReviewWriteStateType } from '@/types/Comments';
-import { CommentList } from '@/data/commentData';
 import { useCreateReview } from '@/hooks/useReviews';
 import { useLocation } from 'react-router-dom';
 import useMessageToParent from '@/hooks/useMessageToParent';
@@ -41,7 +40,9 @@ export default function ReviewEditor(props: Props) {
 
   const { mutate: reviewRecommendMutate } = useReviewRecommendations({
     onSuccess: (data) => {
-      setComments([...comments, data.body]);
+      data.body.forEach((comment) => {
+        setComments([...comments, comment]);
+      });
     },
   });
 
@@ -127,7 +128,7 @@ export default function ReviewEditor(props: Props) {
       />
       <FileInput images={images} setImages={setImages} />
       <Button onClick={onClickSubmit}>
-        <Fonts.body2 weight={500} color="white">
+        <Fonts.body2 weight={500} color="white" textAlign="center">
           리뷰 작성
         </Fonts.body2>
       </Button>
