@@ -50,17 +50,6 @@ export default function ReviewAssistant(props: ReviewWriteStateType) {
   );
 }
 
-const Dots = () => {
-  return (
-    <React.Fragment>
-      <DotIcon alt="." src={Dot} delay={0} />
-      <DotIcon alt="." src={Dot} delay={0.2} />
-      <DotIcon alt="." src={Dot} delay={0.4} />
-      <Margin margin="0 4px 0 0" />
-    </React.Fragment>
-  );
-};
-
 interface CommentProps {
   sort: ReviewAssistType;
   polarity?: ReviewPolarityType;
@@ -101,6 +90,17 @@ const Comment = ({
         {content}
       </Fonts.body3>
     </CommentBox>
+  );
+};
+
+const Dots = () => {
+  return (
+    <React.Fragment>
+      <DotIcon alt="." src={Dot} delay={0} />
+      <DotIcon alt="." src={Dot} delay={0.2} />
+      <DotIcon alt="." src={Dot} delay={0.4} />
+      <Margin margin="0 4px 0 0" />
+    </React.Fragment>
   );
 };
 
@@ -175,7 +175,6 @@ const dotJump = keyframes`
 const DotIcon = styled.img<{ delay: number }>`
   width: 4px;
   margin-right: 2px;
-  margin-bottom: 0px;
   animation-name: ${dotJump};
   animation-duration: 0.7s;
   animation-delay: ${(props) => props.delay}s;
