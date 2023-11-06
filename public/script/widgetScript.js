@@ -36,7 +36,6 @@ const initializeWidget = () => {
   }
 
   const type = $widgetContainer.getAttribute('type');
-  console.log(type);
   const $widgetIframe = createIframe($widgetContainer, type);
 
   $widgetContainer.appendChild($widgetIframe);

@@ -1,9 +1,10 @@
-import { ReviewAssistType } from '@/config/enum';
+import { ReviewAssistType, ReviewPolarity } from '@/config/enum';
 
 export interface CommentType {
   sort: ReviewAssistType;
+  content: string;
   idx?: number[];
-  contents: string[];
+  polarity?: ReviewPolarity;
 }
 
 export interface ReviewWriteStateType {

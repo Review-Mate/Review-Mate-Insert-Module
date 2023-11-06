@@ -4,7 +4,15 @@ export enum ReviewAssist {
   COMPLETE = 2,
 }
 
-export type ReviewAssistType = keyof typeof ReviewAssist | number;
+export type ReviewAssistType = 1 | 2;
+
+// 리뷰 보조 - 문장 긍/부정
+export enum ReviewPolarity {
+  POSITIVE = 0,
+  NEGATIVE = 1,
+}
+
+export type ReviewPolarityType = 0 | 1 | undefined;
 
 // 리뷰 목록 정렬
 export enum ReviewSort {

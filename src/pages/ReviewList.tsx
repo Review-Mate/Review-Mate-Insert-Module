@@ -50,7 +50,6 @@ export default function ReviewList() {
         keyword: selectedTag,
         onSuccess: (data) => {
           setCurrentPage(data.pageable.pageNumber + 1);
-          console.log('dd', data);
         },
       })
     : { data: null, isLoading: true, refetch: undefined, isError: false };
