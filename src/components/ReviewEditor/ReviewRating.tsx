@@ -26,7 +26,7 @@ export default function ReviewRating(props: Props) {
           onClick={() => setRating(star)}
           onMouseEnter={() => setHover(star)}
           onMouseLeave={() => setHover(0)}
-          animation={star == rating}
+          animation={star === rating ? 'true' : 'false'}
         />
       ))}
     </div>
@@ -46,8 +46,8 @@ const starGrow = keyframes`
   }
 `;
 
-const StarIcon = styled.img<{ animation: boolean }>`
-  animation-name: ${(props) => (props.animation ? starGrow : false)};
+const StarIcon = styled.img<{ animation: string }>`
+  animation-name: ${(props) => (props.animation === 'true' ? starGrow : false)};
   animation-duration: 0.3s;
   animation-fill-mode: forwards;
   // 드래그 방지
