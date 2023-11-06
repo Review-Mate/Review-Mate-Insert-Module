@@ -49,13 +49,15 @@ export default function ReviewEditor(props: Props) {
   const { sendMessageToParent } = useMessageToParent();
   const { mutate: createReviewMutate } = useCreateReview({
     onSuccess: () => {
-      window.alert('리뷰가 등록되었습니다.');
+      window.alert(
+        '리뷰가 등록되었습니다. 리뷰 목록에서 등록된 리뷰를 확인해보세요!'
+      );
       sendMessageToParent({ message: 'success' });
       setContent('');
       setTitle('');
       setRating(0);
     },
-    onError: () => {
+    onError: (err) => {
       window.alert('리뷰 등록에 실패했습니다.');
     },
   });
@@ -81,6 +83,8 @@ export default function ReviewEditor(props: Props) {
 
     const formData = intoFormData();
 
+    console.log(formData);
+
     createReviewMutate({
       partnerDomain: partnerDomain,
       reservationPartnerCustomId: reservationId,
@@ -98,6 +102,8 @@ export default function ReviewEditor(props: Props) {
         type: 'application/json',
       })
     );
+
+    console.log('이미지', images);
 
     images.forEach((image) => {
       formData.append('reviewImageFiles', image);

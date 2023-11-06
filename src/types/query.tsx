@@ -1,4 +1,4 @@
 export interface onMutateProps {
-  onSuccess?: () => void;
-  onError?: () => void;
+  onSuccess?: (error?: unknown) => void;
+  onError?: (error?: unknown) => void;
 }
