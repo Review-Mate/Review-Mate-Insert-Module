@@ -12,7 +12,6 @@ export default function Reviews({
   content,
   createdAt,
   authorName,
-  polarity,
   reviewHighlightPairResponses,
 }: ReviewType) {
   const formatDate =
@@ -92,10 +91,4 @@ const TextBox = styled.div`
   flex: 1;
   flex-direction: column;
   margin-right: 40px;
-`;
-
-const Image = styled.img`
-  width: 120px;
-  height: 120px;
-  border-radius: 10px;
 `;

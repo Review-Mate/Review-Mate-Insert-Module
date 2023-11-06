@@ -102,6 +102,7 @@ const ImagePreview = styled.div`
 const PreviewImage = styled.div`
   position: relative;
   margin: 5px;
+  padding: 5px;
   width: 85px;
   height: 85px;
 `;
@@ -116,7 +117,6 @@ const CloseButton = styled.img`
   right: 0;
   width: 20px;
   height: 20px;
-  margin: 5px;
   cursor: pointer;
 `;
 

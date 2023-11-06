@@ -72,7 +72,6 @@ const Comment = ({
     <CommentBox
       sort={sort}
       polarity={polarity}
-      disabled={sort == ReviewAssist.RECOMMEND ? true : false}
       onClick={() => {
         if (idx) sentenceComplete(idx[0], idx[1], content);
       }}
@@ -97,9 +96,11 @@ const Dots = () => {
   return (
     <React.Fragment>
       <DotIcon alt="." src={Dot} delay={0} />
+      <Margin margin="0 2px 0 0" />
       <DotIcon alt="." src={Dot} delay={0.2} />
+      <Margin margin="0 2px 0 0" />
       <DotIcon alt="." src={Dot} delay={0.4} />
-      <Margin margin="0 4px 0 0" />
+      <Margin margin="0 6px 0 0" />
     </React.Fragment>
   );
 };
@@ -174,7 +175,6 @@ const dotJump = keyframes`
 
 const DotIcon = styled.img<{ delay: number }>`
   width: 4px;
-  margin-right: 2px;
   animation-name: ${dotJump};
   animation-duration: 0.7s;
   animation-delay: ${(props) => props.delay}s;
