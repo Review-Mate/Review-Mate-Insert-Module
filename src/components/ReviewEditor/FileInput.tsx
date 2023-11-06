@@ -14,7 +14,7 @@ export default function FileInput(props: Props) {
   const { images, setImages } = props;
 
   // 미리보기 이미지
-  const [imageUrls, setImageUrls] = useState<string[]>([]);
+  const [imagePreviewUrls, setImagePreviewUrls] = useState<string[]>([]);
 
   const onChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
@@ -24,24 +24,33 @@ export default function FileInput(props: Props) {
       return;
     }
 
-    const nowImageURLS = [...imageUrls];
-    const nowImages = [...images];
+    const nowImagePreviewUrls = [...imagePreviewUrls];
+    const nowImageFiles = [...images];
 
     if (files) {
       for (let i = 0; i < files.length; i++) {
+        // preview URL 생성
         const ImageUrl = URL.createObjectURL(files[i]);
-        setImageUrls([...imageUrls, ImageUrl]);
-        nowImageURLS.push(ImageUrl);
-        nowImages.push(files[i]);
+        nowImagePreviewUrls.push(ImageUrl);
+        nowImageFiles.push(files[i]);
       }
-      setImageUrls(nowImageURLS);
-      setImages(nowImages);
+      setImagePreviewUrls(nowImagePreviewUrls);
+      setImages(nowImageFiles);
+
+      // 사용이 끝난 URL 해제
+      for (let i = 0; i < imagePreviewUrls.length; i++) {
+        URL.revokeObjectURL(imagePreviewUrls[i]);
+      }
     }
   };
 
-  const onClickDelete = (image: string) => {
-    const newImages = imageUrls.filter((imageUrl) => imageUrl !== image);
-    setImageUrls(newImages);
+  const onClickDelete = (idx: number) => {
+    const newImagesPreviewUrls = imagePreviewUrls.filter(
+      (_, index) => index != idx
+    );
+    const newImages = images.filter((_, index) => index != idx);
+    setImagePreviewUrls(newImagesPreviewUrls);
+    setImages(newImages);
   };
 
   return (
@@ -59,14 +68,14 @@ export default function FileInput(props: Props) {
         multiple
         onChange={(e) => onChangeFile(e)}
       />
-      {imageUrls.length > 0 && (
+      {imagePreviewUrls.length > 0 && (
         <ImagePreview>
-          {imageUrls.map((imageUrl, index) => (
+          {imagePreviewUrls.map((imageUrl, index) => (
             <PreviewImage key={index}>
               <CloseButton
                 src={Close}
                 alt="삭제"
-                onClick={() => onClickDelete(imageUrl)}
+                onClick={() => onClickDelete(index)}
               />
               <Image src={imageUrl} alt="이미지 미리보기" />
             </PreviewImage>

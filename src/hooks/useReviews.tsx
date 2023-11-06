@@ -27,9 +27,15 @@ const createReview = async ({
   reservationPartnerCustomId,
   reviewData,
 }: CreateReview) => {
+  const config = {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  };
   const { data } = await axios.post(
     `${BASE_URL}/api/widget/v1/${partnerDomain}/reservations/${reservationPartnerCustomId}/reviews`,
-    reviewData
+    reviewData,
+    config
   );
   return data;
 };
