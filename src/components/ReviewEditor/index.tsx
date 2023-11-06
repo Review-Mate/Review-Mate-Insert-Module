@@ -47,9 +47,17 @@ export default function ReviewEditor(props: Props) {
   });
 
   const { sendMessageToParent } = useMessageToParent();
-  const { mutate: createReviewMutate } = useCreateReview(() => {
-    window.alert('리뷰가 등록되었습니다.');
-    sendMessageToParent({ message: 'success' });
+  const { mutate: createReviewMutate } = useCreateReview({
+    onSuccess: () => {
+      window.alert('리뷰가 등록되었습니다.');
+      sendMessageToParent({ message: 'success' });
+      setContent('');
+      setTitle('');
+      setRating(0);
+    },
+    onError: () => {
+      window.alert('리뷰 등록에 실패했습니다.');
+    },
   });
 
   const onChangeInput = ({ e, setState }: onChangeInputProps) => {
@@ -70,10 +78,6 @@ export default function ReviewEditor(props: Props) {
       return;
     }
     if (!validationCheck()) return;
-
-    setContent('');
-    setTitle('');
-    setRating(0);
 
     const formData = intoFormData();
 
@@ -128,7 +132,7 @@ export default function ReviewEditor(props: Props) {
       />
       <FileInput images={images} setImages={setImages} />
       <Button onClick={onClickSubmit}>
-        <Fonts.body2 weight={500} color="white" textAlign="center">
+        <Fonts.body2 weight={500} color="white" textalign="center">
           리뷰 작성
         </Fonts.body2>
       </Button>

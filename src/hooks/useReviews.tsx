@@ -3,6 +3,7 @@ import axios from 'axios';
 import { BASE_URL } from '@/config/api';
 import { ReviewListSortType } from '@/types/ReviewType';
 import { ReviewSort, ReviewSortType } from '@/config/enum';
+import { onMutateProps } from '@/types/query';
 
 interface CreateReview {
   partnerDomain: string;
@@ -51,12 +52,11 @@ const fetchProductReviews = async ({
 };
 
 // 리뷰 생성
-export const useCreateReview = (onSuccess?: () => void) => {
+
+export const useCreateReview = ({ onSuccess, onError }: onMutateProps) => {
   return useMutation(createReview, {
     onSuccess: onSuccess,
-    onError: () => {
-      console.log('리뷰 생성 실패');
-    },
+    onError: onError,
   });
 };
 
