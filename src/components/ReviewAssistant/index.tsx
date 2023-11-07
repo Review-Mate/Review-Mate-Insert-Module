@@ -11,7 +11,7 @@ import {
   ReviewPolarityType,
 } from '@/config/enum';
 import useInputTimeout from '@/hooks/useInputTimeout';
-import { useReviewRecommendations } from '@/hooks/useReviewAssistant';
+import { useReviewRecommendations } from '@/reactQueryHooks/useReviewAssistant';
 import { ThreeDotsLoadingBar } from '../global/ThreeDotsLoadingBar';
 
 export default function ReviewAssistant({

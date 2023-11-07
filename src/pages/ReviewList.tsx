@@ -3,7 +3,7 @@ import ReviewSortingList from '@/components/ReviewSortingList';
 import ReviewStats from '@/components/ReviewStats';
 import ProductIdContext from '@/components/contexts/ProductIdContext';
 import { ReviewSort } from '@/config/enum';
-import { useProductReviews } from '@/hooks/useReviews';
+import { useProductReviews } from '@/reactQueryHooks/useReviews';
 import { Margin } from '@/ui/margin/margin';
 import { Fonts } from '@/utils/GlobalFonts';
 import React, { useEffect, useState } from 'react';
@@ -12,7 +12,7 @@ import { styled } from 'styled-components';
 import LoadingBar from '@/ui/loadingBar/LoadingBar';
 import ProductTagContext from '@/components/contexts/ProductTagContext';
 import useHeightToParent from '@/hooks/useHeightToParent';
-import { useReviewStats } from '@/hooks/useStats';
+import { useReviewStats } from '@/reactQueryHooks/useStats';
 
 export default function ReviewList() {
   const { componentRef } = useHeightToParent();
