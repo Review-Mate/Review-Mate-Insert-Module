@@ -1,35 +1,45 @@
 import { Fonts } from '@/utils/GlobalFonts';
 import { colors } from '@/utils/GlobalStyles';
-import React from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { keyframes, styled } from 'styled-components';
 import { ReactComponent as AIBot } from '@/assets/icons/aibot.svg';
 import { Row } from '@/ui/flex/flex';
-import Dot from '@/assets/icons/dot.svg';
-import { Margin } from '@/ui/margin/margin';
 import { ReviewWriteStateType } from '@/types/Comments';
 import {
   ReviewAssistType,
   ReviewAssist,
   ReviewPolarityType,
 } from '@/config/enum';
+import useInputTimeout from '@/hooks/useInputTimeout';
+import { useReviewRecommendations } from '@/hooks/useReviewAssistant';
+import { ThreeDotsLoadingBar } from '../global/ThreeDotsLoadingBar';
 
-export default function ReviewAssistant(props: ReviewWriteStateType) {
-  const { comments, content, setContent } = props;
+export default function ReviewAssistant({
+  comments,
+  setComments,
+  content,
+  setContent,
+}: ReviewWriteStateType) {
+  const [lastAssistedIdx, setLastAssistedIdx] = useState(0);
 
-  const sentenceComplete = (idx1: number, idx2: number, replace: string) => {
-    if (idx2 > content.length || idx2 == -1) idx2 = content.length;
-    if (idx2 < idx1 || idx1 < 0) return;
+  const { mutate: reviewRecommendMutate } = useReviewRecommendations({
+    onSuccess: (data) => {
+      data.body.forEach((comment) => {
+        setComments([...comments, comment]);
+      });
+    },
+  });
 
-    let newText = content.substring(0, idx1);
-    newText += replace;
-    newText += content.substring(idx2);
-    setContent(newText);
-  };
+  // 1초간 입력이 없을 경우 실행
+  useInputTimeout(1000, () => {
+    reviewRecommendMutate(content.substring(lastAssistedIdx));
+    console.log(content.substring(lastAssistedIdx));
+  });
 
   return (
     <Container>
       <AIBox>
-        <Dots />
+        <ThreeDotsLoadingBar />
         <Fonts.caption weight={500} color={colors.gray01}>
           AI가 맞춤 리뷰 작성을 도와드립니다.
         </Fonts.caption>
@@ -41,8 +51,11 @@ export default function ReviewAssistant(props: ReviewWriteStateType) {
             sort={comment.sort}
             idx={comment?.idx}
             polarity={comment?.polarity}
-            content={comment.content}
-            sentenceComplete={sentenceComplete}
+            content={content}
+            setContent={setContent}
+            newContent={comment.content}
+            lastAssistedIdx={lastAssistedIdx}
+            setLastAssistedIdx={setLastAssistedIdx}
           />
         );
       })}
@@ -55,7 +68,10 @@ interface CommentProps {
   polarity?: ReviewPolarityType;
   idx?: number[];
   content: string;
-  sentenceComplete: (idx1: number, idx2: number, replace: string) => void;
+  setContent: Dispatch<SetStateAction<string>>;
+  newContent: string;
+  lastAssistedIdx: number;
+  setLastAssistedIdx: Dispatch<SetStateAction<number>>;
 }
 
 const Comment = ({
@@ -63,18 +79,36 @@ const Comment = ({
   polarity,
   idx,
   content,
-  sentenceComplete,
+  setContent,
+  newContent,
+  lastAssistedIdx,
+  setLastAssistedIdx,
 }: CommentProps) => {
   let title;
   if (sort == ReviewAssist.RECOMMEND) title = '주제 추천';
   if (sort == ReviewAssist.COMPLETE) title = '이 문장을 쓰려고 하셨나요?';
+
+  const sentenceComplete = () => {
+    if (!idx) return;
+
+    const idx1 = idx[0];
+    let idx2 = idx[1];
+    if (idx2 > content.length || idx2 == -1) idx2 = idx1 + newContent.length;
+    if (idx2 < idx1 || idx1 < 0) return;
+
+    let newText = content.substring(0, lastAssistedIdx + idx1);
+    newText += newContent;
+    newText += content.substring(lastAssistedIdx + idx2);
+
+    setContent(newText);
+    setLastAssistedIdx(lastAssistedIdx + idx2);
+  };
+
   return (
     <CommentBox
       sort={sort}
       polarity={polarity}
-      onClick={() => {
-        if (idx) sentenceComplete(idx[0], idx[1], content);
-      }}
+      onClick={sort == ReviewAssist.COMPLETE ? sentenceComplete : undefined}
     >
       <Row margin="0 0 6px 0">
         <AIBot style={{ width: 30 }} />
@@ -86,22 +120,9 @@ const Comment = ({
         color={colors.gray01}
         style={{ lineHeight: '150%', textAlign: 'left' }}
       >
-        {content}
+        {newContent}
       </Fonts.body3>
     </CommentBox>
-  );
-};
-
-const Dots = () => {
-  return (
-    <React.Fragment>
-      <DotIcon alt="." src={Dot} delay={0} />
-      <Margin margin="0 2px 0 0" />
-      <DotIcon alt="." src={Dot} delay={0.2} />
-      <Margin margin="0 2px 0 0" />
-      <DotIcon alt="." src={Dot} delay={0.4} />
-      <Margin margin="0 6px 0 0" />
-    </React.Fragment>
   );
 };
 
@@ -162,23 +183,4 @@ const CommentBox = styled.button<{
       : colors.lightBlue};
   animation: ${BoxFadeIn} 0.7s forwards ease-out;
   cursor: ${(props) => (props.sort == 1 ? 'default' : 'pointer')};
-`;
-
-const dotJump = keyframes`
-  0% {
-    margin-bottom: 0px;
-  }
-  100% {
-    margin-bottom: 5px;
-  }
-`;
-
-const DotIcon = styled.img<{ delay: number }>`
-  width: 4px;
-  animation-name: ${dotJump};
-  animation-duration: 0.7s;
-  animation-delay: ${(props) => props.delay}s;
-  animation-iteration-count: infinite;
-  animation-timing-function: linear;
-  animation-direction: alternate;
 `;
