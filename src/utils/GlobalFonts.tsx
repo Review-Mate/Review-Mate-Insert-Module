@@ -6,6 +6,7 @@ const Heading = styled.h1<FontProps>`
   margin: ${(props) => props.margin || '0'};
   font-weight: bold;
   color: ${(props) => (props.color ? props.color : colors.black)};
+  text-align: ${(props) => props.textalign || 'left'};
 `;
 
 const Title = styled.h2<FontProps>`
@@ -13,6 +14,7 @@ const Title = styled.h2<FontProps>`
   margin: ${(props) => props.margin || '0'};
   font-weight: bold;
   color: ${(props) => (props.color ? props.color : colors.black)};
+  text-align: ${(props) => props.textalign || 'left'};
 `;
 
 const SubTitle = styled.h3<FontProps>`
@@ -20,6 +22,7 @@ const SubTitle = styled.h3<FontProps>`
   margin: ${(props) => props.margin || '0'};
   font-weight: bold;
   color: ${(props) => (props.color ? props.color : colors.black)};
+  text-align: ${(props) => props.textalign || 'left'};
 `;
 
 const body1 = styled.p<FontProps>`
@@ -34,6 +37,7 @@ const body2 = styled.p<FontProps>`
   margin: ${(props) => props.margin || '0'};
   color: ${(props) => (props.color ? props.color : colors.black)};
   font-weight: ${(props) => (props.weight ? props.weight : 'normal')};
+  text-align: ${(props) => props.textalign || 'left'};
 `;
 
 const body3 = styled.p<FontProps>`
@@ -41,6 +45,7 @@ const body3 = styled.p<FontProps>`
   margin: ${(props) => props.margin || '0'};
   color: ${(props) => (props.color ? props.color : colors.black)};
   font-weight: ${(props) => (props.weight ? props.weight : 'normal')};
+  text-align: ${(props) => props.textalign || 'left'};
 `;
 
 const caption = styled.p<FontProps>`
@@ -48,6 +53,7 @@ const caption = styled.p<FontProps>`
   margin: ${(props) => props.margin || '0'};
   color: ${(props) => (props.color ? props.color : colors.black)};
   font-weight: ${(props) => (props.weight ? props.weight : 'normal')};
+  text-align: ${(props) => props.textalign || 'left'};
 `;
 
 const num1 = styled.p<FontProps>`
@@ -56,6 +62,7 @@ const num1 = styled.p<FontProps>`
   margin: ${(props) => props.margin || '0'};
   color: ${(props) => (props.color ? props.color : colors.black)};
   font-weight: ${(props) => (props.weight ? props.weight : 'normal')};
+  text-align: ${(props) => props.textalign || 'left'};
 `;
 
 const num2 = styled.p<FontProps>`
@@ -64,6 +71,7 @@ const num2 = styled.p<FontProps>`
   margin: ${(props) => props.margin || '0'};
   color: ${(props) => (props.color ? props.color : colors.black)};
   font-weight: ${(props) => (props.weight ? props.weight : 'normal')};
+  text-align: ${(props) => props.textalign || 'left'};
 `;
 
 const num3 = styled.p<FontProps>`
@@ -72,6 +80,7 @@ const num3 = styled.p<FontProps>`
   margin: ${(props) => props.margin || '0'};
   color: ${(props) => (props.color ? props.color : colors.black)};
   font-weight: ${(props) => (props.weight ? props.weight : 'normal')};
+  text-align: ${(props) => props.textalign || 'left'};
 `;
 
 const num4 = styled.p<FontProps>`
@@ -80,12 +89,14 @@ const num4 = styled.p<FontProps>`
   margin: ${(props) => props.margin || '0'};
   color: ${(props) => (props.color ? props.color : colors.black)};
   font-weight: ${(props) => (props.weight ? props.weight : 'normal')};
+  text-align: ${(props) => props.textalign || 'left'};
 `;
 
 interface FontProps {
   color?: string;
   margin?: string;
   weight?: number;
+  textalign?: string;
 }
 
 export const Fonts = {

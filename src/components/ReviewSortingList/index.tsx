@@ -37,7 +37,7 @@ export default function ReviewSortingList({
         setSelectedOption={setSelectedOption}
       />
       <KeywordSortBar setSelectedPage={setSelectedPage} />
-      {reviewList.map((review: ReviewType) => (
+      {reviewList?.map((review: ReviewType) => (
         <Reviews
           key={review.id}
           id={review.id}
@@ -47,13 +47,13 @@ export default function ReviewSortingList({
           createdAt={review.createdAt}
           authorName={review.authorName}
           polarity={review.polarity}
-          // image={review.image}
-          reviewHighlightPairResponses={review.reviewHighlightPairResponses}
+          reviewImageUrls={review.reviewImageUrls}
+          reviewTagIndexResponses={review.reviewTagIndexResponses}
         />
       ))}
 
       <PageButtonBox>
-        {pageButtons.map((pageButton) => (
+        {pageButtons?.map((pageButton) => (
           <PageButton key={pageButton} value={pageButton} onClick={onPageClick}>
             <Fonts.body3 weight={currentPage == pageButton ? 900 : 300}>
               {pageButton}

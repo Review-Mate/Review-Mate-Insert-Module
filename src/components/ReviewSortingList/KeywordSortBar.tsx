@@ -4,7 +4,7 @@ import React, { useContext } from 'react';
 import styled from 'styled-components';
 import { ReactComponent as CheckWhite } from '@/assets/icons/checkWhite.svg';
 import { ReactComponent as CheckBlack } from '@/assets/icons/checkBlack.svg';
-import { useTags } from '@/hooks/useTags';
+import { useTags } from '@/reactQueryHooks/useTags';
 import ProductIdContext from '../contexts/ProductIdContext';
 import ProductTagContext from '../contexts/ProductTagContext';
 import { reviewTagMatch } from '@/utils/tagMatch';

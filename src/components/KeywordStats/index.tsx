@@ -7,7 +7,7 @@ import { ReactComponent as AIBot } from '@/assets/icons/aibot.svg';
 import KeywordStatList from './KeywordStatList';
 import { ReactComponent as Down } from '@/assets/icons/down.svg';
 import { ReactComponent as Up } from '@/assets/icons/up.svg';
-import { useTagStats } from '@/hooks/useStats';
+import { useTagStats } from '@/reactQueryHooks/useStats';
 import ProductIdContext from '../contexts/ProductIdContext';
 import { reviewTagMatch } from '@/utils/tagMatch';
 

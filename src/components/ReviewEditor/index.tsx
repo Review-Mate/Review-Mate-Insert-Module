@@ -1,19 +1,19 @@
 import { Fonts } from '@/utils/GlobalFonts';
-import React, { useState } from 'react';
+import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { styled } from 'styled-components';
 import ReviewRating from './ReviewRating';
 import FileInput from './FileInput';
 import { colors } from '@/utils/GlobalStyles';
-import useInputTimeout from '@/hooks/useInputTimeout';
-import { ReviewWriteStateType } from '@/types/Comments';
-import { CommentList } from '@/data/commentData';
-import { useCreateReview } from '@/hooks/useReviews';
+import { useCreateReview } from '@/reactQueryHooks/useReviews';
 import { useLocation } from 'react-router-dom';
 import useMessageToParent from '@/hooks/useMessageToParent';
 
-interface Props extends ReviewWriteStateType {
+interface Props {
   title: string;
   setTitle: React.Dispatch<React.SetStateAction<string>>;
+  reviewInput: string;
+  setReviewInput: React.Dispatch<React.SetStateAction<string>>;
+  handleInputChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
 }
 
 interface onChangeInputProps {
@@ -21,16 +21,19 @@ interface onChangeInputProps {
   setState: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function ReviewEditor(props: Props) {
-  const { comments, setComments, title, setTitle, content, setContent } = props;
-
+export default function ReviewEditor({
+  title,
+  setTitle,
+  reviewInput,
+  setReviewInput,
+  handleInputChange,
+}: Props) {
   const location = useLocation();
 
   // 파트너사 도메인
   const partnerDomain = new URLSearchParams(location.search).get(
     'partner_domain'
   );
-
   // 파트너가 전달한 예약 아이디
   const reservationId = new URLSearchParams(location.search).get(
     'reservation_id'
@@ -40,9 +43,19 @@ export default function ReviewEditor(props: Props) {
   const [images, setImages] = useState<File[]>([]);
 
   const { sendMessageToParent } = useMessageToParent();
-  const { mutate: createReviewMutate } = useCreateReview(() => {
-    window.alert('리뷰가 등록되었습니다.');
-    sendMessageToParent({ message: 'success' });
+  const { mutate: createReviewMutate } = useCreateReview({
+    onSuccess: () => {
+      window.alert(
+        '리뷰가 등록되었습니다. 리뷰 목록에서 등록된 리뷰를 확인해보세요!'
+      );
+      sendMessageToParent({ message: 'success' });
+      setReviewInput('');
+      setTitle('');
+      setRating(0);
+    },
+    onError: (err) => {
+      window.alert('리뷰 등록에 실패했습니다.');
+    },
   });
 
   const onChangeInput = ({ e, setState }: onChangeInputProps) => {
@@ -52,9 +65,9 @@ export default function ReviewEditor(props: Props) {
   const validationCheck = () => {
     if (rating === 0) window.alert('별점을 입력해주세요');
     else if (title.length === 0) window.alert('제목을 입력해주세요');
-    else if (content.length === 0) window.alert('내용을 입력해주세요');
+    else if (reviewInput.length === 0) window.alert('내용을 입력해주세요');
 
-    return rating !== 0 && title.length !== 0 && content.length !== 0;
+    return rating !== 0 && title.length !== 0 && reviewInput.length !== 0;
   };
 
   const onClickSubmit = async () => {
@@ -63,10 +76,6 @@ export default function ReviewEditor(props: Props) {
       return;
     }
     if (!validationCheck()) return;
-
-    setContent('');
-    setTitle('');
-    setRating(0);
 
     const formData = intoFormData();
 
@@ -80,7 +89,7 @@ export default function ReviewEditor(props: Props) {
   const intoFormData = () => {
     const formData = new FormData();
 
-    const reviewCreateRequest = { rating, title, content };
+    const reviewCreateRequest = { rating, title, content: reviewInput };
     formData.append(
       'reviewCreateRequest',
       new Blob([JSON.stringify(reviewCreateRequest)], {
@@ -95,13 +104,6 @@ export default function ReviewEditor(props: Props) {
     return formData;
   };
 
-  const [count, setCount] = useState(0);
-  // 1초간 입력이 없을 경우 실행
-  useInputTimeout(1000, () => {
-    setComments([...comments, CommentList[count]]);
-    setCount(1);
-  });
-
   return (
     <Container>
       <Fonts.body1 margin="0 0 15px 0">이번 여행은 만족하셨나요?</Fonts.body1>
@@ -115,15 +117,13 @@ export default function ReviewEditor(props: Props) {
       />
       <Textarea
         placeholder="내용"
-        value={content}
+        value={reviewInput}
         rows={10}
-        onChange={(e) => {
-          onChangeInput({ e, setState: setContent });
-        }}
+        onChange={(e) => handleInputChange(e)}
       />
       <FileInput images={images} setImages={setImages} />
       <Button onClick={onClickSubmit}>
-        <Fonts.body2 weight={500} color="white">
+        <Fonts.body2 weight={500} color="white" textalign="center">
           리뷰 작성
         </Fonts.body2>
       </Button>

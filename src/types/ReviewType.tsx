@@ -6,12 +6,13 @@ export interface ReviewType {
   authorName: string;
   createdAt: string;
   polarity: string;
-  reviewHighlightPairResponses: [
+  reviewTagIndexResponses: [
     {
       startIndex: number;
       endIndex: number;
     }
   ];
+  reviewImageUrls: string[];
 }
 
 export interface PageableType {
