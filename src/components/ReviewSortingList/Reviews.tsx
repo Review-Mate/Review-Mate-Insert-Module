@@ -34,6 +34,7 @@ export default function Reviews({
     const sentence = [];
     let lastIndex = 0;
     indexList?.forEach((index) => {
+      if (lastIndex > index.startIndex) return;
       sentence.push(content.slice(lastIndex, index.startIndex));
       sentence.push(
         <Highlight>{content.slice(index.startIndex, index.endIndex)}</Highlight>
