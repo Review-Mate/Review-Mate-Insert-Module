@@ -3,8 +3,8 @@ interface ReviewTagMatch {
 }
 
 export const reviewTagMatch: ReviewTagMatch = {
-  KINDNESS: '친절도',
-  ROOM: '방/객실/청결도',
+  KINDNESS: '친절',
+  ROOM: '객실/청결',
   RESTROOM: '화장실',
   LOCATION: '위치',
   SIGHT: '풍경',
