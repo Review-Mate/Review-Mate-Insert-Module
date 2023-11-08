@@ -1,19 +1,20 @@
 import { Fonts } from '@/utils/GlobalFonts';
-import React, { useState } from 'react';
+import React, { ChangeEvent, KeyboardEvent, useState } from 'react';
 import { styled } from 'styled-components';
 import ReviewRating from './ReviewRating';
 import FileInput from './FileInput';
 import { colors } from '@/utils/GlobalStyles';
-import useInputTimeout from '@/hooks/useInputTimeout';
-import { ReviewWriteStateType } from '@/types/Comments';
-import { useCreateReview } from '@/hooks/useReviews';
+import { useCreateReview } from '@/reactQueryHooks/useReviews';
 import { useLocation } from 'react-router-dom';
 import useMessageToParent from '@/hooks/useMessageToParent';
-import { useReviewRecommendations } from '@/hooks/useReviewAssistant';
 
-interface Props extends ReviewWriteStateType {
+interface Props {
   title: string;
   setTitle: React.Dispatch<React.SetStateAction<string>>;
+  reviewInput: string;
+  setReviewInput: React.Dispatch<React.SetStateAction<string>>;
+  handleInputChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
+  handleKeyDown: (e: KeyboardEvent<HTMLTextAreaElement>) => void;
 }
 
 interface onChangeInputProps {
@@ -21,9 +22,14 @@ interface onChangeInputProps {
   setState: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function ReviewEditor(props: Props) {
-  const { comments, setComments, title, setTitle, content, setContent } = props;
-
+export default function ReviewEditor({
+  title,
+  setTitle,
+  reviewInput,
+  setReviewInput,
+  handleInputChange,
+  handleKeyDown,
+}: Props) {
   const location = useLocation();
 
   // 파트너사 도메인
@@ -38,14 +44,6 @@ export default function ReviewEditor(props: Props) {
   const [rating, setRating] = useState<number>(0);
   const [images, setImages] = useState<File[]>([]);
 
-  const { mutate: reviewRecommendMutate } = useReviewRecommendations({
-    onSuccess: (data) => {
-      data.body.forEach((comment) => {
-        setComments([...comments, comment]);
-      });
-    },
-  });
-
   const { sendMessageToParent } = useMessageToParent();
   const { mutate: createReviewMutate } = useCreateReview({
     onSuccess: () => {
@@ -53,7 +51,7 @@ export default function ReviewEditor(props: Props) {
         '리뷰가 등록되었습니다. 리뷰 목록에서 등록된 리뷰를 확인해보세요!'
       );
       sendMessageToParent({ message: 'success' });
-      setContent('');
+      setReviewInput('');
       setTitle('');
       setRating(0);
     },
@@ -69,9 +67,9 @@ export default function ReviewEditor(props: Props) {
   const validationCheck = () => {
     if (rating === 0) window.alert('별점을 입력해주세요');
     else if (title.length === 0) window.alert('제목을 입력해주세요');
-    else if (content.length === 0) window.alert('내용을 입력해주세요');
+    else if (reviewInput.length === 0) window.alert('내용을 입력해주세요');
 
-    return rating !== 0 && title.length !== 0 && content.length !== 0;
+    return rating !== 0 && title.length !== 0 && reviewInput.length !== 0;
   };
 
   const onClickSubmit = async () => {
@@ -83,8 +81,6 @@ export default function ReviewEditor(props: Props) {
 
     const formData = intoFormData();
 
-    console.log(formData);
-
     createReviewMutate({
       partnerDomain: partnerDomain,
       reservationPartnerCustomId: reservationId,
@@ -95,7 +91,7 @@ export default function ReviewEditor(props: Props) {
   const intoFormData = () => {
     const formData = new FormData();
 
-    const reviewCreateRequest = { rating, title, content };
+    const reviewCreateRequest = { rating, title, content: reviewInput };
     formData.append(
       'reviewCreateRequest',
       new Blob([JSON.stringify(reviewCreateRequest)], {
@@ -103,19 +99,12 @@ export default function ReviewEditor(props: Props) {
       })
     );
 
-    console.log('이미지', images);
-
     images.forEach((image) => {
       formData.append('reviewImageFiles', image);
     });
 
     return formData;
   };
-
-  // 1초간 입력이 없을 경우 실행
-  useInputTimeout(1000, () => {
-    reviewRecommendMutate(content);
-  });
 
   return (
     <Container>
@@ -130,11 +119,10 @@ export default function ReviewEditor(props: Props) {
       />
       <Textarea
         placeholder="내용"
-        value={content}
+        value={reviewInput}
         rows={10}
-        onChange={(e) => {
-          onChangeInput({ e, setState: setContent });
-        }}
+        onChange={(e) => handleInputChange(e)}
+        onKeyDown={(e) => handleKeyDown(e)}
       />
       <FileInput images={images} setImages={setImages} />
       <Button onClick={onClickSubmit}>

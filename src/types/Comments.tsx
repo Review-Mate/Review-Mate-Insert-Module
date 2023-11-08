@@ -6,10 +6,3 @@ export interface CommentType {
   idx?: number[];
   polarity?: ReviewPolarity;
 }
-
-export interface ReviewWriteStateType {
-  comments: CommentType[];
-  setComments: React.Dispatch<React.SetStateAction<CommentType[]>>;
-  content: string;
-  setContent: React.Dispatch<React.SetStateAction<string>>;
-}

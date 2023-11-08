@@ -8,14 +8,6 @@ export default function useInputTimeout(timeout: number, callback: () => void) {
   };
 
   useEffect(() => {
-    window.addEventListener('input', resetFunction);
-
-    return () => {
-      window.removeEventListener('input', resetFunction);
-    };
-  }, []);
-
-  useEffect(() => {
     if (!lastTime) return;
 
     const timer = setTimeout(() => {
@@ -26,4 +18,6 @@ export default function useInputTimeout(timeout: number, callback: () => void) {
       clearTimeout(timer);
     };
   }, [lastTime]);
+
+  return resetFunction;
 }
