@@ -29,11 +29,11 @@ export default function Reviews({
       endIndex: number;
     }[]
   ) => {
-    if (indexList.length === 0) return content;
+    if (indexList?.length === 0) return content;
 
     const sentence = [];
     let lastIndex = 0;
-    indexList.forEach((index) => {
+    indexList?.forEach((index) => {
       sentence.push(content.slice(lastIndex, index.startIndex));
       sentence.push(
         <Highlight>{content.slice(index.startIndex, index.endIndex)}</Highlight>
@@ -69,7 +69,7 @@ export default function Reviews({
         <Fonts.caption color={colors.gray01}>{formatDate}</Fonts.caption>
       </TextBox>
       {reviewImageUrls.length !== 0 && (
-        <Image src={`https://${reviewImageUrls[0]}`} />
+        <Image src={`https://${reviewImageUrls[0]}`} alt="리뷰 이미지" />
       )}
     </Container>
   );
