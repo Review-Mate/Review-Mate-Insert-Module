@@ -12,7 +12,8 @@ export default function Reviews({
   content,
   createdAt,
   authorName,
-  reviewHighlightPairResponses,
+  reviewTagIndexResponses,
+  reviewImageUrls,
 }: ReviewType) {
   const formatDate =
     createdAt.substring(0, 4) +
@@ -60,14 +61,16 @@ export default function Reviews({
           margin="0 0 20px 0"
           style={{ lineHeight: 1.5 }}
         >
-          {wordHighlight(content, reviewHighlightPairResponses)}
+          {wordHighlight(content, reviewTagIndexResponses)}
         </Fonts.caption>
         <Fonts.body3 weight={500} margin="0 0 5px 0">
           {authorName}
         </Fonts.body3>
         <Fonts.caption color={colors.gray01}>{formatDate}</Fonts.caption>
       </TextBox>
-      {/* <Image src="https://cdn.pixabay.com/photo/2016/03/04/19/36/beach-1236581_1280.jpg" /> */}
+      {reviewImageUrls.length !== 0 && (
+        <Image src={`https://${reviewImageUrls[0]}`} alt="리뷰 이미지" />
+      )}
     </Container>
   );
 }
@@ -91,4 +94,10 @@ const TextBox = styled.div`
   flex: 1;
   flex-direction: column;
   margin-right: 40px;
+`;
+
+const Image = styled.img`
+  width: 120px;
+  height: 120px;
+  border-radius: 10px;
 `;
