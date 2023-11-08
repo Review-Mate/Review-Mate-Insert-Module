@@ -28,11 +28,11 @@ export default function Reviews({
       endIndex: number;
     }[]
   ) => {
-    if (indexList.length === 0) return content;
+    if (indexList?.length === 0) return content;
 
     const sentence = [];
     let lastIndex = 0;
-    indexList.forEach((index) => {
+    indexList?.forEach((index) => {
       sentence.push(content.slice(lastIndex, index.startIndex));
       sentence.push(
         <Highlight>{content.slice(index.startIndex, index.endIndex)}</Highlight>

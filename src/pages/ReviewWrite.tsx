@@ -11,15 +11,8 @@ export default function ReviewWrite() {
 
   const [title, setTitle] = useState<string>('');
 
-  const {
-    reviewInput,
-    setReviewInput,
-    comments,
-    handleInputChange,
-    handleKeyDown,
-    lastAssistedIdx,
-    setLastAssistedIdx,
-  } = useReviewAndComments();
+  const { reviewInput, setReviewInput, comments, handleInputChange } =
+    useReviewAndComments();
 
   return (
     <Container ref={componentRef}>
@@ -27,7 +20,6 @@ export default function ReviewWrite() {
         reviewInput={reviewInput}
         setReviewInput={setReviewInput}
         handleInputChange={handleInputChange}
-        handleKeyDown={handleKeyDown}
         title={title}
         setTitle={setTitle}
       />
@@ -36,8 +28,6 @@ export default function ReviewWrite() {
         comments={comments}
         reviewInput={reviewInput}
         setReviewInput={setReviewInput}
-        lastAssistedIdx={lastAssistedIdx}
-        setLastAssistedIdx={setLastAssistedIdx}
       />
     </Container>
   );

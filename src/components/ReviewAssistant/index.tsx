@@ -10,16 +10,12 @@ interface Props {
   comments: CommentType[];
   reviewInput: string;
   setReviewInput: React.Dispatch<React.SetStateAction<string>>;
-  lastAssistedIdx: number;
-  setLastAssistedIdx: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function ReviewAssistant({
   comments,
   reviewInput,
   setReviewInput,
-  lastAssistedIdx,
-  setLastAssistedIdx,
 }: Props) {
   return (
     <Container>
@@ -39,8 +35,6 @@ export default function ReviewAssistant({
             newReviewInput={comment.content}
             reviewInput={reviewInput}
             setReviewInput={setReviewInput}
-            lastAssistedIdx={lastAssistedIdx}
-            setLastAssistedIdx={setLastAssistedIdx}
           />
         );
       })}

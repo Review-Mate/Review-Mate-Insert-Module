@@ -14,7 +14,6 @@ interface Props {
   reviewInput: string;
   setReviewInput: React.Dispatch<React.SetStateAction<string>>;
   handleInputChange: (e: ChangeEvent<HTMLTextAreaElement>) => void;
-  handleKeyDown: (e: KeyboardEvent<HTMLTextAreaElement>) => void;
 }
 
 interface onChangeInputProps {
@@ -28,7 +27,6 @@ export default function ReviewEditor({
   reviewInput,
   setReviewInput,
   handleInputChange,
-  handleKeyDown,
 }: Props) {
   const location = useLocation();
 
@@ -122,7 +120,6 @@ export default function ReviewEditor({
         value={reviewInput}
         rows={10}
         onChange={(e) => handleInputChange(e)}
-        onKeyDown={(e) => handleKeyDown(e)}
       />
       <FileInput images={images} setImages={setImages} />
       <Button onClick={onClickSubmit}>

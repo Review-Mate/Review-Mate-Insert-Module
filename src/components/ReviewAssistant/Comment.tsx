@@ -17,8 +17,6 @@ interface CommentProps {
   reviewInput: string;
   setReviewInput: Dispatch<SetStateAction<string>>;
   newReviewInput: string;
-  lastAssistedIdx: number;
-  setLastAssistedIdx: Dispatch<SetStateAction<number>>;
 }
 
 export const Comment = ({
@@ -28,8 +26,6 @@ export const Comment = ({
   reviewInput,
   setReviewInput,
   newReviewInput,
-  lastAssistedIdx,
-  setLastAssistedIdx,
 }: CommentProps) => {
   let title;
   if (sort == ReviewAssist.RECOMMEND) title = '주제 추천';
@@ -44,12 +40,11 @@ export const Comment = ({
       idx2 = idx1 + newReviewInput.length;
     if (idx2 < idx1 || idx1 < 0) return;
 
-    let newText = reviewInput.substring(0, lastAssistedIdx + idx1);
+    let newText = reviewInput.substring(0, idx1);
     newText += newReviewInput;
-    newText += reviewInput.substring(lastAssistedIdx + idx2);
+    newText += reviewInput.substring(idx2);
 
     setReviewInput(newText);
-    setLastAssistedIdx(lastAssistedIdx + idx2);
   };
 
   return (
