@@ -148,12 +148,11 @@ const Box = styled.div`
 `;
 
 const BigBox = styled.div`
-  height: 52px;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  padding-left: 13px;
+  padding: 10px 0 10px 13px;
   box-sizing: border-box;
   border-top: 1px solid ${colors.gray03};
   background-color: ${colors.gray08};
@@ -178,13 +177,12 @@ const BigBox = styled.div`
 `;
 
 const SmallBox = styled.div`
-  height: 60px;
   width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  padding-left: 13px;
+  padding: 10px 0 10px 13px;
   box-sizing: border-box;
   border-top: 1px solid ${colors.gray06};
   overflow-x: auto;
