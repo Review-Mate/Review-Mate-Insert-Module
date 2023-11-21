@@ -37,21 +37,20 @@ export default function KeywordSortBar({ setSelectedPage }: Props) {
             const tag = reviewTagMatch[tagName];
             if (tag === undefined) return;
             return (
-              <React.Fragment key={index}>
-                <BigTag
-                  title={tag}
-                  check={selectedBigTag === tagName}
-                  onClick={() => {
+              <BigTag
+                key={index}
+                title={tag}
+                check={selectedBigTag === tagName}
+                onClick={() => {
+                  setSelectedTag('');
+                  if (selectedBigTag === tagName) {
+                    setSelectedBigTag('');
                     setSelectedTag('');
-                    if (selectedBigTag === tagName) {
-                      setSelectedBigTag('');
-                      setSelectedTag('');
-                      return;
-                    }
-                    setSelectedBigTag(tagName);
-                  }}
-                />
-              </React.Fragment>
+                    return;
+                  }
+                  setSelectedBigTag(tagName);
+                }}
+              />
             );
           })}
       </BigBox>
@@ -59,20 +58,19 @@ export default function KeywordSortBar({ setSelectedPage }: Props) {
         <SmallBox>
           {tagsData &&
             tagsData[selectedBigTag]?.map((smallTag, index) => (
-              <React.Fragment key={index}>
-                <SmallTag
-                  title={smallTag}
-                  check={selectedTag === smallTag}
-                  onClick={() => {
-                    if (selectedTag === smallTag) {
-                      setSelectedTag('');
-                      return;
-                    }
-                    setSelectedPage(1);
-                    setSelectedTag(smallTag);
-                  }}
-                />
-              </React.Fragment>
+              <SmallTag
+                key={index}
+                title={smallTag}
+                check={selectedTag === smallTag}
+                onClick={() => {
+                  if (selectedTag === smallTag) {
+                    setSelectedTag('');
+                    return;
+                  }
+                  setSelectedPage(1);
+                  setSelectedTag(smallTag);
+                }}
+              />
             ))}
         </SmallBox>
       )}
@@ -97,6 +95,11 @@ const BigTag = ({ title, check, onClick }: TagProps) => {
         color={check ? colors.white : colors.primary}
         weight={500}
         margin={check ? '0 0 0 4px' : '0'}
+        style={{
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+        }}
       >
         {title}
       </Fonts.body3>
@@ -106,12 +109,17 @@ const BigTag = ({ title, check, onClick }: TagProps) => {
 
 const SmallTag = ({ title, check, onClick }: TagProps) => {
   return (
-    <Tag onClick={onClick} bordercolor={check ? colors.gray03 : colors.gray06}>
+    <Tag onClick={onClick} bordercolor={check ? colors.gray01 : colors.gray05}>
       {check && <CheckBlack style={{ marginBottom: 2 }} />}
       <Fonts.body3
         color={colors.gray01}
         weight={500}
         margin={check ? '0 0 0 4px' : '0'}
+        style={{
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+        }}
       >
         {title}
       </Fonts.body3>
@@ -121,14 +129,17 @@ const SmallTag = ({ title, check, onClick }: TagProps) => {
 
 const Tag = styled.button<{ backgroundcolor?: string; bordercolor?: string }>`
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  min-width: 66px;
+  width: 'auto';
+  max-width: 150px;
   height: 30px;
   border: 1px solid ${(props) => props.bordercolor || colors.primary};
   border-radius: 100px;
   background-color: ${(props) => props.backgroundcolor || colors.white};
   margin: 0 5px 0 0;
+  padding: 0 10px 0 10px;
   cursor: pointer;
 `;
 
@@ -146,15 +157,41 @@ const BigBox = styled.div`
   box-sizing: border-box;
   border-top: 1px solid ${colors.gray03};
   background-color: ${colors.gray08};
+  overflow-x: auto;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  -ms-overflow-style: none; // for Internet Explorer, Edge
+  scrollbar-width: none; // for Firefox
 `;
 
 const SmallBox = styled.div`
-  height: 52px;
+  height: 60px;
   width: 100%;
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: flex-start;
   padding-left: 13px;
   box-sizing: border-box;
   border-top: 1px solid ${colors.gray06};
+  overflow-x: auto;
+
+  // chrome, safari, opera,
+  &::-webkit-scrollbar {
+    height: 9px;
+  }
+  &::-webkit-scrollbar-thumb {
+    width: 3%;
+    background: ${colors.gray04};
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: ${colors.gray08};
+  }
+
+  // Firefox
+  scrollbar-color: ${colors.gray04} ${colors.gray08};
+  scrollbar-width: thin;
 `;
