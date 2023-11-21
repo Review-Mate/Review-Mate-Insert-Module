@@ -42,7 +42,7 @@ export default function RatingStatBox({ rating }: Props) {
                 ? starGreen
                 : star > rating + 1
                 ? starEmpty
-                : starIcons[Math.round((rating % 1) * 10)]
+                : starIcons[Math.round((rating * 10) % 10)]
             }
             width={20}
             alt="별점"
