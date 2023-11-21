@@ -89,12 +89,13 @@ export default function KeywordStats({ reviewCount }: Props) {
       })}
       {!hide &&
         KeywordList?.map((keyword, index) => {
-          if (index >= TAG_NUMBER_LIMIT)
+          const tag = reviewTagMatch[keyword.reviewProperty];
+          if (tag !== undefined && TAG_NUMBER_LIMIT <= index && index < 7)
             return (
               <div key={index}>
                 <Margin margin={'10px 0 0 0'} />
                 <KeywordStatList
-                  title={keyword.reviewProperty}
+                  title={tag}
                   positive={keyword.positiveCount}
                   negative={keyword.negativeCount}
                   max={maxCount}

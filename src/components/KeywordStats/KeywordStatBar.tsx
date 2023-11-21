@@ -44,7 +44,8 @@ const Circle = styled.div<{ color?: string; reverse?: number }>`
   justify-content: center;
   align-items: center;
   border-radius: 100px;
-  width: 26px;
+  padding: 0 5px;
+  min-width: 16px;
   height: 26px;
   background-color: ${(props) => props.color || colors.primary};
 `;
