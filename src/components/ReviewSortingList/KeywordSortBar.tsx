@@ -158,12 +158,23 @@ const BigBox = styled.div`
   border-top: 1px solid ${colors.gray03};
   background-color: ${colors.gray08};
   overflow-x: auto;
+
+  // chrome, safari, opera, Edge
   &::-webkit-scrollbar {
-    display: none;
+    height: 9px;
+  }
+  &::-webkit-scrollbar-thumb {
+    width: 3%;
+    background: ${colors.gray04};
+    border-radius: 10px;
+  }
+  &::-webkit-scrollbar-track {
+    background-color: ${colors.gray08};
   }
 
-  -ms-overflow-style: none; // for Internet Explorer, Edge
-  scrollbar-width: none; // for Firefox
+  // Firefox
+  scrollbar-color: ${colors.gray04} ${colors.gray08};
+  scrollbar-width: thin;
 `;
 
 const SmallBox = styled.div`
@@ -178,7 +189,7 @@ const SmallBox = styled.div`
   border-top: 1px solid ${colors.gray06};
   overflow-x: auto;
 
-  // chrome, safari, opera,
+  // chrome, safari, opera, Edge
   &::-webkit-scrollbar {
     height: 9px;
   }
