@@ -22,7 +22,9 @@ export default function ReviewStats({
     <Box>
       <StatItem>
         {/* 점수에 따라 별점 채워짐(0.1 단위) */}
-        {reviewStats && <RatingStatBox rating={reviewStats?.averageRating} />}
+        {reviewStats && (
+          <RatingStatBox rating={reviewStats?.averageRating.toFixed(1)} />
+        )}
         <Margin margin={'5px 0 0 0'} />
         {reviewStats && (
           <Fonts.num2>{reviewStats?.averageRating.toFixed(1)}</Fonts.num2>
