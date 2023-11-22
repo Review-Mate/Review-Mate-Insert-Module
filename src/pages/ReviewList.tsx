@@ -49,6 +49,7 @@ export default function ReviewList() {
         property: selectedBigTag,
         keyword: selectedTag,
         onSuccess: (data) => {
+          console.log(data);
           setCurrentPage(data.pageable.pageNumber + 1);
         },
       })

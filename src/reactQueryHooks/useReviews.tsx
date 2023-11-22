@@ -51,8 +51,8 @@ const fetchProductReviews = async ({
   keyword,
 }: FetchProductReviews): Promise<ReviewListSortType> => {
   let api = `${BASE_URL}/api/widget/v1/${partnerDomain}/products/${travelProductPartnerCustomId}/reviews?orderCriteria=${reviewSort}&page=${reviewPage}&size=${reviewListSize}`;
-  if (property && keyword && property != '' && keyword != '')
-    api = api.concat(`&property=${property}&keyword=${keyword}`);
+  if (property && property != '') api = api.concat(`&property=${property}`);
+  if (keyword && keyword != '') api = api.concat(`&keyword=${keyword}`);
   const { data } = await axios.get(api);
   return data;
 };
