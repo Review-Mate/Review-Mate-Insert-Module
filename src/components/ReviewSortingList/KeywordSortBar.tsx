@@ -8,12 +8,14 @@ import { useTags } from '@/reactQueryHooks/useTags';
 import ProductIdContext from '../contexts/ProductIdContext';
 import ProductTagContext from '../contexts/ProductTagContext';
 import { reviewTagMatch } from '@/utils/tagMatch';
+import { useQueryClient } from 'react-query';
 
 interface Props {
   setSelectedPage: React.Dispatch<React.SetStateAction<number>>;
 }
 
 export default function KeywordSortBar({ setSelectedPage }: Props) {
+  const queryClient = useQueryClient();
   const { selectedTag, setSelectedTag, selectedBigTag, setSelectedBigTag } =
     useContext(ProductTagContext);
 
@@ -29,26 +31,39 @@ export default function KeywordSortBar({ setSelectedPage }: Props) {
 
   if (isLoading || isError) return <></>;
 
+  const onBigTagClick = (bigTag: string) => {
+    setSelectedTag('');
+    if (selectedBigTag === bigTag) {
+      setSelectedBigTag('');
+      setSelectedTag('');
+      return;
+    }
+    setSelectedBigTag(bigTag);
+  };
+
+  const onSmallTagClick = (smallTag: string) => {
+    if (selectedTag === smallTag) {
+      setSelectedTag('');
+      return;
+    }
+    setSelectedPage(1);
+    setSelectedTag(smallTag);
+  };
+
   return (
     <Box>
       <BigBox>
         {tagsData &&
-          Object.keys(tagsData)?.map((tagName, index) => {
-            const tag = reviewTagMatch[tagName];
+          Object.keys(tagsData)?.map((bigTag, index) => {
+            const tag = reviewTagMatch[bigTag];
             if (tag === undefined) return;
             return (
               <BigTag
                 key={index}
                 title={tag}
-                check={selectedBigTag === tagName}
+                check={selectedBigTag === bigTag}
                 onClick={() => {
-                  setSelectedTag('');
-                  if (selectedBigTag === tagName) {
-                    setSelectedBigTag('');
-                    setSelectedTag('');
-                    return;
-                  }
-                  setSelectedBigTag(tagName);
+                  onBigTagClick(bigTag);
                 }}
               />
             );
@@ -63,12 +78,7 @@ export default function KeywordSortBar({ setSelectedPage }: Props) {
                 title={smallTag}
                 check={selectedTag === smallTag}
                 onClick={() => {
-                  if (selectedTag === smallTag) {
-                    setSelectedTag('');
-                    return;
-                  }
-                  setSelectedPage(1);
-                  setSelectedTag(smallTag);
+                  onSmallTagClick(smallTag);
                 }}
               />
             ))}
@@ -138,7 +148,7 @@ const Tag = styled.button<{ backgroundcolor?: string; bordercolor?: string }>`
   border: 1px solid ${(props) => props.bordercolor || colors.primary};
   border-radius: 100px;
   background-color: ${(props) => props.backgroundcolor || colors.white};
-  margin: 0 5px 0 0;
+  margin: 2px 5px 2px 0;
   padding: 0 10px 0 10px;
   cursor: pointer;
 `;
@@ -178,21 +188,23 @@ const BigBox = styled.div`
 
 const SmallBox = styled.div`
   width: 100%;
+  max-height: 115px;
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   align-items: center;
   justify-content: flex-start;
   padding: 10px 0 10px 13px;
   box-sizing: border-box;
   border-top: 1px solid ${colors.gray06};
-  overflow-x: auto;
+  overflow-y: auto;
 
   // chrome, safari, opera, Edge
   &::-webkit-scrollbar {
-    height: 9px;
+    width: 9px;
   }
   &::-webkit-scrollbar-thumb {
-    width: 3%;
+    height: 30%;
     background: ${colors.gray04};
     border-radius: 10px;
   }

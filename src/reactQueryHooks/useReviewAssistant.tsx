@@ -26,13 +26,17 @@ export const useReviewRecommendations = ({
 }: ReviewRecommendations) => {
   return useMutation(getReviewRecommendations, {
     onSuccess: onSuccess,
-    onError: () => console.log('리뷰 추천에 실패했습니다.'),
+    onError: (err) => {
+      throw err;
+    },
   });
 };
 
 export const useReviewComplete = ({ onSuccess }: ReviewRecommendations) => {
   return useMutation(getReviewComplete, {
     onSuccess: onSuccess,
-    onError: () => console.log('리뷰완성에 실패했습니다.'),
+    onError: (err) => {
+      throw err;
+    },
   });
 };
