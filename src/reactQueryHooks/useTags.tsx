@@ -22,11 +22,8 @@ export const useTags = ({
     ['tags', partnerDomain, singleTravelProductPartnerCustomId],
     () => fetchTags({ partnerDomain, singleTravelProductPartnerCustomId }),
     {
-      onSuccess: () => {
-        console.log('태그 불러오기 성공');
-      },
-      onError: () => {
-        console.log('태그 불러오기 실패');
+      onError: (err) => {
+        throw err;
       },
     }
   );
