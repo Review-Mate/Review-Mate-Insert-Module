@@ -5,5 +5,4 @@ export interface CommentType {
   content: string;
   idx?: number[];
   polarity?: ReviewPolarity;
-  visible: boolean;
 }

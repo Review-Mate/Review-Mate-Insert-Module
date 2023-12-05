@@ -32,26 +32,7 @@ export default function ReviewAssistant({
       })
     );
   };
-  const removeComments = (sort: number) => {
-    setComments((comments) => {
-      return comments.map((comment) => {
-        if (comment.sort == sort) {
-          return {
-            ...comment,
-            visible: false,
-          };
-        }
-        return comment;
-      });
-    });
-    setTimeout(() => {
-      setComments(
-        comments.filter((comment) => {
-          return comment.sort != sort;
-        })
-      );
-    }, 400);
-  };
+
   return (
     <Container>
       <AIBox>
@@ -64,7 +45,6 @@ export default function ReviewAssistant({
         return (
           <Comment
             key={index}
-            visible={comment.visible}
             sort={comment.sort}
             idx={comment.idx}
             polarity={comment?.polarity}
@@ -72,7 +52,6 @@ export default function ReviewAssistant({
             reviewInput={reviewInput}
             setReviewInput={setReviewInput}
             changeCommentIdx={changeCommentIdx}
-            removeComments={removeComments}
           />
         );
       })}

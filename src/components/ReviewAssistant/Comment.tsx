@@ -11,7 +11,6 @@ import styled, { keyframes } from 'styled-components';
 import { ReactComponent as AIBot } from '@/assets/icons/aibot.svg';
 
 interface CommentProps {
-  visible: boolean;
   sort: ReviewAssistType;
   polarity?: ReviewPolarityType;
   idx?: number[];
@@ -19,11 +18,9 @@ interface CommentProps {
   setReviewInput: Dispatch<SetStateAction<string>>;
   newReviewInput: string;
   changeCommentIdx: (sort: number, newIdx: number[]) => void;
-  removeComments: (sort: number) => void;
 }
 
 export const Comment = ({
-  visible,
   sort,
   polarity,
   idx,
@@ -31,7 +28,6 @@ export const Comment = ({
   setReviewInput,
   newReviewInput,
   changeCommentIdx,
-  removeComments,
 }: CommentProps) => {
   let title;
   if (sort == ReviewAssist.RECOMMEND) title = '주제 추천';
@@ -42,9 +38,8 @@ export const Comment = ({
 
     const idx1 = idx[0];
     let idx2 = idx[1];
-    if (idx2 > reviewInput.length || idx2 == -1)
-      idx2 = idx1 + newReviewInput.length;
-    if (idx2 < idx1 || idx1 < 0) return;
+    if ((idx2 !== -1 && idx2 < idx1) || idx1 < 0) return;
+    if (idx2 > idx1 + reviewInput.length) idx2 = idx1 + newReviewInput.length;
 
     let newText = reviewInput.substring(0, idx1);
     newText += newReviewInput;
@@ -53,8 +48,6 @@ export const Comment = ({
     // 변경된 idx 적용
     changeCommentIdx(sort, [idx1, idx2]);
 
-    removeComments(sort);
-
     setReviewInput(newText);
   };
 
@@ -62,7 +55,6 @@ export const Comment = ({
     <CommentBox
       sort={sort}
       polarity={polarity}
-      visible={visible}
       onClick={sort == ReviewAssist.COMPLETE ? sentenceComplete : undefined}
     >
       <Row margin="0 0 6px 0">
@@ -91,19 +83,9 @@ const BoxFadeIn = keyframes`
   }
 `;
 
-const BoxFadeOut = keyframes`
-  0% {
-    opacity: 100;
-  }
-  100% {
-    opacity: 0;
-  }
-`;
-
 const CommentBox = styled.button<{
   sort: ReviewAssistType;
   polarity: ReviewPolarityType;
-  visible?: boolean;
 }>`
   display: flex;
   flex-direction: column;
@@ -125,7 +107,6 @@ const CommentBox = styled.button<{
       : props.polarity
       ? colors.lightRed
       : colors.lightBlue};
-  animation: ${(props) => (props.visible ? BoxFadeIn : BoxFadeOut)}
-    ${(props) => (props.visible ? '0.7s' : '0.4s')} forwards ease-out;
+  animation: ${BoxFadeIn} 0.7s forwards ease-out;
   cursor: ${(props) => (props.sort == 1 ? 'default' : 'pointer')};
 `;
