@@ -11,8 +11,13 @@ export default function ReviewWrite() {
 
   const [title, setTitle] = useState<string>('');
 
-  const { reviewInput, setReviewInput, comments, handleInputChange } =
-    useReviewAndComments();
+  const {
+    reviewInput,
+    setReviewInput,
+    comments,
+    setComments,
+    handleInputChange,
+  } = useReviewAndComments();
 
   return (
     <Container ref={componentRef}>
@@ -26,6 +31,7 @@ export default function ReviewWrite() {
       <Margin margin={'0 0 0 20px'} />
       <ReviewAssistant
         comments={comments}
+        setComments={setComments}
         reviewInput={reviewInput}
         setReviewInput={setReviewInput}
       />

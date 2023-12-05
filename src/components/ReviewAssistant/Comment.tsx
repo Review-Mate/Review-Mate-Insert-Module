@@ -17,6 +17,7 @@ interface CommentProps {
   reviewInput: string;
   setReviewInput: Dispatch<SetStateAction<string>>;
   newReviewInput: string;
+  changeCommentIdx: (sort: number, newIdx: number[]) => void;
 }
 
 export const Comment = ({
@@ -26,6 +27,7 @@ export const Comment = ({
   reviewInput,
   setReviewInput,
   newReviewInput,
+  changeCommentIdx,
 }: CommentProps) => {
   let title;
   if (sort == ReviewAssist.RECOMMEND) title = '주제 추천';
@@ -36,13 +38,15 @@ export const Comment = ({
 
     const idx1 = idx[0];
     let idx2 = idx[1];
-    if (idx2 > reviewInput.length || idx2 == -1)
-      idx2 = idx1 + newReviewInput.length;
-    if (idx2 < idx1 || idx1 < 0) return;
+    if ((idx2 !== -1 && idx2 < idx1) || idx1 < 0) return;
+    if (idx2 > idx1 + reviewInput.length) idx2 = idx1 + newReviewInput.length;
 
     let newText = reviewInput.substring(0, idx1);
     newText += newReviewInput;
-    newText += reviewInput.substring(idx2);
+    if (idx2 !== -1) newText += reviewInput.substring(idx2);
+
+    // 변경된 idx 적용
+    changeCommentIdx(sort, [idx1, idx2]);
 
     setReviewInput(newText);
   };
