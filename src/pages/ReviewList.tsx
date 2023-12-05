@@ -1,7 +1,7 @@
 import KeywordStats from '@/components/KeywordStats';
 import ReviewSortingList from '@/components/ReviewSortingList';
 import ReviewStats from '@/components/ReviewStats';
-import ProductIdContext from '@/components/contexts/ProductIdContext';
+import { ProductIdProvider } from '@/components/contexts/ProductIdContext';
 import { ReviewSort } from '@/config/enum';
 import { useProductReviews } from '@/reactQueryHooks/useReviews';
 import { Margin } from '@/ui/margin/margin';
@@ -10,7 +10,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import { styled } from 'styled-components';
 import LoadingBar from '@/ui/loadingBar/LoadingBar';
-import ProductTagContext from '@/components/contexts/ProductTagContext';
+import { ProductTagProvider } from '@/components/contexts/ProductTagContext';
 import useHeightToParent from '@/hooks/useHeightToParent';
 import { useReviewStats } from '@/reactQueryHooks/useStats';
 
@@ -73,8 +73,8 @@ export default function ReviewList() {
 
   if (partnerDomain && partnerProductId)
     return (
-      <ProductIdContext.Provider value={{ partnerDomain, partnerProductId }}>
-        <ProductTagContext.Provider
+      <ProductIdProvider value={{ partnerDomain, partnerProductId }}>
+        <ProductTagProvider
           value={{
             selectedTag,
             setSelectedTag,
@@ -109,8 +109,8 @@ export default function ReviewList() {
               />
             )}
           </Container>
-        </ProductTagContext.Provider>
-      </ProductIdContext.Provider>
+        </ProductTagProvider>
+      </ProductIdProvider>
     );
 
   return <div>상품 아이디가 존재하지 않습니다.</div>;

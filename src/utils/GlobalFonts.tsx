@@ -30,6 +30,7 @@ const body1 = styled.p<FontProps>`
   margin: ${(props) => props.margin || '0'};
   font-weight: bold;
   color: ${(props) => (props.color ? props.color : colors.black)};
+  text-align: ${(props) => props.textalign || 'left'};
 `;
 
 const body2 = styled.p<FontProps>`
