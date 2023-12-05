@@ -2,7 +2,7 @@ import StatBars from '@/components/ReviewStats/StatBars';
 import { Margin } from '@/ui/margin/margin';
 import { Fonts } from '@/utils/GlobalFonts';
 import { colors } from '@/utils/GlobalStyles';
-import React from 'react';
+import React, { useMemo } from 'react';
 import { styled } from 'styled-components';
 import RatingStatBox from './RatingStatBox';
 import LoadingBar from '@/ui/loadingBar/LoadingBar';
@@ -18,6 +18,18 @@ export default function ReviewStats({
   isLoading,
   isError,
 }: Props) {
+  const getMaxPropertyCount = () => {
+    return Math.max(
+      reviewStats?.oneStarRatingCount,
+      reviewStats?.twoStarRatingCount,
+      reviewStats?.threeStarRatingCount,
+      reviewStats?.fourStarRatingCount,
+      reviewStats?.fiveStarRatingCount
+    );
+  };
+
+  const maxCount = useMemo(() => getMaxPropertyCount(), [reviewStats]);
+
   return (
     <Box>
       <StatItem>
@@ -42,7 +54,7 @@ export default function ReviewStats({
         )}
       </StatItem>
       <StatItem>
-        {/* 전체 리뷰 수를 100으로, 퍼센트(%)만큼 채워짐 */}
+        {/* 가장 많은 별점 수를 기준으로, 퍼센트(%)만큼 채워짐 */}
         {reviewStats && (
           <StatBars
             scoreList={[
@@ -52,7 +64,7 @@ export default function ReviewStats({
               reviewStats?.twoStarRatingCount,
               reviewStats?.oneStarRatingCount,
             ]}
-            max={reviewStats?.reviewCount}
+            max={maxCount}
           />
         )}
       </StatItem>

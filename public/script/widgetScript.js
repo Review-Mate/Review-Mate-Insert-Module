@@ -9,6 +9,7 @@ const createIframe = ($widgetContainer, type) => {
   iframe.style.width = '100%';
   iframe.style.height = '0';
   iframe.style.border = 'none';
+  iframe.style.overflow = 'hidden';
   iframe.scrolling = 'no';
 
   return iframe;
