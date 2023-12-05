@@ -15,6 +15,5 @@ const ProductTagContext = createContext<ProductTagContextType>({
 });
 
 export const ProductTagProvider = ProductTagContext.Provider;
-export const ProductTagConsumer = ProductTagContext.Consumer;
 
 export default ProductTagContext;

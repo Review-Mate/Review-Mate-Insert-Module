@@ -8,7 +8,6 @@ import { useTags } from '@/reactQueryHooks/useTags';
 import ProductIdContext from '../contexts/ProductIdContext';
 import ProductTagContext from '../contexts/ProductTagContext';
 import { reviewTagMatch } from '@/utils/tagMatch';
-import { useQueryClient } from 'react-query';
 
 interface Props {
   setSelectedPage: React.Dispatch<React.SetStateAction<number>>;
