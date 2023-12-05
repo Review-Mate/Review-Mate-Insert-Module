@@ -8,15 +8,50 @@ import { CommentType } from '@/types/Comments';
 
 interface Props {
   comments: CommentType[];
+  setComments: React.Dispatch<React.SetStateAction<CommentType[]>>;
   reviewInput: string;
   setReviewInput: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function ReviewAssistant({
   comments,
+  setComments,
   reviewInput,
   setReviewInput,
 }: Props) {
+  const changeCommentIdx = (sort: number, newIdx: number[]) => {
+    setComments(
+      comments.map((comment) => {
+        if (comment.sort == sort) {
+          return {
+            ...comment,
+            idx: newIdx,
+          };
+        }
+        return comment;
+      })
+    );
+  };
+  const removeComments = (sort: number) => {
+    setComments((comments) => {
+      return comments.map((comment) => {
+        if (comment.sort == sort) {
+          return {
+            ...comment,
+            visible: false,
+          };
+        }
+        return comment;
+      });
+    });
+    setTimeout(() => {
+      setComments(
+        comments.filter((comment) => {
+          return comment.sort != sort;
+        })
+      );
+    }, 400);
+  };
   return (
     <Container>
       <AIBox>
@@ -29,12 +64,15 @@ export default function ReviewAssistant({
         return (
           <Comment
             key={index}
+            visible={comment.visible}
             sort={comment.sort}
-            idx={comment?.idx}
+            idx={comment.idx}
             polarity={comment?.polarity}
             newReviewInput={comment.content}
             reviewInput={reviewInput}
             setReviewInput={setReviewInput}
+            changeCommentIdx={changeCommentIdx}
+            removeComments={removeComments}
           />
         );
       })}

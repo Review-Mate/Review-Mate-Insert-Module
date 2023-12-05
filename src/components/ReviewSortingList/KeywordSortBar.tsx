@@ -15,7 +15,6 @@ interface Props {
 }
 
 export default function KeywordSortBar({ setSelectedPage }: Props) {
-  const queryClient = useQueryClient();
   const { selectedTag, setSelectedTag, selectedBigTag, setSelectedBigTag } =
     useContext(ProductTagContext);
 

@@ -11,21 +11,27 @@ import styled, { keyframes } from 'styled-components';
 import { ReactComponent as AIBot } from '@/assets/icons/aibot.svg';
 
 interface CommentProps {
+  visible: boolean;
   sort: ReviewAssistType;
   polarity?: ReviewPolarityType;
   idx?: number[];
   reviewInput: string;
   setReviewInput: Dispatch<SetStateAction<string>>;
   newReviewInput: string;
+  changeCommentIdx: (sort: number, newIdx: number[]) => void;
+  removeComments: (sort: number) => void;
 }
 
 export const Comment = ({
+  visible,
   sort,
   polarity,
   idx,
   reviewInput,
   setReviewInput,
   newReviewInput,
+  changeCommentIdx,
+  removeComments,
 }: CommentProps) => {
   let title;
   if (sort == ReviewAssist.RECOMMEND) title = '주제 추천';
@@ -42,7 +48,12 @@ export const Comment = ({
 
     let newText = reviewInput.substring(0, idx1);
     newText += newReviewInput;
-    newText += reviewInput.substring(idx2);
+    if (idx2 !== -1) newText += reviewInput.substring(idx2);
+
+    // 변경된 idx 적용
+    changeCommentIdx(sort, [idx1, idx2]);
+
+    removeComments(sort);
 
     setReviewInput(newText);
   };
@@ -51,6 +62,7 @@ export const Comment = ({
     <CommentBox
       sort={sort}
       polarity={polarity}
+      visible={visible}
       onClick={sort == ReviewAssist.COMPLETE ? sentenceComplete : undefined}
     >
       <Row margin="0 0 6px 0">
@@ -79,9 +91,19 @@ const BoxFadeIn = keyframes`
   }
 `;
 
+const BoxFadeOut = keyframes`
+  0% {
+    opacity: 100;
+  }
+  100% {
+    opacity: 0;
+  }
+`;
+
 const CommentBox = styled.button<{
   sort: ReviewAssistType;
   polarity: ReviewPolarityType;
+  visible?: boolean;
 }>`
   display: flex;
   flex-direction: column;
@@ -103,6 +125,7 @@ const CommentBox = styled.button<{
       : props.polarity
       ? colors.lightRed
       : colors.lightBlue};
-  animation: ${BoxFadeIn} 0.7s forwards ease-out;
+  animation: ${(props) => (props.visible ? BoxFadeIn : BoxFadeOut)}
+    ${(props) => (props.visible ? '0.7s' : '0.4s')} forwards ease-out;
   cursor: ${(props) => (props.sort == 1 ? 'default' : 'pointer')};
 `;
